@@ -65,6 +65,7 @@ voltph/
 ## 📖 Documentation
 
 - [Technical Stack](./docs/TECH_STACK.md)
+- [Backend API Guide](./docs/BACKEND.md)
 - [Onboarding Plan for Juniors](./docs/ONBOARDING.md)
 - [Architecture Diagram](./docs/ARCHITECTURE.md)
 
