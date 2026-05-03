@@ -50,11 +50,68 @@ graph TD
 - This is a local NPM package within the monorepo.
 - It contains `interfaces`, `validation schemas`, and `calculation utilities` to ensure consistency across all services.
 
-## Data Flow: Trip Optimization
-1. User inputs origin and destination in the app.
-2. App sends request to `/api/trips/optimize`.
-3. API calls **Google Routes API** to get the polyline and distance.
-4. API fetches the user's **EV Model** specs from the DB.
-5. API calculates consumption.
-6. API performs a spatial query to find charging stations within a buffer of the route.
-7. API returns the optimized plan to the user.
+## Sequence Diagram: Trip Optimization Workflow
+
+This diagram illustrates the flow of data when a user plans a trip and requests route optimization.
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant FE as Frontend (Web/Mobile)
+    participant API as VoltPH API
+    participant DB as PostgreSQL/PostGIS
+    participant G as Google Maps API
+
+    U->>FE: Enter Origin/Destination & Select EV
+    FE->>API: POST /api/trips/optimize (TripPlan)
+    API->>G: Request Route (Polyline, Traffic, Distance)
+    G-->>API: Return Route Data
+    API->>DB: Fetch EV Model Specifications
+    DB-->>API: Return EVModel Details
+    API->>API: Calculate Estimated Consumption
+    API->>DB: Spatial Query: Find Stations along Route
+    DB-->>API: Return Nearby Charging Stations
+    API->>API: Finalize Trip Result
+    API-->>FE: Return TripResult (Optimized Plan)
+    FE->>U: Display Route & Charging Recommendations
+```
+
+## Entity Relationship Diagram (ERD)
+
+The following diagram represents the core data models and their relationships.
+
+```mermaid
+erDiagram
+    USER ||--o{ TRIP : "plans"
+    USER {
+        uuid id
+        string email
+        string name
+    }
+    EV_MODEL ||--o{ TRIP : "is used for"
+    EV_MODEL {
+        uuid id
+        string make
+        string model
+        float batteryCapacityKWh
+        float averageConsumptionKWhPerKm
+        string[] plugTypes
+    }
+    TRIP {
+        uuid id
+        uuid userId
+        uuid evModelId
+        json origin
+        json destination
+        float totalDistanceKm
+    }
+    CHARGING_STATION {
+        uuid id
+        string name
+        string provider
+        geography location
+        string[] plugTypes
+        float powerKW
+        boolean isAvailable
+    }
+```
