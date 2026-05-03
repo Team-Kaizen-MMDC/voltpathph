@@ -68,6 +68,7 @@ voltph/
 - [Backend API Guide](./docs/BACKEND.md)
 - [Frontend Web Guide](./docs/FRONTEND_WEB.md)
 - [Frontend Mobile Guide](./docs/FRONTEND_MOBILE.md)
+- [DevOps & Deployment](./docs/DEVOPS.md)
 - [Onboarding Plan for Juniors](./docs/ONBOARDING.md)
 - [Architecture Diagram](./docs/ARCHITECTURE.md)
 
