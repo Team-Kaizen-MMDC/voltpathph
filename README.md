@@ -66,6 +66,8 @@ voltph/
 
 - [Technical Stack](./docs/TECH_STACK.md)
 - [Backend API Guide](./docs/BACKEND.md)
+- [Frontend Web Guide](./docs/FRONTEND_WEB.md)
+- [Frontend Mobile Guide](./docs/FRONTEND_MOBILE.md)
 - [Onboarding Plan for Juniors](./docs/ONBOARDING.md)
 - [Architecture Diagram](./docs/ARCHITECTURE.md)
 
