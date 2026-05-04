@@ -4,13 +4,13 @@ import { Point } from "geojson";
 @Entity()
 export class ChargingStation {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  provider: string;
+  provider!: string;
 
   @Index({ spatial: true })
   @Column({
@@ -18,14 +18,14 @@ export class ChargingStation {
     spatialFeatureType: "Point",
     srid: 4324,
   })
-  location: Point;
+  location!: Point;
 
   @Column("simple-array")
-  plugTypes: string[];
+  plugTypes!: string[];
 
   @Column("float")
-  powerKW: number;
+  powerKW!: number;
 
   @Column({ default: true })
-  isAvailable: boolean;
+  isAvailable!: boolean;
 }

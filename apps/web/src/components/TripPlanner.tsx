@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TripPlan, TripResult } from '@voltph/shared';
-import { Navigation, MapPin, Battery, Clock, ArrowRight } from 'lucide-react';
+import { Navigation, MapPin, Battery, Clock, ArrowRight, Zap } from 'lucide-react';
 
 const TripPlanner: React.FC = () => {
   const [origin, setOrigin] = useState('');
@@ -35,7 +35,7 @@ const TripPlanner: React.FC = () => {
         totalDurationMin: 110,
         estimatedBatteryConsumptionKWh: 13.6,
         remainingBatteryPercentage: 77.5,
-        requiredChargingStops: []
+        recommendedChargingStops: []
       });
     } finally {
       setIsPlanning(false);

@@ -3,23 +3,23 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity()
 export class EVModel {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id!: string;
 
   @Column()
-  make: string;
+  make!: string;
 
   @Column()
-  model: string;
+  model!: string;
 
   @Column("float")
-  batteryCapacityKWh: number;
+  batteryCapacityKWh!: number;
 
   @Column("float")
-  averageConsumptionKWhPerKm: number;
+  averageConsumptionKWhPerKm!: number;
 
   @Column("simple-array")
-  plugTypes: string[];
+  plugTypes!: string[];
 
   @Column({ nullable: true })
-  imageUrl: string;
+  imageUrl?: string;
 }
