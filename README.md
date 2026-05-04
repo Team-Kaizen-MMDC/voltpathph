@@ -37,6 +37,7 @@ voltph/
 ## 🚥 Getting Started
 
 ### Prerequisites
+
 - Node.js (v18+)
 - PostgreSQL with PostGIS extension
 - Google Maps API Key
@@ -44,23 +45,35 @@ voltph/
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/your-repo/voltph.git
    cd voltph
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
-3. Set up environment variables:
+3. Build the project:
+
+   ```bash
+   npm run build
+   ```
+
+4. Set up environment variables:
    Copy `.env.example` in `apps/api` to `.env` and fill in your credentials.
 
-4. Run the development environment:
+5. Run the development environment:
    ```bash
    npm run dev
    ```
+
+## 🌍 Deployment
+
+We use **Railway** for production hosting. It automatically handles our monorepo structure via the `railway.json` configuration. See the [DevOps Guide](docs/DEVOPS.md) for detailed instructions on provisioning PostgreSQL/PostGIS and setting up service networking.
 
 ## 📖 Documentation
 
@@ -73,4 +86,5 @@ voltph/
 - [Architecture Diagram](./docs/ARCHITECTURE.md)
 
 ## 📄 License
+
 MIT

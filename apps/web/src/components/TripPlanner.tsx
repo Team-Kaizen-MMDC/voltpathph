@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Zap,
 } from "lucide-react";
+import { API_URL } from "../config";
 
 const TripPlanner: React.FC = () => {
   const [origin, setOrigin] = useState("");
@@ -27,7 +28,7 @@ const TripPlanner: React.FC = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3001/api/trips/optimize", {
+      const res = await fetch(`${API_URL}/api/trips/optimize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(plan),
