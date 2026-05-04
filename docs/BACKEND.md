@@ -30,6 +30,8 @@ GOOGLE_MAPS_API_KEY=your_google_maps_key
 3. Build for production: `npm run build`
 4. Start production server: `npm run start`
 
+> **Note:** If you encounter `TS2564` errors regarding property initialization in entities, ensure you are using definite assignment assertions (`!`) as per our TypeORM standards. Missing types for `cors` should be installed as a dev dependency (`@types/cors`).
+
 ## 🛣 API Endpoints Reference
 
 ### EV Models

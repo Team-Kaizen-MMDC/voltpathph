@@ -1,0 +1,20 @@
+# VoltPH Code Ownership
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owners
+*       @brianjancarlos
+
+# Backend
+/apps/api/      @brianjancarlos
+
+# Frontend
+/apps/web/      @brianjancarlos
+/apps/mobile/   @brianjancarlos
+
+# Shared Logic
+/packages/shared/ @brianjancarlos
+
+# DevOps & Configuration
+/docs/DEVOPS.md  @brianjancarlos
+/turbo.json      @brianjancarlos
+/package.json    @brianjancarlos

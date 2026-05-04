@@ -10,6 +10,7 @@ Welcome to the VoltPH team! This guide will help you get up to speed with our co
 - [ ] Set up **VS Code** with recommended extensions:
   - ESLint, Prettier, Tailwind CSS IntelliSense (if applicable), Turbo Console Log.
 - [ ] Clone the repo and run `npm install`.
+- [ ] Run `cd apps/api && npm run seed` to populate your local database with EV models.
 - [ ] Run `npm run dev` and verify you can access the Web app (localhost:5173) and API (localhost:3001).
 
 ## 📚 Phase 2: Knowledge Base (Week 1)
