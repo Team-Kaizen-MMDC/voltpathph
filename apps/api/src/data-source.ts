@@ -8,11 +8,22 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.DB_HOST || "localhost",
-  port: parseInt(process.env.DB_PORT || "5432"),
-  username: process.env.DB_USERNAME || "postgres",
-  password: process.env.DB_PASSWORD || "password",
-  database: process.env.DB_DATABASE || "voltph",
+  url: process.env.DATABASE_URL,
+  host: !process.env.DATABASE_URL
+    ? process.env.DB_HOST || "localhost"
+    : undefined,
+  port: !process.env.DATABASE_URL
+    ? parseInt(process.env.DB_PORT || "5432")
+    : undefined,
+  username: !process.env.DATABASE_URL
+    ? process.env.DB_USERNAME || "postgres"
+    : undefined,
+  password: !process.env.DATABASE_URL
+    ? process.env.DB_PASSWORD || "password"
+    : undefined,
+  database: !process.env.DATABASE_URL
+    ? process.env.DB_DATABASE || "voltph"
+    : undefined,
   synchronize: true, // Be careful with this in production
   logging: false,
   entities: [EVModel, ChargingStation],
