@@ -17,23 +17,24 @@ VoltPH uses a **Turborepo** monorepo structure to manage multiple applications a
 - **Framework:** Express.js with TypeScript
 - **ORM:** TypeORM
 - **Database:** PostgreSQL (v14+)
-- **Geospatial:** PostGIS extension (for `geography` types and spatial indexing)
-- **Authentication:** JWT (Planned)
+- **Geospatial:** PostGIS extension
+- **SDKs:** `@googlemaps/google-maps-services-js`
 
 ## 🖥 Frontend - Web (apps/web)
 - **Library:** React (v18)
 - **Build Tool:** Vite
-- **State Management:** React Context / TanStack Query (Planned)
+- **Data Fetching:** `axios` & `@tanstack/react-query`
 - **Styling:** Vanilla CSS / CSS Modules
 - **Icons:** Lucide React
 
 ## 📱 Frontend - Mobile (apps/mobile)
 - **Framework:** Expo / React Native
+- **Data Fetching:** `axios` & `@tanstack/react-query`
 - **Maps:** `react-native-maps` (Google Maps Provider)
 - **Icons:** Lucide React Native
 
 ## 📦 Shared Package (packages/shared)
-- **Purpose:** Contains DTOs (Data Transfer Objects), validation schemas, and common utility functions used by both API and Client apps.
+- **Purpose:** Contains DTOs, validation schemas (using `zod`), and common utilities.
 
 ## 🔌 External APIs & Integrations
 - **Google Maps Platform:**

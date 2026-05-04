@@ -41,3 +41,5 @@ export interface TripResult {
   remainingBatteryPercentage: number;
   recommendedChargingStops: ChargingStation[];
 }
+
+export * from './validation';

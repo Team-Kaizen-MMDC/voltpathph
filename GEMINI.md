@@ -25,8 +25,12 @@ All contributors MUST follow the GitHub Flow strategy:
 -   **Backend:** Node.js Express with TypeORM and PostGIS.
 -   **Frontend:** React (Vite) for Web, React Native (Expo) for Mobile.
 
-## 🛠 Tooling
+## 🛠 Tooling & Libraries
 
--   **Monorepo:** Turborepo. Use `npm run dev` from root to start all services.
--   **Linting:** `npm run lint`.
--   **Database:** PostgreSQL with PostGIS extension. Run `cd apps/api && npm run seed` for initial data.
+- **Monorepo:** Turborepo. Use `npm run dev` from root to start all services.
+- **Linting & Formatting:** `eslint` and `prettier`. Automatically enforced on commit via `husky` and `lint-staged`.
+- **Validation:** `zod`. Use for all shared schemas in `packages/shared`.
+- **Data Fetching:** `@tanstack/react-query` and `axios` on the frontend for robust state and networking.
+- **Backend SDKs:** `@googlemaps/google-maps-services-js` for official Maps integration.
+- **Database:** PostgreSQL with PostGIS extension. Run `cd apps/api && npm run seed` for initial data.
+
