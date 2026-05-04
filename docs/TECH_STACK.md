@@ -46,5 +46,5 @@ VoltPH uses a **Turborepo** monorepo structure to manage multiple applications a
 - **Docker:** (Planned) Containerization for API and Database.
 - **Hosting:**
   - **Web:** Vercel / Netlify
-  - **API:** Render / AWS ECS
-  - **DB:** MongoDB Atlas (originally suggested) or Managed PostgreSQL.
+  - **API:** Render / AWS App Runner
+  - **DB:** Managed PostgreSQL with PostGIS (e.g., Supabase, Neon, or Aiven).
