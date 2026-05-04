@@ -37,9 +37,27 @@ This document outlines the deployment strategy, CI/CD workflows, and environment
 ## 🔄 CI/CD Workflows (GitHub Actions)
 We use GitHub Actions for automated linting and testing. (Found in `.github/workflows/`)
 
-- **Linting:** Triggered on every Push/PR.
-- **Testing:** Triggered on every PR to `main`.
-- **Production Deploy:** (Optional) Triggered when a tag is pushed or a PR is merged to `main`.
+## 🌳 Branching Strategy (GitHub Flow)
+
+We follow the **GitHub Flow** branching strategy to ensure code quality and stable releases:
+
+1.  **Main Branch (`main`):**
+    -   Represents the production-ready state.
+    -   Protected: Direct pushes are disabled.
+    -   All changes must come through a Pull Request.
+
+2.  **Feature & Fix Branches:**
+    -   `feat/feature-description`: For new features or enhancements.
+    -   `fix/bug-description`: For resolving bugs and issues.
+    -   `docs/topic`: For documentation-only changes.
+    -   `chore/task`: For maintenance and dependency updates.
+
+3.  **Pull Request Process:**
+    -   Branches are created from the latest `main`.
+    -   Open a PR early for feedback if needed (Draft PR).
+    -   At least one approval is required before merging.
+    -   CI checks (Linting, Build) must pass.
+    -   Merge using "Squash and Merge" to keep history clean.
 
 ## 🔐 Environment Management
 Environment variables are handled per-app within the monorepo:
