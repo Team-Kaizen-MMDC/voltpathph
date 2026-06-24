@@ -14,7 +14,7 @@ graph TB
     end
 
     subgraph Packages ["Shared Codebase"]
-        Shared["@voltph/shared<br/>(Zod Schemas, Physics Math, Interfaces)"]
+        Shared["@voltph/shared<br/>(Zod Schemas, Energy Model, Interfaces)"]
     end
 
     subgraph Infrastructure ["Orchestration & Logic (Railway)"]
@@ -102,8 +102,8 @@ sequenceDiagram
     end
 
     critical Specs & Geometry Load
-        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Cd, Mass)
-        DB-->>API: Return Vehicle Spec Specs
+        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Ebase, plugTypes)
+        DB-->>API: Return Vehicle Specifications
         API->>API: Decode Polyline Coordinates & Apply Ramer-Douglas-Peucker (RDP) Reduction
     end
 
@@ -113,7 +113,7 @@ sequenceDiagram
     end
 
     critical Energy Optimization & Search
-        API->>API: Execute Physics Engine (Drag, Roll, Slope, A/C draw) per segment
+        API->>API: Apply rule-based energy model (Wtraffic x Welevation x Wtemperature) per segment
         API->>DB: Spatial Query (ST_DWithin along Route Line geography buffer)
         DB-->>API: Return Compatible Charging Stations
         API->>API: Build Recommended Charging Stops & Final SoC Waypoints
@@ -125,7 +125,7 @@ sequenceDiagram
 
 ## Entity Relationship Diagram (ERD)
 
-The following diagram represents the core data models and their relationships, tailored for physics calculations and crowdsourced status reporting.
+The following diagram represents the core data models and their relationships, tailored for rule-based energy estimation and crowdsourced status reporting. User credentials are managed by Supabase Auth (`auth.users`); the `USER` table is an application profile keyed by that ID.
 
 ```mermaid
 erDiagram
@@ -147,9 +147,8 @@ erDiagram
     }
 
     USER {
-        uuid id
+        uuid id "= Supabase auth.users.id"
         string email
-        string passwordHash
         string name
         timestamp createdAt
     }

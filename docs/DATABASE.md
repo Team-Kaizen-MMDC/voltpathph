@@ -24,9 +24,8 @@ erDiagram
     }
 
     USER {
-        uuid id
+        uuid id "= Supabase auth.users.id"
         string email
-        string passwordHash
         string name
         timestamp createdAt
     }
@@ -140,10 +139,7 @@ Specifications of EV vehicle models available in the Philippine market.
   - `average_consumption_kwh_per_km` (DOUBLE PRECISION, Not Null)
   - `plug_types` (TEXT[], Not Null) - e.g., `['Type 2', 'CCS2']`
   - `image_url` (VARCHAR(500), Nullable)
-  - `drag_coefficient` (DOUBLE PRECISION, Default: `0.26`) - $C_d$
-  - `frontal_area_sqm` (DOUBLE PRECISION, Default: `2.4`) - $A$
-  - `mass_kg` (DOUBLE PRECISION, Default: `1600.0`) - $m$
-  - `rolling_resistance_coefficient` (DOUBLE PRECISION, Default: `0.012`) - $C_r$
+  - _Physics-model columns (`drag_coefficient`, `frontal_area_sqm`, `mass_kg`, `rolling_resistance_coefficient`) are intentionally deferred: the canonical energy model is rule-based (`E = Ebase × Wtraffic × Welevation × Wtemperature`) and does not require them. They would only be added if the force-based model (future work) is adopted — see the `voltph-ev-physics` skill._
   - `created_at` (TIMESTAMP, Default: `NOW()`)
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 

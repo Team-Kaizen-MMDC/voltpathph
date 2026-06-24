@@ -92,9 +92,14 @@ Finally, the researchers offer their deepest gratitude to God Almighty for provi
 
 # **LIST OF TABLES** {#list-of-tables}
 
-Table 1\. Name of Table 1 ……………………………………………………………… page \#  
-Table 2\. Name of Table 2 ……………………………………………………………… page \#  
-Table 3\. Name of Table 3 ……………………………………………………………… page \#
+Table 1\. Predefined Test Drive Routes ……………………………………………… page \#  
+Table 2\. Sample Data Collection Sheet for Test Drive Segments ………………… page \#  
+Table 3\. Functional Requirements …………………………………………………… page \#  
+Table 4\. Non-Functional Requirements ……………………………………………… page \#  
+Table 5\. Sprint Timeline ……………………………………………………………… page \#  
+Table 6\. Sprint Deliverables ………………………………………………………… page \#  
+Table 7\. Technologies and Development Tools ……………………………………… page \#  
+Table 8\. Testing Plan Summary ……………………………………………………… page \#
 
 # **LIST OF FIGURES** {#list-of-figures}
 
@@ -108,9 +113,9 @@ Figure 7\. Entity Relationship Diagram……………………………………
 
 # **LIST OF APPENDICES** {#list-of-appendices}
 
-Appendix 1\. Name of Appendix 1 ……………………………………………….…… page \#  
-Appendix 2\. Name of Appendix 2 ……………………………………………….…… page \#  
-Appendix 3\. Name of Appendix 3 ……………………………………………….…… page \#  
+Appendix 1\. Link to Prototype and Source Code Repository ……………………… page \#  
+Appendix 2\. Disclosure of Artificial Intelligence Tools Used in Research ………… page \#  
+Appendix 3\. Sample Test Drive Data Collection Sheets …………………………… page \#  
 (Ensure to include the link to your prototype/output and the Disclosure of Artificial Intelligence Tools Used in Research. Each appendix should be on a separate page.)
 
 #
@@ -351,6 +356,12 @@ This system is highly relevant to Voltpath PH because it validates the operation
 _EVRO Application Home Screen_  
 ![][image4]
 
+**_A Better Route Planner (ABRP)_**
+
+A Better Route Planner (ABRP) is a dedicated electric-vehicle route-planning platform purpose-built for EV trip planning rather than general navigation. It estimates energy consumption and recommends charging stops along a route based on user-configurable vehicle profiles, incorporating factors such as battery capacity, consumption rate, elevation, speed, and ambient temperature (A Better Route Planner, n.d.). Its principal strength is energy-aware routing that explicitly models cumulative battery usage along a route, a capability absent from general navigation platforms such as Google Maps and Waze.
+
+However, ABRP's consumption profiles are generic and user-supplied rather than empirically calibrated to Philippine road, traffic, and tropical-climate conditions, and its charging-station coverage within the Philippines remains limited and largely community-maintained. ABRP therefore demonstrates the value of energy-aware EV routing while reinforcing the same localization gap identified across the other reviewed systems — precisely the gap Voltpath PH addresses through a locally-calibrated energy model and an integrated, Philippine-focused charging station directory.
+
 **EV Charging Infrastructure and Accessibility**  
  The growth of electric vehicle (EV) adoption is closely linked to the availability, accessibility, and reliability of charging infrastructure. Although advancements in battery technology continue to improve EV driving range, charging accessibility remains one of the major operational concerns affecting route planning and long-distance travel. Several studies emphasize that insufficient charging infrastructure directly limits EV usability, particularly in developing countries where charging networks are still emerging.  
  According to the International Energy Agency (IEA, 2025), charging infrastructure development plays a critical role in supporting the global transition toward electric mobility. Publicly accessible charging stations heavily improve routing flexibility and reduce operational uncertainties among EV operators by enabling more reliable long-distance travel corridors. However, the report also highlighted that charging station distribution remains severely uneven across many emerging and developing economies, creating distinct accessibility gaps outside highly urbanized metropolitan hubs.  
@@ -400,7 +411,7 @@ A rigorous data gathering process is essential to establish a baseline of user n
 
     ***Real-World EV Test Drives.*** The second and primary data gathering method involves conducting controlled, real-world test drives using a Geely EX5 Em-i Max, a battery electric vehicle representative of the compact crossover EV segment increasingly adopted by Philippine consumers. The test vehicle will be driven across a set of predefined routes spanning Metro Manila and Cavite, selected specifically to capture variation across the three local conditions identified in the literature review: traffic congestion, road elevation, and ambient temperature.
 
-To ensure that the regression analysis can isolate and capture the effects of traffic congestion, road elevation, and highway driving conditions, test drives will be conducted along four predefined route types, summarized in Table 2\. The Heavy Traffic route, from Bonifacio Global City (BGC) to Quezon Avenue, represents stop-and-go, high-congestion urban driving typical of Metro Manila’s business districts during peak hours. The Mixed Traffic route, from Manila to BGC, represents a combination of arterial roads and moderately congested city streets. The Elevation route, from Cavite to Tagaytay, represents sustained uphill and downhill driving along a significant elevation gradient. The Highway route, along the Skyway and South Luzon Expressway (SLEX), represents free-flowing, steady-speed expressway driving with minimal elevation change. Test drives will be conducted at different times of day, including the morning rush, midday, and evening rush periods, and across varying ambient temperature conditions, allowing the effects of traffic congestion, elevation, and temperature on energy consumption to be observed both individually and in combination.  
+To ensure that the regression analysis can isolate and capture the effects of traffic congestion, road elevation, and highway driving conditions, test drives will be conducted along four predefined route types, summarized in Table 1\. The Heavy Traffic route, from Bonifacio Global City (BGC) to Quezon Avenue, represents stop-and-go, high-congestion urban driving typical of Metro Manila’s business districts during peak hours. The Mixed Traffic route, from Manila to BGC, represents a combination of arterial roads and moderately congested city streets. The Elevation route, from Cavite to Tagaytay, represents sustained uphill and downhill driving along a significant elevation gradient. The Highway route, along the Skyway and South Luzon Expressway (SLEX), represents free-flowing, steady-speed expressway driving with minimal elevation change. Test drives will be conducted at different times of day, including the morning rush, midday, and evening rush periods, and across varying ambient temperature conditions, allowing the effects of traffic congestion, elevation, and temperature on energy consumption to be observed both individually and in combination.  
 **Table 1\.**  
 _Predefined Test Drive Routes_
 
@@ -470,16 +481,18 @@ Because these factors are applied multiplicatively rather than additively, Voltp
 The functional requirements for Voltpath PH were derived from the identified user needs and system gaps. Table 3 enumerates each requirement with its description and implementation priority.  
 _Table 3\. Functional Requirements_
 
-| ID        | Requirement                       | Description                                                                                                                                                                                                    | Priority |
-| :-------- | :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| FR-01     | EV Range Prediction               | The system shall estimate battery energy consumption per route segment using the formula **_E \= Ebase × Wtraffic × Welevation × Wtemperature_**, with weighting factors derived from Philippine driving data. | High     |
-| FR-02     | State-of-Charge Display           | The system shall display the estimated State-of-Charge (SoC) as a percentage at each route waypoint and at the destination.                                                                                    | High     |
-| ~~FR-03~~ | ~~Energy-Efficient Routing~~      | ~~The system shall generate and display route alternatives ranked by predicted energy consumption rather than solely by distance or travel time.~~                                                             | ~~High~~ |
-| FR-04     | Charging Station Locator          | The system shall retrieve and display nearby EV charging stations along the route.                                                                                                                             | High     |
-| ~~FR-05~~ | ~~Real-Time Traffic Integration~~ | ~~The system shall integrate live traffic data from the Google Maps Routes API to adjust route energy estimates dynamically.~~                                                                                 | ~~High~~ |
-| FR-06     | Elevation Data Integration        | The system shall retrieve route elevation profiles via the Google Maps Elevation API and apply terrain-based adjustments to energy predictions.                                                                | High     |
-| FR-07     | EV Model Configuration            | Users shall be able to select from a list of supported EV models (e.g. Geely) so that the baseline consumption rate (Ebase) reflects the correct vehicle specification.                                        | Medium   |
-| FR-08     | User Account Management           | Users shall be able to register, log in, and save trip history and preferred EV model to their profile.                                                                                                        | Medium   |
+| ID    | Requirement                    | Description                                                                                                                                                                                                    | Priority |
+| :---- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| FR-01 | EV Range Prediction            | The system shall estimate battery energy consumption per route segment using the formula **_E \= Ebase × Wtraffic × Welevation × Wtemperature_**, with weighting factors derived from Philippine driving data. | High     |
+| FR-02 | State-of-Charge Display        | The system shall display the estimated State-of-Charge (SoC) as a percentage at each route waypoint and at the destination.                                                                                    | High     |
+| FR-03 | Energy-Efficient Routing       | The system shall generate and display route alternatives ranked by predicted energy consumption rather than solely by distance or travel time.                                                                 | High     |
+| FR-04 | Charging Station Locator       | The system shall retrieve and display nearby EV charging stations along the route.                                                                                                                             | High     |
+| FR-05 | Real-Time Traffic Integration  | The system shall integrate live traffic data from the Google Maps Routes API to adjust route energy estimates dynamically.                                                                                     | High     |
+| FR-06 | Elevation Data Integration     | The system shall retrieve route elevation profiles via the Google Maps Elevation API and apply terrain-based adjustments to energy predictions.                                                                | High     |
+| FR-07 | EV Model Configuration         | Users shall be able to select from a list of supported EV models (e.g. Geely) so that the baseline consumption rate (Ebase) reflects the correct vehicle specification.                                        | Medium   |
+| FR-08 | User Account Management        | Users shall be able to register, log in (via Supabase Auth), and save trip history and preferred EV model to their profile.                                                                                    | Medium   |
+| FR-09 | Reachable Range Visualization  | The system shall display the estimated reachable travel zone (range overlay) based on the current State-of-Charge and the selected EV model.                                                                   | Medium   |
+| FR-10 | Crowdsourced Station Reporting | Users shall be able to submit and view status reports (e.g., available, occupied, out of service) for charging stations to keep directory data current.                                                        | Medium   |
 
 **Non-Functional Requirements**  
 Non-functional requirements define the quality attributes the system must satisfy to be considered production-ready. Table 4 presents these requirements along with their measurable success metrics.
@@ -810,7 +823,7 @@ Deliverables:
 - Bug resolution documentation
 - Final application release
 
-**Sprint Timeline**
+**Table 5\.** _Sprint Timeline_
 
 | Sprint      | Major Activities                                                                                     |
 | :---------- | :--------------------------------------------------------------------------------------------------- |
@@ -820,7 +833,7 @@ Deliverables:
 | Sprint 7-8  | Intelligent Routing, Charging Station Integration, and Geospatial Processing using PostGIS           |
 | Sprint 9-10 | System Testing, Model Validation (MAPE & RMSE), Optimization, Bug Fixing, and Deployment Preparation |
 
-**Sprint Deliverables**
+**Table 6\.** _Sprint Deliverables_
 
 | Sprint      | Major Activities                                    |
 | :---------- | :-------------------------------------------------- |
@@ -830,7 +843,7 @@ Deliverables:
 | Sprint 7-8  | Route Optimization Module, Charging Station Locator |
 | Sprint 9-10 | Test Reports, Validation Results, Final Release     |
 
-**Technologies and Development Tools**  
+**Table 7\.** _Technologies and Development Tools_  
 The project will utilize the following technologies:
 
 | Component                 | Technology                                       |
@@ -855,15 +868,15 @@ Through Agile Scrum, structured sprint planning, collaborative development pract
 
 4. # **Testing Plan** {#testing-plan}
 
-   The testing strategy for Voltpath PH is designed to validate system correctness, prediction accuracy, and usability across all layers of the application. Five testing types will be conducted across Sprints 9–10 and during the controlled road-test phase. Table 7 summarizes each testing type alongside its scope and success criteria.
+   The testing strategy for Voltpath PH is designed to validate system correctness, prediction accuracy, and usability across all layers of the application. Five testing types will be conducted across Sprints 9–10 and during the controlled road-test phase. Table 8 summarizes each testing type alongside its scope and success criteria.
 
-_Table 7\. Testing Plan Summary_
+_Table 8\. Testing Plan Summary_
 
 | Testing Type                   | Scope                                                                                                                                                                         | Success Criteria                                                                                                                     |
 | :----------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
 | Unit Testing                   | Individual functions within the energy prediction engine, SoC calculator, route weight scoring, and PostGIS query helpers.                                                    | All unit tests pass with ≥ 90% code coverage on core calculation modules.                                                            |
 | Integration Testing            | End-to-end API flows: trip optimization endpoint, charging station retrieval, Google Maps API data pipeline, and database read/write operations.                              | All API endpoints return correct HTTP status codes and response payloads for both valid and invalid inputs.                          |
-| System Testing                 | Full application stack deployed to Railway staging environment: mobile-to-API-to-database round trips, map rendering, and route display.                                      | All functional requirements (FR-01 through FR-10) verified across both Android and iOS builds.                                       |
+| System Testing                 | Full application stack deployed to Railway staging environment: mobile-to-API-to-database round trips, map rendering, and route display.                                      | All functional requirements (FR-01 through FR-10) to be verified across both Android and iOS builds.                                 |
 | Model Validation (Route Tests) | Controlled real-world test drives on four predefined route types in Metro Manila and Cavite using the Geely EX5 Em-i Max.                                                     | Prediction model achieves MAPE ≤ 15% and RMSE ≤ 80 Wh/km against recorded SoC values.                                                |
 | User Acceptance Testing (UAT)  | Internal evaluation conducted by the three researchers, each independently completing predefined task scenarios (trip planning, charging station lookup, SoC interpretation). | Average System Usability Scale (SUS) score ≥ 70 across all three researchers; unanimous rating of interface as at least easy to use. |
 
@@ -919,6 +932,8 @@ The methodology presented in this chapter provides a structured, evidence-based 
 #
 
 # **REFERENCES** {#references}
+
+A Better Route Planner. (n.d.). _A Better Route Planner (ABRP)_. Iternio. [https://abetterrouteplanner.com](https://abetterrouteplanner.com)
 
 Amin, A., Amin, M. S., Park, H., & Lee, D. (2025). Electric Vehicle Range Prediction Models: A Systematic review of machine learning, mathematical, and simulation approaches. _World Electric Vehicle Journal_, 16(11), 607\. [https://doi.org/10.3390/wevj16110607](https://doi.org/10.3390/wevj16110607)
 

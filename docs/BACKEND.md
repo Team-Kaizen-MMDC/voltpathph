@@ -98,8 +98,8 @@ sequenceDiagram
     end
 
     critical Specs & Geometry Load
-        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Cd, Mass)
-        DB-->>API: Return Vehicle Spec Specs
+        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Ebase, plugTypes)
+        DB-->>API: Return Vehicle Specifications
         API->>API: Decode Polyline Coordinates & Apply Ramer-Douglas-Peucker (RDP) Reduction
     end
 
@@ -109,7 +109,7 @@ sequenceDiagram
     end
 
     critical Energy Optimization & Search
-        API->>API: Execute Physics Engine (Drag, Roll, Slope, A/C draw) per segment
+        API->>API: Apply rule-based energy model (Wtraffic x Welevation x Wtemperature) per segment
         API->>DB: Spatial Query (ST_DWithin along Route Line geography buffer)
         DB-->>API: Return Compatible Charging Stations
         API->>API: Build Recommended Charging Stops & Final SoC Waypoints
