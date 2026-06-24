@@ -2,7 +2,7 @@
 
 ![Backend Version](https://img.shields.io/badge/backend-v1.0.0--alpha-blue)
 
-The VoltPH Backend is a Node.js Express application built with TypeScript and TypeORM, using PostgreSQL and PostGIS for geospatial data management.
+The Voltpath PH Backend is a Node.js Express application built with TypeScript and TypeORM, using PostgreSQL and PostGIS for geospatial data management.
 
 ## 🚀 Getting Started
 
@@ -71,8 +71,8 @@ The core engine for route and battery calculation.
 sequenceDiagram
     autonumber
     actor U as Driver (Mobile/Web Client)
-    participant FE as VoltPath Client
-    participant API as VoltPH API (Railway)
+    participant FE as Voltpath PH Client
+    participant API as Voltpath PH API (Railway)
     participant DB as Supabase DB (PostgreSQL/PostGIS)
     participant G_Routes as Google Routes API
     participant G_Elev as Google Elevation API
@@ -109,7 +109,7 @@ sequenceDiagram
 
 
 ## 🗄 Database & Geospatial
-VoltPH uses **PostgreSQL** with the **PostGIS** extension to handle spatial data.
+Voltpath PH uses **PostgreSQL** with the **PostGIS** extension to handle spatial data.
 
 For a comprehensive guide on database structure, column types, relationship diagrams, and query optimizations, see the [Database Architecture Documentation](./DATABASE.md).
 

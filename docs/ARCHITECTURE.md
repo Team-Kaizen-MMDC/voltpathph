@@ -2,7 +2,7 @@
 
 ![Architecture Version](https://img.shields.io/badge/arch-v1.0.0-blue)
 
-This document describes the high-level architecture of the VoltPH platform.
+This document describes the high-level architecture of the Voltpath PH platform.
 
 ## Architecture Diagram
 
@@ -18,7 +18,7 @@ graph TB
     end
 
     subgraph Infrastructure ["Orchestration & Logic (Railway)"]
-        API["VoltPH API Gateway<br/>(Node.js / Express)"]
+        API["Voltpath PH API Gateway<br/>(Node.js / Express)"]
         Cache["In-Memory Cache<br/>(Routes & Stations Cache)"]
     end
 
@@ -81,8 +81,8 @@ This diagram illustrates the flow of data when a user plans a trip and requests 
 sequenceDiagram
     autonumber
     actor U as Driver (Mobile/Web Client)
-    participant FE as VoltPath Client
-    participant API as VoltPH API (Railway)
+    participant FE as Voltpath PH Client
+    participant API as Voltpath PH API (Railway)
     participant DB as Supabase DB (PostgreSQL/PostGIS)
     participant G_Routes as Google Routes API
     participant G_Elev as Google Elevation API

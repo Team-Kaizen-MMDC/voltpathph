@@ -1,11 +1,11 @@
 ---
 name: voltph-architect
-description: Architectural governance for VoltPH, focusing on monorepo integrity, cross-platform consistency, and the evolution of the shared logic layer.
+description: Architectural governance for Voltpath PH, focusing on monorepo integrity, cross-platform consistency, and the evolution of the shared logic layer.
 ---
 
-# VoltPH Software Architect Skill
+# Voltpath PH Software Architect Skill
 
-Expert guidance on maintaining the structural integrity and scalability of the VoltPH ecosystem.
+Expert guidance on maintaining the structural integrity and scalability of the Voltpath PH ecosystem.
 
 ## 🏗 Architectural Principles
 - **Monorepo First:** Ensure logic is shared via `packages/shared` to avoid duplication between Web and Mobile.

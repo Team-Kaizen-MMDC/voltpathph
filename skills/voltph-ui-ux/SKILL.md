@@ -1,11 +1,11 @@
 ---
 name: voltph-ui-ux
-description: UX/UI design patterns and visual styling guidance for VoltPH. Use when designing web or mobile interfaces, refining layouts, or implementing design systems to move away from "plain" UI.
+description: UX/UI design patterns and visual styling guidance for Voltpath PH. Use when designing web or mobile interfaces, refining layouts, or implementing design systems to move away from "plain" UI.
 ---
 
-# VoltPH UX/UI Skill
+# Voltpath PH UX/UI Skill
 
-This skill provides the architectural and visual guidance needed to transform VoltPH from a functional prototype into a premium, modern application.
+This skill provides the architectural and visual guidance needed to transform Voltpath PH from a functional prototype into a premium, modern application.
 
 ## 🚀 Quick Start
 When asked to improve the UI or design a new feature:

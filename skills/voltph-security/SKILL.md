@@ -1,11 +1,11 @@
 ---
 name: voltph-security
-description: Security and privacy guidance for VoltPH, covering API protection, user location privacy, and secure data handling in the Philippines context.
+description: Security and privacy guidance for Voltpath PH, covering API protection, user location privacy, and secure data handling in the Philippines context.
 ---
 
-# VoltPH Security Skill
+# Voltpath PH Security Skill
 
-Ensuring the safety of user data and the integrity of the VoltPH platform.
+Ensuring the safety of user data and the integrity of the Voltpath PH platform.
 
 ## 🛡 Security Priorities
 - **PII & Location Privacy:** Trip plans and user locations must be handled securely and never logged in plain text.

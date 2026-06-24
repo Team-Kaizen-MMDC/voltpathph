@@ -1,6 +1,6 @@
 # Database Architecture & Schema Documentation 🗄🌍
 
-This document provides a detailed breakdown of the VoltPH database schema, spatial indexing configurations, relationships, and coordinate reference standards.
+This document provides a detailed breakdown of the Voltpath PH database schema, spatial indexing configurations, relationships, and coordinate reference standards.
 
 ## Entity Relationship Diagram (ERD)
 

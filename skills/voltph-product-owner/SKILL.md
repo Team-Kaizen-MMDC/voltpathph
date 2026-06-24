@@ -1,11 +1,11 @@
 ---
 name: voltph-product-owner
-description: Project management and product owner workflows for VoltPH. Use when writing user stories, managing sprints, prioritizing the backlog, or validating features.
+description: Project management and product owner workflows for Voltpath PH. Use when writing user stories, managing sprints, prioritizing the backlog, or validating features.
 ---
 
-# VoltPH Product Owner & Sprint Management Skill
+# Voltpath PH Product Owner & Sprint Management Skill
 
-Guidance for managing the development lifecycle, writing standard-compliant user stories, and orchestrating sprints for the VoltPH MVP.
+Guidance for managing the development lifecycle, writing standard-compliant user stories, and orchestrating sprints for the Voltpath PH MVP.
 
 ## 📋 Backlog Structure & Standards
 All user stories must follow the standard format:

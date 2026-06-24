@@ -1,6 +1,6 @@
-# VoltPH Project Instructions
+# Voltpath PH Project Instructions
 
-This file contains mandates and conventions for the VoltPH project. These instructions take precedence over general defaults.
+This file contains mandates and conventions for the Voltpath PH project. These instructions take precedence over general defaults.
 
 ## 🌳 Branching Strategy (GitHub Flow)
 

@@ -1,11 +1,11 @@
 ---
 name: voltph-data-engineer
-description: Data engineering specialized for VoltPH, focusing on EV consumption models, charging station data ingestion, and PH-specific traffic data analysis.
+description: Data engineering specialized for Voltpath PH, focusing on EV consumption models, charging station data ingestion, and PH-specific traffic data analysis.
 ---
 
-# VoltPH Data Engineer Skill
+# Voltpath PH Data Engineer Skill
 
-Managing the core data assets that power VoltPH's optimization engine.
+Managing the core data assets that power Voltpath PH's optimization engine.
 
 ## 📊 Data Domains
 - **EV Consumption Models:** Maintaining accurate kWh/km data for PH-available brands (BYD, Vinfast, etc.).

@@ -2,7 +2,7 @@
 
 ![Onboarding](https://img.shields.io/badge/onboarding-v1.0.0-green)
 
-Welcome to the VoltPH team! This guide will help you get up to speed with our codebase and development workflow.
+Welcome to the Voltpath PH team! This guide will help you get up to speed with our codebase and development workflow.
 
 Track current sprint assignments, backlog issues, and our roadmap on our [GitHub Project Kanban Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5).
 

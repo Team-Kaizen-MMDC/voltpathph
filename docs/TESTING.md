@@ -1,6 +1,6 @@
 # Testing Specifications & Quality Assurance 🧪📈
 
-This document details the testing architecture, validation protocols, and user acceptance criteria for the VoltPH platform.
+This document details the testing architecture, validation protocols, and user acceptance criteria for the Voltpath PH platform.
 
 ---
 

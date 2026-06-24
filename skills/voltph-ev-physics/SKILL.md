@@ -3,7 +3,7 @@ name: voltph-ev-physics
 description: Physics-based modeling of electric vehicle energy consumption. Use when developing or refining the battery prediction algorithm based on road grade, speed, mass, and auxiliary loads.
 ---
 
-# VoltPH EV Physics & Consumption Skill
+# Voltpath PH EV Physics & Consumption Skill
 
 Guidance for calculating and predicting EV battery consumption along a route. This model shifts the application from raw averages to highly accurate, physics-backed predictions.
 

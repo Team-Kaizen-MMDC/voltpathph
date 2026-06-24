@@ -3,9 +3,9 @@ name: voltph-maps-gis
 description: Specialized workflows for GIS and mapping integration, including Google Maps Routes/Places/Elevation API calls, PostGIS spatial indexing, and polyline operations.
 ---
 
-# VoltPH Maps & GIS Skill
+# Voltpath PH Maps & GIS Skill
 
-Guidance for handling geospatial operations, Google Maps API integration, and PostGIS query optimizations for the VoltPH platform.
+Guidance for handling geospatial operations, Google Maps API integration, and PostGIS query optimizations for the Voltpath PH platform.
 
 ## 🌍 Spatial Foundations (PostGIS)
 - **Coordinate Reference System:** Always use **SRID 4326** (WGS 84 GPS standard) for geospatial tables. (Note: Fix any occurrences of legacy SRID 4324).

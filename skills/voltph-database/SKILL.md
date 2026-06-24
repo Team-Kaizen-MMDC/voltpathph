@@ -1,11 +1,11 @@
 ---
 name: voltph-database
-description: Management and optimization of the VoltPH PostgreSQL/PostGIS database, focusing on geospatial indexing and EV data schemas.
+description: Management and optimization of the Voltpath PH PostgreSQL/PostGIS database, focusing on geospatial indexing and EV data schemas.
 ---
 
-# VoltPH Database Skill
+# Voltpath PH Database Skill
 
-Best practices for managing the VoltPH data layer.
+Best practices for managing the Voltpath PH data layer.
 
 ## 🛠 Tech Stack
 - **Database:** PostgreSQL (v14+)

@@ -1,11 +1,11 @@
 ---
 name: voltph-mobile-developer
-description: Specialized workflows for the VoltPH React Native/Expo mobile application. Use when developing mobile-specific components, handling GPS/sensors, integrating offline caching, or configuring EAS builds.
+description: Specialized workflows for the Voltpath PH React Native/Expo mobile application. Use when developing mobile-specific components, handling GPS/sensors, integrating offline caching, or configuring EAS builds.
 ---
 
-# VoltPH Mobile Developer Skill
+# Voltpath PH Mobile Developer Skill
 
-Guidance for developing the VoltPH mobile application, focusing on cross-platform performance (iOS/Android), native map integration, offline-first reliability, and battery-efficient location tracking in the Philippines.
+Guidance for developing the Voltpath PH mobile application, focusing on cross-platform performance (iOS/Android), native map integration, offline-first reliability, and battery-efficient location tracking in the Philippines.
 
 ## 🛠 Tech Stack & Tools
 - **Framework:** Expo / React Native with TypeScript
