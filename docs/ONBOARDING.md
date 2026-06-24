@@ -24,6 +24,7 @@ The `@voltph/shared` package contains Zod schemas and TypeScript interfaces used
 
 ## 📚 Phase 2: Knowledge Base (Week 1)
 
+- [ ] **Testing Protocols:** Read our [Testing Specifications Guide](./TESTING.md) to understand the Jest/Vitest setups and model validation metrics.
 - [ ] **Monorepo Architecture:** Read about [Turborepo](https://turbo.build/repo/docs).
 - [ ] **TypeScript:** Familiarize yourself with our shared types in `packages/shared`.
 - [ ] **PostGIS:** Understand basic spatial queries like `ST_DWithin`.

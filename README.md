@@ -82,6 +82,7 @@ We use **Railway** for production hosting. It automatically handles our monorepo
 - [Technical Stack](./docs/TECH_STACK.md)
 - [Database Schema & Architecture Guide](./docs/DATABASE.md)
 - [Backend API Guide](./docs/BACKEND.md)
+- [Testing & Quality Assurance Guide](./docs/TESTING.md)
 - [Frontend Web Guide](./docs/FRONTEND_WEB.md)
 - [Frontend Mobile Guide](./docs/FRONTEND_MOBILE.md)
 - [DevOps, Deployment & Branching Strategy](./docs/DEVOPS.md)
