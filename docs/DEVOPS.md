@@ -68,6 +68,7 @@ We follow the **GitHub Flow** branching strategy to ensure code quality and stab
 
 3.  **Pull Request Process:**
     - Branches are created from the latest `main`.
+    - Link the PR to the corresponding issue card on the [VoltPathPH Project Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5).
     - Open a PR early for feedback if needed (Draft PR).
     - At least one approval is required before merging.
     - CI checks (Linting, Build) must pass.

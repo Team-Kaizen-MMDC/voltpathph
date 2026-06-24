@@ -4,6 +4,8 @@
 
 Welcome to the VoltPH team! This guide will help you get up to speed with our codebase and development workflow.
 
+Track current sprint assignments, backlog issues, and our roadmap on our [GitHub Project Kanban Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5).
+
 ## 🏁 Phase 1: Environment Setup (Day 1)
 
 - [ ] Install **Node.js** (LTS version).

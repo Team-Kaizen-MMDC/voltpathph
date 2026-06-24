@@ -3,6 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0--alpha-blue)
 ![Tech Stack](https://img.shields.io/badge/stack-Turborepo%20|%20Node.js%20|%20React%20|%20PostGIS-green)
 ![License](https://img.shields.io/badge/license-MIT-yellow)
+[![Project Kanban](https://img.shields.io/badge/Kanban-VoltPathPH-blueviolet?logo=github)](https://github.com/orgs/Team-Kaizen-MMDC/projects/5)
 
 **VoltPH** is a comprehensive EV efficiency and navigation optimization platform tailored for the Philippines. It helps EV owners plan trips, predict battery consumption based on local traffic conditions, and locate charging stations across the archipelago.
 
@@ -77,6 +78,7 @@ We use **Railway** for production hosting. It automatically handles our monorepo
 
 ## 📖 Documentation
 
+- [Project Kanban Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5) - Track sprints, backlog, and roadmap.
 - [Technical Stack](./docs/TECH_STACK.md)
 - [Backend API Guide](./docs/BACKEND.md)
 - [Frontend Web Guide](./docs/FRONTEND_WEB.md)
