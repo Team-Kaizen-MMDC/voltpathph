@@ -25,7 +25,7 @@
 ## 📁 Project Structure
 
 ```text
-voltph/
+voltpathph/
 ├── apps/
 │   ├── api/        # Node.js Express Backend
 │   ├── web/        # React Web Application
@@ -48,8 +48,8 @@ voltph/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/voltph.git
-   cd voltph
+   git clone https://github.com/Team-Kaizen-MMDC/voltpathph.git
+   cd voltpathph
    ```
 
 2. Install dependencies:
