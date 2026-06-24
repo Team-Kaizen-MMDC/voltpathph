@@ -12,7 +12,8 @@ Guidance for developing the Voltpath PH API, focusing on performance, geospatial
 - **Runtime:** Node.js (LTS)
 - **Framework:** Express.js + TypeScript
 - **ORM:** TypeORM
-- **Database:** PostgreSQL with PostGIS
+- **Database:** Supabase PostgreSQL 15 + PostGIS (connect via session pooler 5432 / direct connection)
+- **Auth:** Supabase Auth (the API verifies tokens; it does not issue them)
 
 ## 🚀 Key Workflows
 
@@ -22,6 +23,7 @@ Guidance for developing the Voltpath PH API, focusing on performance, geospatial
 - Always use `AppDataSource` for database operations.
 - For geospatial data, use the `Point` type from `geojson` and the `geography` type in TypeORM.
 - **Schema changes go through migrations, not `synchronize`.** `synchronize: true` is dev-only; set `false` and add migrations to `apps/api/src/migrations` (the `migrations` array is currently empty).
+- The app `user` table is a **profile** keyed by Supabase `auth.users.id` — never store passwords in app tables.
 
 ### 2. Geospatial Queries
 
@@ -35,7 +37,8 @@ Guidance for developing the Voltpath PH API, focusing on performance, geospatial
 
 ### 4. Request Hardening (apply to every route)
 
+- **Verify the Supabase JWT** in middleware (`SUPABASE_JWT_SECRET`) on protected routes — do not hand-roll auth (see `voltph-security`).
 - **Validate input** with the shared zod schemas (`packages/shared/src/validation.ts`, e.g. `TripPlanSchema`) before using `req.body` — do not cast `req.body as TripPlan` blindly.
 - **Never return raw error objects** (`res.json({ error })`) — they leak stack traces/DB internals. Return a safe message + log server-side via a central error handler.
-- Restrict CORS to known origins in production; add `helmet`, rate limiting, and a JSON body-size limit (see `voltph-security`).
+- Restrict CORS to known origins in production; add `helmet`, rate limiting, and a JSON body-size limit.
 - Make `/health` report DB readiness, not just `ok`.

@@ -41,13 +41,13 @@ graph TB
     %% Communications
     Web -->|REST APIs / JWT| API
     Mobile -->|REST APIs / JWT / Geolocation| API
-    
+
     %% API Interactions
     API <--> Cache
     API -->|Google Maps SDK| G_Routes
     API -->|Google Maps SDK| G_Elevation
     API -->|Google Maps SDK| G_Places
-    
+
     %% Data Interactions
     API <-->|TypeORM / SQL / Spatial Query| DB
     DB -.-> SpatialIndex
@@ -56,21 +56,27 @@ graph TB
 ## Component Breakdown
 
 ### 1. Client Applications
+
 - **Web App:** A Vite-powered React application for administrators and managers.
 - **Mobile App:** An Expo-powered React Native application for drivers, integrating geolocation APIs, native maps, and offline syncing.
 - Both apps share validation schemas and interfaces via the shared package.
 
 ### 2. Backend API
+
 - **Technology:** Node.js Express with TypeScript and TypeORM.
 - **Orchestration:** Coordinates Google Maps Services (Routes, Elevation, Places) with database spatial searches to predict segment consumption and find stations.
+- **Authentication:** Verifies **Supabase Auth** JWTs in middleware on protected routes; the API itself does not issue or store credentials.
 - **Caching:** In-memory caching for Google Routes/Elevation calls to optimize response latency and minimize API fees.
 
 ### 3. Data Tier (Supabase)
-- **PostgreSQL:** Cloud-hosted managed database on Supabase.
+
+- **PostgreSQL 15:** Cloud-hosted managed database on Supabase (connected via the session pooler / direct connection).
 - **PostGIS:** Spatial database extension storing locations as `Point` coordinates (SRID 4326), with GIST spatial indexing for radius and route buffer searches.
+- **Supabase Auth:** Manages user credentials and JWT issuance in the `auth.users` schema; application `user` profiles are keyed by `auth.users.id`.
 
 ### 4. Shared Logic (`packages/shared`)
-- **Physics Engine:** Physical model calculating power consumption from drag ($C_d$), rolling resistance ($C_r$), elevation profiles, mass, and continuous AC draw.
+
+- **Energy Model:** The canonical rule-based multiplicative model `E = Ebase × Wtraffic × Welevation × Wtemperature` with locally-calibrated weights (a physics force-model is retained as future work — see the `voltph-ev-physics` skill).
 - **Validation:** Type-safe validators using `zod` to validate all API request/response payloads.
 
 ## Sequence Diagram: Trip Optimization Workflow
@@ -89,30 +95,30 @@ sequenceDiagram
 
     U->>FE: Enter Trip Plan (Origin, Destination, EV Model, Initial SoC)
     FE->>API: POST /api/trips/optimize (TripPlan Payload)
-    
+
     critical Route Retrieval
         API->>G_Routes: Request Path & Traffic (Waypoints, Polyline, Duration)
         G_Routes-->>API: Return Encoded Polyline & Traffic Speeds
     end
-    
+
     critical Specs & Geometry Load
         API->>DB: Query EVModel Specifications (batteryCapacityKWh, Cd, Mass)
         DB-->>API: Return Vehicle Spec Specs
         API->>API: Decode Polyline Coordinates & Apply Ramer-Douglas-Peucker (RDP) Reduction
     end
-    
+
     critical Terrain Profile Lookup
         API->>G_Elev: Request Elevation Coordinates along Path
         G_Elev-->>API: Return Slope Profiles (Meters relative to Sea Level)
     end
-    
+
     critical Energy Optimization & Search
         API->>API: Execute Physics Engine (Drag, Roll, Slope, A/C draw) per segment
         API->>DB: Spatial Query (ST_DWithin along Route Line geography buffer)
         DB-->>API: Return Compatible Charging Stations
         API->>API: Build Recommended Charging Stops & Final SoC Waypoints
     end
-    
+
     API-->>FE: Return optimized TripResult JSON
     FE->>U: Display visual map overlays, waypoint SoC steps, and charging pins
 ```
@@ -126,10 +132,10 @@ erDiagram
     USER ||--o{ USER_VEHICLE : "owns"
     USER ||--o{ TRIP : "plans"
     USER ||--o{ STATION_REPORT : "submits"
-    
+
     EV_MODEL ||--o{ USER_VEHICLE : "defines specification for"
     EV_MODEL ||--o{ TRIP : "is selected for"
-    
+
     USER_VEHICLE {
         uuid id
         uuid userId

@@ -6,16 +6,17 @@ This document outlines the deployment strategy, CI/CD workflows, and environment
 
 ## 🏗 Deployment Strategy
 
-### 1. Platform: Railway (Recommended)
+### 1. Platforms: Railway (compute) + Supabase (data & auth)
 
-We use **Railway** for seamless monorepo deployment of our Backend and Frontend Web services.
+The canonical split is **Railway for application compute** and **Supabase for the database, authentication, and storage**. This keeps the operational surface small for the team and offloads the highest-risk concerns (password security, JWT issuance) to a managed service.
 
-- **Config File:** `railway.json` in the root directory orchestrates the services.
-- **Database:** Provision a **PostgreSQL** service within the same Railway project.
-  - **Important:** Ensure the **PostGIS** extension is enabled (`CREATE EXTENSION IF NOT EXISTS postgis;`).
-- **Services:**
-  - **`voltph-api`**: Automatically uses `DATABASE_URL`. Requires `GOOGLE_MAPS_API_KEY`.
-  - **`voltph-web`**: Requires `VITE_API_URL` pointing to the deployed API URL.
+- **Railway** (`railway.json` at the repo root) hosts the compute services:
+  - **`voltph-api`**: Node.js Express backend. Uses `DATABASE_URL` (the Supabase connection string) and requires `GOOGLE_MAPS_API_KEY` + Supabase keys (see Environment Management).
+  - **`voltph-web`**: React/Vite SPA, served statically. Requires `VITE_API_URL` at build time. _(Optional best-practice: host the static SPA on Vercel/Netlify/Cloudflare Pages instead of a Railway container — a CDN serves static assets more efficiently and gives per-PR preview URLs. Railway-static remains a valid simpler option.)_
+- **Supabase** hosts the data tier — it is **not** defined in `railway.json`:
+  - **PostgreSQL 15 + PostGIS** — enable the extension once via the Supabase SQL editor: `CREATE EXTENSION IF NOT EXISTS postgis;`.
+  - **Supabase Auth** — issues and manages user credentials/JWTs; the API verifies these tokens (see [Authentication](#-authentication-supabase-auth)).
+  - **Connection from the API:** use the **session pooler (port 5432) or the direct connection** for the long-running Railway container. Avoid the transaction pooler (port 6543) — TypeORM relies on prepared statements that it does not support.
 
 ### 2. Backend API (`apps/api`)
 
@@ -74,16 +75,30 @@ We follow the **GitHub Flow** branching strategy to ensure code quality and stab
     - CI checks (Linting, Build) must pass.
     - Merge using "Squash and Merge" to keep history clean.
 
+## 🔐 Authentication (Supabase Auth)
+
+Voltpath PH uses **Supabase Auth** rather than a self-built JWT system. This satisfies `NFR-05` (JWT on protected resources, credentials encrypted at rest, OWASP alignment) while offloading password hashing, token issuance/rotation, email verification, and optional OAuth to a managed, audited service.
+
+- **Clients** (web/mobile) authenticate directly with Supabase Auth using `SUPABASE_URL` + `SUPABASE_ANON_KEY` and receive a JWT.
+- **The API** treats requests as untrusted and **verifies the Supabase JWT** in middleware using `SUPABASE_JWT_SECRET` before serving protected routes (trips, profile, station reports).
+- **App user data** lives in an application `user`/`profile` table keyed by the Supabase `auth.users.id` UUID — the app never stores raw passwords.
+- Optional: enable **Row-Level Security (RLS)** so users can only read/write their own trips and reports.
+
 ## 🔐 Environment Management
 
 Environment variables are handled per-app within the monorepo:
 
-| Variable              | Location       | Purpose                           |
-| :-------------------- | :------------- | :-------------------------------- |
-| `DATABASE_URL`        | API            | Connection string for PostGIS DB  |
-| `JWT_SECRET`          | API            | Signing secret for authentication |
-| `GOOGLE_MAPS_API_KEY` | API/Web/Mobile | Access to Maps & Routes APIs      |
-| `VITE_API_URL`        | Web            | Public URL of the deployed API    |
+| Variable                    | Location       | Purpose                                                       |
+| :-------------------------- | :------------- | :------------------------------------------------------------ |
+| `DATABASE_URL`              | API            | Supabase Postgres connection string (session pooler / direct) |
+| `SUPABASE_URL`              | API/Web/Mobile | Supabase project URL                                          |
+| `SUPABASE_ANON_KEY`         | Web/Mobile     | Public anon key for client-side Supabase Auth                 |
+| `SUPABASE_SERVICE_ROLE_KEY` | API            | Server-side privileged key (never exposed to clients)         |
+| `SUPABASE_JWT_SECRET`       | API            | Secret used to verify Supabase-issued JWTs in API middleware  |
+| `GOOGLE_MAPS_API_KEY`       | API/Web/Mobile | Access to Maps, Routes, Places & Elevation APIs               |
+| `VITE_API_URL`              | Web            | Public URL of the deployed API (inlined at build time)        |
+
+> Authentication is handled by **Supabase Auth**, so there is no self-managed `JWT_SECRET` for signing — the API only _verifies_ Supabase tokens using `SUPABASE_JWT_SECRET`.
 
 ### Secret Management
 

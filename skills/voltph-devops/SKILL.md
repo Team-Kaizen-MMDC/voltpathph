@@ -7,12 +7,13 @@ description: DevOps and CI/CD workflows for Voltpath PH, managing Turborepo, env
 
 Managing the infrastructure and lifecycle of the Voltpath PH project.
 
-## 🛠 Tech Stack
+## 🛠 Canonical Platforms
 
-- **Monorepo:** Turborepo (note: `turbo.json` still uses the legacy `pipeline` key — Turbo v2 renamed it to `tasks`).
-- **Package Manager:** NPM Workspaces
-- **Deployment:** Railway (`railway.json` defines `voltph-api` + `voltph-web`).
+- **Compute:** Railway (`railway.json` defines `voltph-api` + `voltph-web`).
+- **Data + Auth + Storage:** **Supabase** (PostgreSQL 15 + PostGIS + Supabase Auth). The DB is **not** in `railway.json`.
 - **Mobile:** Expo Application Services (EAS).
+- **Monorepo:** Turborepo (note: `turbo.json` still uses the legacy `pipeline` key — Turbo v2 renamed it to `tasks`).
+- **Package Manager:** NPM Workspaces.
 
 ## 🚀 Key Workflows
 
@@ -41,15 +42,23 @@ Managing the infrastructure and lifecycle of the Voltpath PH project.
   ```
 - Then enable branch protection on `main` requiring this check + 1 approval (matches the documented GitHub Flow).
 
-### 3. Environment Management
+### 3. Database & Auth (decided: Supabase)
 
-- API needs `DATABASE_URL`, `GOOGLE_MAPS_API_KEY`, `JWT_SECRET`; web needs `VITE_API_URL` **at build time** (Vite inlines it — `serve` hosts static `dist`).
+- The Supabase-vs-Railway-Postgres conflict is **resolved in favor of Supabase**. State Supabase consistently in all docs/paper; the DB lives in the Supabase project, not `railway.json`.
+- Enable PostGIS once: `CREATE EXTENSION IF NOT EXISTS postgis;` (Supabase SQL editor).
+- **Connect from the API via the session pooler (port 5432) or the direct connection** — not the transaction pooler (6543), which TypeORM's prepared statements don't support.
+- **Auth = Supabase Auth.** The API verifies Supabase JWTs (`SUPABASE_JWT_SECRET`); it does not sign its own tokens (no self-managed `JWT_SECRET`). See `voltph-security`.
+
+### 4. Environment Management
+
+- API needs `DATABASE_URL` (Supabase), `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`, `GOOGLE_MAPS_API_KEY`.
+- Clients need `SUPABASE_URL` + `SUPABASE_ANON_KEY`; web also needs `VITE_API_URL` **at build time** (Vite inlines it; `serve` hosts static `dist`).
 - Never commit `.env`; inject via Railway variables / GitHub Secrets.
 
-### 4. Database host — resolve the conflict
+### 5. Web hosting (optional upgrade)
 
-- Docs disagree: System Design/ARCHITECTURE say **Supabase**; Implementation Plan/DEVOPS say a **Railway** Postgres. `railway.json` defines neither. Pick one, document it consistently, and (if Railway) add the DB service or note it's provisioned via the dashboard. Enable PostGIS: `CREATE EXTENSION IF NOT EXISTS postgis;`.
+- Railway-static (`serve`) works, but hosting the SPA on Vercel/Netlify/Cloudflare Pages gives a CDN + per-PR preview URLs and frees Railway for the API only.
 
-### 5. Mobile Deployment
+### 6. Mobile Deployment
 
 - EAS for builds + OTA updates (`eas build`, `eas update`).
