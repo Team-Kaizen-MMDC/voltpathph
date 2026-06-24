@@ -8,16 +8,24 @@ description: Data engineering specialized for Voltpath PH, focusing on EV consum
 Managing the core data assets that power Voltpath PH's optimization engine.
 
 ## 📊 Data Domains
-- **EV Consumption Models:** Maintaining accurate kWh/km data for PH-available brands (BYD, Vinfast, etc.).
-- **Charging Station Data:** Curating and updating the `ChargingStation` table from external sources.
-- **Traffic Patterns:** Analyzing data from Google Routes to improve battery prediction accuracy.
+
+- **EV Consumption Models:** Maintain accurate consumption data for the PH-market target brands. The paper's target set is **BYD, Geely, Jetour, VinFast** — keep the seed, README, and paper aligned on this list.
+- **Charging Station Data:** Curate and update the `ChargingStation` table from external sources.
+- **Traffic Patterns:** Analyze Google Routes data to calibrate the rule-based weights (`Wtraffic`, etc.).
 
 ## 🚀 Key Workflows
 
 ### 1. EV Catalog Management
-- Periodically update the `EVModel` table with new battery capacities and efficiency ratings.
-- Validate consumption formulas against real-world test data from the PH market.
+
+- The calibration vehicle is the **Geely EX5 Em-i Max** — it **must** exist in the seed (`apps/api/src/seed.ts`) because it provides `Ebase`. It is currently missing; add it.
+- Use real `imageUrl` values, not `https://example.com/...` placeholders.
+- Periodically update `EVModel` with new battery capacities and efficiency ratings; validate against real-world test-drive data.
 
 ### 2. Data Ingestion
-- Create scripts to sync data from providers like OpenChargeMap, filtering specifically for the Philippines.
-- Ensure all coordinates are correctly transformed to `SRID 4324`.
+
+- Create scripts to sync data from providers like OpenChargeMap, filtered to the Philippines.
+- **Store all coordinates as `SRID 4326`** (WGS 84). Never `4324` (past bug — verify with `grep -rn 4324`).
+
+### 3. Regression Calibration
+
+- The energy weights come from multiple regression on the test-drive dataset; keep the dataset, regression script, and the weight constants in `packages/shared` traceable to each other so recalibration is reproducible.

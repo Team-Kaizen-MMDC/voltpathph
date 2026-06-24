@@ -1,44 +1,65 @@
 ---
 name: voltph-ev-physics
-description: Physics-based modeling of electric vehicle energy consumption. Use when developing or refining the battery prediction algorithm based on road grade, speed, mass, and auxiliary loads.
+description: EV energy consumption modeling for Voltpath PH. The CANONICAL model is the paper's rule-based multiplicative formula (E = Ebase × Wtraffic × Welevation × Wtemperature). Use when developing or refining the battery/SoC prediction engine. A physics force-model is documented at the end as future work only.
 ---
 
-# Voltpath PH EV Physics & Consumption Skill
+# Voltpath PH EV Energy Consumption Skill
 
-Guidance for calculating and predicting EV battery consumption along a route. This model shifts the application from raw averages to highly accurate, physics-backed predictions.
+Guidance for estimating EV battery consumption and State-of-Charge (SoC) along a route.
 
-## 🔋 The Energy Consumption Equation
-For each route segment, the energy required at the wheels ($E_{wheel}$) is calculated based on physical forces:
+> **Canonical model decision:** The Capstone paper adopts a **rule-based multiplicative** model and explicitly argues _against_ heavy physics/ML for a mobile, explainable, resource-constrained deployment (RRL §"Rule-Based and Coefficient Models"). Implement the rule-based model. The physics force-model in the appendix is **future/alternative work** — never present it as the implemented approach in code, docs, or the paper.
 
-$$F_{total} = F_{roll} + F_{drag} + F_{gravity} + F_{accel}$$
+## ⚡ The Canonical Model (implement this)
 
-Where:
-1.  **Rolling Resistance:** $F_{roll} = C_r \cdot m \cdot g \cdot \cos(\theta)$
-    - $C_r$: Rolling resistance coefficient (typically ~0.01 - 0.015 for EV tires).
-    - $m$: Vehicle mass (including occupants/cargo).
-    - $g$: Acceleration due to gravity ($9.81 \text{ m/s}^2$).
-    - $\theta$: Road slope (angle of incline from elevation data).
-2.  **Aerodynamic Drag:** $F_{drag} = \frac{1}{2} \cdot \rho \cdot C_d \cdot A \cdot v^2$
-    - $\rho$: Air density (approx. $1.18 \text{ kg/m}^3$ at 30°C in the Philippines).
-    - $C_d$: Drag coefficient (dependent on EV model, e.g., ~0.24 for BYD Atto 3).
-    - $A$: Frontal area of the car ($m^2$).
-    - $v$: Vehicle velocity ($m/s$). Note the quadratic scaling with speed!
-3.  **Gravity Force:** $F_{gravity} = m \cdot g \cdot \sin(\theta)$
-    - Adds resistance uphill, recovers energy downhill.
-4.  **Inertial Force (Acceleration):** $F_{accel} = m \cdot a$
+For each route segment:
 
-## ⚡ Battery Consumption & Regeneration
-- **Energy at Wheels:** $E_{wheel} = F_{total} \cdot d$ (where $d$ is segment distance).
-- **Powertrain Efficiency:** Convert wheel energy to battery energy.
-  - When $F_{total} > 0$ (traction): $E_{battery} = E_{wheel} / \eta_{propulsion}$ (efficiency $\eta \approx 0.85 - 0.90$).
-  - When $F_{total} < 0$ (deceleration/downhill): $E_{battery} = E_{wheel} \cdot \eta_{regen}$ (regenerative braking efficiency $\eta \approx 0.60 - 0.70$).
+```
+E = Ebase × Wtraffic × Welevation × Wtemperature
+```
 
-## ❄️ Auxiliary Load (Air Conditioning)
-- In the Philippines, the ambient temperature is consistently high (28°C - 35°C). Air conditioning is run continuously and consumes significant power.
-- **Auxiliary Power ($P_{aux}$):** Air conditioning and electronics draw a constant power (typically $1.0\text{ kW} - 2.5\text{ kW}$ depending on the vehicle scale and setting).
-- **Auxiliary Energy:** $E_{aux} = P_{aux} \cdot t$ (where $t$ is the segment duration).
-- **Total Consumption:** $E_{total} = E_{battery} + E_{aux}$
+- **E** — estimated consumption for the segment (Wh/km). Keep one unit project-wide. The paper uses **Wh/km**; the `EVModel.averageConsumptionKWhPerKm` column is kWh/km — convert explicitly (`1 kWh/km = 1000 Wh/km`) and document it.
+- **Ebase** — baseline consumption from the selected `EVModel` (manufacturer spec). Calibration vehicle: **Geely EX5 Em-i Max**.
+- **Wtraffic** — congestion weight (free / light / moderate / heavy), centered on 1.0 at light traffic.
+- **Welevation** — terrain weight from net grade per km (Google Elevation API): >1.0 uphill, <1.0 net downhill (regen recovery).
+- **Wtemperature** — ambient-temperature / AC-load weight: >1.0 in tropical heat.
 
-## 🇵🇭 Philippine Traffic Adjustment Factor
-- Extreme stop-and-go traffic (e.g., EDSA, C5) results in high auxiliary consumption ($E_{aux}$) due to extended travel time, even though aerodynamic drag ($F_{drag}$) is negligible at low speeds.
-- Implement a scaling factor or model traffic delay directly as a multiplier to the segment travel time, which naturally scales the A/C draw.
+Weights are **multiplicative** so compounding adverse conditions (heavy traffic _and_ uphill) stack realistically. They are derived from **multiple regression** on the PH test-drive dataset, each centered at 1.0 under baseline conditions (light traffic, flat terrain, moderate temperature).
+
+### Segment SoC depletion
+
+```
+segmentWh     = E × segmentDistanceKm
+batteryWh     = EVModel.batteryCapacityKWh × 1000
+deltaSoC%     = (segmentWh / batteryWh) × 100
+remainingSoC% = previousSoC% − deltaSoC%
+```
+
+Compute per segment; surface predicted SoC at each waypoint.
+
+## ✅ Implementation notes
+
+- Put the formula and weight tables in `packages/shared` (single source of truth for API + clients). The paper/docs reference `packages/shared/src/physics.ts`; create that module (rename to `energy.ts` if "physics" no longer fits) — **it does not exist yet**.
+- **Test-first:** write unit tests with known input/output pairs from the test-drive dataset before wiring the endpoint (see `voltph-test-engineer`).
+- Keep weights in a constants/config object so regression recalibration is a data change, not a code change.
+- Validate against `NFR-01` (MAPE ≤ 15%) and `NFR-02` (RMSE ≤ 80 Wh/km).
+
+## 🇵🇭 Philippine factors captured by the weights
+
+- **Traffic:** stop-and-go raises consumption via repeated accel/decel and longer AC runtime → higher `Wtraffic`.
+- **Elevation:** Manila ↔ Tagaytay/Antipolo/Cavite climbs → higher `Welevation`; descents recover some energy.
+- **Temperature:** sustained 28–35 °C → continuous AC load → higher `Wtemperature`.
+
+---
+
+## 📎 Appendix — Physics force-model (FUTURE WORK ONLY)
+
+Do **not** implement as the primary model or document as built. It requires `EVModel` fields that do not currently exist (`drag_coefficient`, `frontal_area_sqm`, `mass_kg`, `rolling_resistance_coefficient`); do not add those columns to docs/schema unless this model is actually adopted.
+
+`F_total = F_roll + F_drag + F_gravity + F_accel`
+
+- Rolling: `F_roll = Cr · m · g · cos(θ)`
+- Drag: `F_drag = ½ · ρ · Cd · A · v²` (ρ ≈ 1.18 kg/m³ at ~30 °C)
+- Gravity: `F_gravity = m · g · sin(θ)`
+- Inertia: `F_accel = m · a`
+
+Convert wheel energy to battery energy via propulsion efficiency (~0.85–0.90), apply regen efficiency (~0.60–0.70) on negative `F_total`, add auxiliary energy `E_aux = P_aux · t` (P_aux ≈ 1.0–2.5 kW). More granular, but contradicts the paper's rationale and is harder to calibrate/explain — hence future work.

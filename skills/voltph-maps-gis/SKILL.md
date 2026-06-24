@@ -8,32 +8,38 @@ description: Specialized workflows for GIS and mapping integration, including Go
 Guidance for handling geospatial operations, Google Maps API integration, and PostGIS query optimizations for the Voltpath PH platform.
 
 ## 🌍 Spatial Foundations (PostGIS)
-- **Coordinate Reference System:** Always use **SRID 4326** (WGS 84 GPS standard) for geospatial tables. (Note: Fix any occurrences of legacy SRID 4324).
-- **Geography vs. Geometry:** 
-  - Use `geography` type in TypeORM columns for measurements in meters (e.g., `ST_DWithin` with radius in meters).
-  - Use `geometry` type for flat spatial math or indexing, but cast to `geography` when calculating exact spherical distances.
-- **Spatial Indexing:** Ensure a **GiST** index is created on all spatial columns (e.g., `@Index({ spatial: true })`).
+
+- **Coordinate Reference System:** Always use **SRID 4326** (WGS 84 GPS standard) for geospatial tables.
+- **Verify before claiming a fix:** run `grep -rn 4324` across `apps/`, `packages/`, and `skills/` and confirm zero hits before stating the SRID is correct anywhere (code, docs, or CHANGELOG). A past CHANGELOG entry claimed the `4324→4326` fix while the code still used `4324` — don't repeat that.
+- **Geography vs. Geometry:**
+  - Use `geography` in TypeORM columns for measurements in meters (e.g., `ST_DWithin` with radius in meters).
+  - Use `geometry` for flat spatial math/indexing, but cast to `geography` for exact spherical distances.
+- **Spatial Indexing:** Ensure a **GiST** index on all spatial columns (e.g., `@Index({ spatial: true })`).
 
 ## 🗺 Google Maps Platform Integrations
-- **Routes API:** Retrieve detailed routes (including step-by-step polylines, duration, traffic speeds, and distances).
-- **Places API:** Provide search autocomplete for origin/destination search fields on both web and mobile.
-- **Elevation API:** Query elevation data along the decoded polyline points to compute changes in potential energy (slope/grades) for battery calculation.
+
+- **Routes API:** detailed routes (step polylines, duration, traffic speeds, distances).
+- **Places API:** origin/destination autocomplete on web and mobile.
+- **Elevation API:** elevation along the decoded polyline to compute slope/grades for the energy weights.
 
 ## 🚀 Key Algorithms & Queries
 
 ### 1. Polyline Decoding
-- Route paths from Google Routes are encoded using the Encoded Polyline Algorithm. Decode this into an array of `[lat, lng]` coordinates in the backend.
+
+- Route paths are encoded with the Encoded Polyline Algorithm. Decode to `[lat, lng]` arrays in the backend.
 
 ### 2. Searching Along a Route (Spatial Buffer Query)
+
 - To find charging stations near the planned route:
-  1. Convert the decoded polyline into a PostGIS `LineString` object.
-  2. Create a buffer around the line (e.g., 5 kilometers) using `ST_Buffer` (or use `ST_DWithin` on the path).
-  3. Query `ChargingStation` points that intersect this buffer.
-  - *Example query outline:*
+  1. Convert the decoded polyline into a PostGIS `LineString`.
+  2. Buffer the line (e.g., 5 km) via `ST_Buffer`, or use `ST_DWithin` against the path.
+  3. Query `ChargingStation` points within the buffer.
+  - _Example:_
     ```sql
-    SELECT * FROM charging_station 
+    SELECT * FROM charging_station
     WHERE ST_DWithin(location::geography, ST_GeogFromText(:route_line), :buffer_meters);
     ```
 
 ### 3. Polyline Reduction
-- For long routes, reduce the number of coordinates sent to the Elevation API using the Ramer-Douglas-Peucker algorithm to save API quota and cost.
+
+- For long routes, reduce coordinates sent to the Elevation API using Ramer-Douglas-Peucker to save quota and cost.
