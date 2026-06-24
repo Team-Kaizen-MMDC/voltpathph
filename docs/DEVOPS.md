@@ -1,8 +1,8 @@
 # DevOps & Deployment Guide 🚀🏗
 
-![DevOps Version](https://img.shields.io/badge/devops-v1.0.0--alpha-blue)
+![DevOps Version](https://img.shields.io/badge/devops-v1.0.0--beta-blue)
 
-This document outlines the deployment strategy, CI/CD workflows, and environment management for the VoltPH platform.
+This document outlines the deployment strategy, CI/CD workflows, and environment management for the Voltpath PH platform.
 
 ## 🏗 Deployment Strategy
 
@@ -68,6 +68,7 @@ We follow the **GitHub Flow** branching strategy to ensure code quality and stab
 
 3.  **Pull Request Process:**
     - Branches are created from the latest `main`.
+    - Link the PR to the corresponding issue card on the [Voltpath PH Project Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5).
     - Open a PR early for feedback if needed (Draft PR).
     - At least one approval is required before merging.
     - CI checks (Linting, Build) must pass.

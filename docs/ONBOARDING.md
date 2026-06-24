@@ -2,7 +2,9 @@
 
 ![Onboarding](https://img.shields.io/badge/onboarding-v1.0.0-green)
 
-Welcome to the VoltPH team! This guide will help you get up to speed with our codebase and development workflow.
+Welcome to the Voltpath PH team! This guide will help you get up to speed with our codebase and development workflow.
+
+Track current sprint assignments, backlog issues, and our roadmap on our [GitHub Project Kanban Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5).
 
 ## 🏁 Phase 1: Environment Setup (Day 1)
 
@@ -22,6 +24,7 @@ The `@voltph/shared` package contains Zod schemas and TypeScript interfaces used
 
 ## 📚 Phase 2: Knowledge Base (Week 1)
 
+- [ ] **Testing Protocols:** Read our [Testing Specifications Guide](./TESTING.md) to understand the Jest/Vitest setups and model validation metrics.
 - [ ] **Monorepo Architecture:** Read about [Turborepo](https://turbo.build/repo/docs).
 - [ ] **TypeScript:** Familiarize yourself with our shared types in `packages/shared`.
 - [ ] **PostGIS:** Understand basic spatial queries like `ST_DWithin`.

@@ -1,4 +1,4 @@
-# VoltPH Design Tokens
+# Voltpath PH Design Tokens
 
 Core visual variables for a consistent and premium EV charging experience.
 

@@ -1,11 +1,11 @@
 ---
 name: voltph-docs-engineer
-description: Technical documentation management for VoltPH, focusing on Markdown, Mermaid diagrams, and maintainable project guides.
+description: Technical documentation management for Voltpath PH, focusing on Markdown, Mermaid diagrams, and maintainable project guides.
 ---
 
-# VoltPH Documentation Engineer Skill
+# Voltpath PH Documentation Engineer Skill
 
-Maintaining the clarity and accuracy of the VoltPH knowledge base.
+Maintaining the clarity and accuracy of the Voltpath PH knowledge base.
 
 ## 📝 Documentation Standards
 - Use **GitHub Flavored Markdown**.

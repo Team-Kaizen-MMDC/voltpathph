@@ -1,11 +1,11 @@
 ---
 name: voltph-devops
-description: DevOps and CI/CD workflows for VoltPH, managing Turborepo, environments, and multi-platform deployments.
+description: DevOps and CI/CD workflows for Voltpath PH, managing Turborepo, environments, and multi-platform deployments.
 ---
 
-# VoltPH DevOps Skill
+# Voltpath PH DevOps Skill
 
-Managing the infrastructure and lifecycle of the VoltPH project.
+Managing the infrastructure and lifecycle of the Voltpath PH project.
 
 ## 🛠 Tech Stack
 - **Monorepo:** Turborepo

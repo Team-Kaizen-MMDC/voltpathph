@@ -1,11 +1,11 @@
 ---
 name: voltph-test-engineer
-description: Quality assurance and testing strategies for VoltPH, covering unit, integration, and E2E testing across the monorepo.
+description: Quality assurance and testing strategies for Voltpath PH, covering unit, integration, and E2E testing across the monorepo.
 ---
 
-# VoltPH Test Engineer Skill
+# Voltpath PH Test Engineer Skill
 
-Ensuring the reliability and correctness of the VoltPH platform.
+Ensuring the reliability and correctness of the Voltpath PH platform.
 
 ## 🧪 Testing Strategy
 - **Unit Testing:** Focus on consumption math in `packages/shared`.

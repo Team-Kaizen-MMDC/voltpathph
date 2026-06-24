@@ -1,4 +1,4 @@
-# VoltPH UI Patterns
+# Voltpath PH UI Patterns
 
 Standardized React/React Native patterns to elevate the "plain" UI.
 

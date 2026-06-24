@@ -1,11 +1,11 @@
 ---
 name: voltph-frontend
-description: Expert guidance for VoltPH frontend development, covering React (Web) and React Native (Mobile) using TypeScript and Turborepo.
+description: Expert guidance for Voltpath PH frontend development, covering React (Web) and React Native (Mobile) using TypeScript and Turborepo.
 ---
 
-# VoltPH Frontend Skill
+# Voltpath PH Frontend Skill
 
-Expert workflows for building and maintaining the VoltPH Web and Mobile applications.
+Expert workflows for building and maintaining the Voltpath PH Web and Mobile applications.
 
 ## 🛠 Tech Stack
 - **Web:** React + Vite + TypeScript (located in `apps/web`)

@@ -1,8 +1,8 @@
 # Backend API Documentation 🔙💻
 
-![Backend Version](https://img.shields.io/badge/backend-v1.0.0--alpha-blue)
+![Backend Version](https://img.shields.io/badge/backend-v1.0.0--beta-blue)
 
-The VoltPH Backend is a Node.js Express application built with TypeScript and TypeORM, using PostgreSQL and PostGIS for geospatial data management.
+The Voltpath PH Backend is a Node.js Express application built with TypeScript and TypeORM, using PostgreSQL and PostGIS for geospatial data management.
 
 ## 🚀 Getting Started
 
@@ -65,14 +65,57 @@ The core engine for route and battery calculation.
   - Request Body: `TripPlan`
   - Response: `TripResult`
 
-## 🗄 Database & Geospatial
-VoltPH uses **PostGIS** to handle geographical data.
+#### Trip Optimization Sequence Workflow
 
-- **Spatial Indexing:** The `ChargingStation` table has a GIST index on the `location` column.
-- **Coordinate System:** All points use **SRID 4324** (WGS 84).
-- **Entities:** Located in `src/entities/`.
-  - `EVModel`: Specifications (Battery, Consumption, Plugs).
-  - `ChargingStation`: Geographical point and provider details.
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Driver (Mobile/Web Client)
+    participant FE as Voltpath PH Client
+    participant API as Voltpath PH API (Railway)
+    participant DB as Supabase DB (PostgreSQL/PostGIS)
+    participant G_Routes as Google Routes API
+    participant G_Elev as Google Elevation API
+
+    U->>FE: Enter Trip Plan (Origin, Destination, EV Model, Initial SoC)
+    FE->>API: POST /api/trips/optimize (TripPlan Payload)
+    
+    critical Route Retrieval
+        API->>G_Routes: Request Path & Traffic (Waypoints, Polyline, Duration)
+        G_Routes-->>API: Return Encoded Polyline & Traffic Speeds
+    end
+    
+    critical Specs & Geometry Load
+        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Cd, Mass)
+        DB-->>API: Return Vehicle Spec Specs
+        API->>API: Decode Polyline Coordinates & Apply Ramer-Douglas-Peucker (RDP) Reduction
+    end
+    
+    critical Terrain Profile Lookup
+        API->>G_Elev: Request Elevation Coordinates along Path
+        G_Elev-->>API: Return Slope Profiles (Meters relative to Sea Level)
+    end
+    
+    critical Energy Optimization & Search
+        API->>API: Execute Physics Engine (Drag, Roll, Slope, A/C draw) per segment
+        API->>DB: Spatial Query (ST_DWithin along Route Line geography buffer)
+        DB-->>API: Return Compatible Charging Stations
+        API->>API: Build Recommended Charging Stops & Final SoC Waypoints
+    end
+    
+    API-->>FE: Return optimized TripResult JSON
+    FE->>U: Display visual map overlays, waypoint SoC steps, and charging pins
+```
+
+
+## 🗄 Database & Geospatial
+Voltpath PH uses **PostgreSQL** with the **PostGIS** extension to handle spatial data.
+
+For a comprehensive guide on database structure, column types, relationship diagrams, and query optimizations, see the [Database Architecture Documentation](./DATABASE.md).
+
+- **Coordinate System:** All geographical coordinates use standard **SRID 4326** (WGS 84 GPS standard).
+- **Spatial Indexing:** GIST indices are utilized on `location` coordinates for high-performance radius queries.
+- **TypeORM Entities:** Stored under `apps/api/src/entities/`.
 
 ## 🧪 Testing & Quality
 - **Linter:** ESLint

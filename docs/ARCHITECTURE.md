@@ -2,53 +2,76 @@
 
 ![Architecture Version](https://img.shields.io/badge/arch-v1.0.0-blue)
 
-This document describes the high-level architecture of the VoltPH platform.
+This document describes the high-level architecture of the Voltpath PH platform.
 
 ## Architecture Diagram
 
 ```mermaid
-graph TD
-    User([User])
-    WebApp[Web App - React]
-    MobileApp[Mobile App - React Native]
-    API[API - Node.js/Express]
-    DB[(PostgreSQL + PostGIS)]
-    GMap[Google Maps API]
-    Shared[Shared Package]
+graph TB
+    subgraph Clients ["Client Layer (TypeScript)"]
+        Web["Web Admin App<br/>(React / Vite)"]
+        Mobile["Mobile Driver App<br/>(React Native / Expo)"]
+    end
 
-    User --> WebApp
-    User --> MobileApp
-    WebApp -.-> Shared
-    MobileApp -.-> Shared
+    subgraph Packages ["Shared Codebase"]
+        Shared["@voltph/shared<br/>(Zod Schemas, Physics Math, Interfaces)"]
+    end
+
+    subgraph Infrastructure ["Orchestration & Logic (Railway)"]
+        API["Voltpath PH API Gateway<br/>(Node.js / Express)"]
+        Cache["In-Memory Cache<br/>(Routes & Stations Cache)"]
+    end
+
+    subgraph Data ["Data Storage Tier (Supabase)"]
+        DB[(PostgreSQL + PostGIS)]
+        SpatialIndex[GIST Spatial Indexing]
+    end
+
+    subgraph Cloud ["External Cloud Services"]
+        G_Routes["Google Routes API<br/>(Traffic-Aware Polyline)"]
+        G_Elevation["Google Elevation API<br/>(Terrain Profiles)"]
+        G_Places["Google Places API<br/>(Station Locs & Autocomplete)"]
+    end
+
+    %% Client associations
+    Web -.-> Shared
+    Mobile -.-> Shared
     API -.-> Shared
 
-    WebApp --> API
-    MobileApp --> API
-    API --> DB
-    API --> GMap
+    %% Communications
+    Web -->|REST APIs / JWT| API
+    Mobile -->|REST APIs / JWT / Geolocation| API
+    
+    %% API Interactions
+    API <--> Cache
+    API -->|Google Maps SDK| G_Routes
+    API -->|Google Maps SDK| G_Elevation
+    API -->|Google Maps SDK| G_Places
+    
+    %% Data Interactions
+    API <-->|TypeORM / SQL / Spatial Query| DB
+    DB -.-> SpatialIndex
 ```
 
 ## Component Breakdown
 
 ### 1. Client Applications
-- **Web App:** A Vite-powered React application for desktop users.
-- **Mobile App:** An Expo-powered React Native application for users on the go.
-- Both apps share business logic and type definitions via the `shared` package.
+- **Web App:** A Vite-powered React application for administrators and managers.
+- **Mobile App:** An Expo-powered React Native application for drivers, integrating geolocation APIs, native maps, and offline syncing.
+- Both apps share validation schemas and interfaces via the shared package.
 
 ### 2. Backend API
-- **Technology:** Express.js with TypeScript.
-- **Responsibilities:**
-  - Managing EV model data.
-  - Locating charging stations.
-  - Orchestrating trip optimization by combining Google Maps data with EV consumption models.
+- **Technology:** Node.js Express with TypeScript and TypeORM.
+- **Orchestration:** Coordinates Google Maps Services (Routes, Elevation, Places) with database spatial searches to predict segment consumption and find stations.
+- **Caching:** In-memory caching for Google Routes/Elevation calls to optimize response latency and minimize API fees.
 
-### 3. Data Layer
-- **PostgreSQL:** Primary relational store.
-- **PostGIS:** Extension used for storing charging station locations as `Point` geographies, allowing for efficient "nearby" searches.
+### 3. Data Tier (Supabase)
+- **PostgreSQL:** Cloud-hosted managed database on Supabase.
+- **PostGIS:** Spatial database extension storing locations as `Point` coordinates (SRID 4326), with GIST spatial indexing for radius and route buffer searches.
 
 ### 4. Shared Logic (`packages/shared`)
-- This is a local NPM package within the monorepo.
-- It contains `interfaces`, `validation schemas`, and `calculation utilities` to ensure consistency across all services.
+- **Physics Engine:** Physical model calculating power consumption from drag ($C_d$), rolling resistance ($C_r$), elevation profiles, mass, and continuous AC draw.
+- **Validation:** Type-safe validators using `zod` to validate all API request/response payloads.
 
 ## Sequence Diagram: Trip Optimization Workflow
 
@@ -56,62 +79,130 @@ This diagram illustrates the flow of data when a user plans a trip and requests 
 
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant FE as Frontend (Web/Mobile)
-    participant API as VoltPH API
-    participant DB as PostgreSQL/PostGIS
-    participant G as Google Maps API
+    autonumber
+    actor U as Driver (Mobile/Web Client)
+    participant FE as Voltpath PH Client
+    participant API as Voltpath PH API (Railway)
+    participant DB as Supabase DB (PostgreSQL/PostGIS)
+    participant G_Routes as Google Routes API
+    participant G_Elev as Google Elevation API
 
-    U->>FE: Enter Origin/Destination & Select EV
-    FE->>API: POST /api/trips/optimize (TripPlan)
-    API->>G: Request Route (Polyline, Traffic, Distance)
-    G-->>API: Return Route Data
-    API->>DB: Fetch EV Model Specifications
-    DB-->>API: Return EVModel Details
-    API->>API: Calculate Estimated Consumption
-    API->>DB: Spatial Query: Find Stations along Route
-    DB-->>API: Return Nearby Charging Stations
-    API->>API: Finalize Trip Result
-    API-->>FE: Return TripResult (Optimized Plan)
-    FE->>U: Display Route & Charging Recommendations
+    U->>FE: Enter Trip Plan (Origin, Destination, EV Model, Initial SoC)
+    FE->>API: POST /api/trips/optimize (TripPlan Payload)
+    
+    critical Route Retrieval
+        API->>G_Routes: Request Path & Traffic (Waypoints, Polyline, Duration)
+        G_Routes-->>API: Return Encoded Polyline & Traffic Speeds
+    end
+    
+    critical Specs & Geometry Load
+        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Cd, Mass)
+        DB-->>API: Return Vehicle Spec Specs
+        API->>API: Decode Polyline Coordinates & Apply Ramer-Douglas-Peucker (RDP) Reduction
+    end
+    
+    critical Terrain Profile Lookup
+        API->>G_Elev: Request Elevation Coordinates along Path
+        G_Elev-->>API: Return Slope Profiles (Meters relative to Sea Level)
+    end
+    
+    critical Energy Optimization & Search
+        API->>API: Execute Physics Engine (Drag, Roll, Slope, A/C draw) per segment
+        API->>DB: Spatial Query (ST_DWithin along Route Line geography buffer)
+        DB-->>API: Return Compatible Charging Stations
+        API->>API: Build Recommended Charging Stops & Final SoC Waypoints
+    end
+    
+    API-->>FE: Return optimized TripResult JSON
+    FE->>U: Display visual map overlays, waypoint SoC steps, and charging pins
 ```
 
 ## Entity Relationship Diagram (ERD)
 
-The following diagram represents the core data models and their relationships.
+The following diagram represents the core data models and their relationships, tailored for physics calculations and crowdsourced status reporting.
 
 ```mermaid
 erDiagram
+    USER ||--o{ USER_VEHICLE : "owns"
     USER ||--o{ TRIP : "plans"
+    USER ||--o{ STATION_REPORT : "submits"
+    
+    EV_MODEL ||--o{ USER_VEHICLE : "defines specification for"
+    EV_MODEL ||--o{ TRIP : "is selected for"
+    
+    USER_VEHICLE {
+        uuid id
+        uuid userId
+        uuid evModelId
+        string licensePlate
+        string nickname
+        float currentOdometerKm
+        float currentSocPercentage
+    }
+
     USER {
         uuid id
         string email
+        string passwordHash
         string name
+        timestamp createdAt
     }
-    EV_MODEL ||--o{ TRIP : "is used for"
-    EV_MODEL {
-        uuid id
-        string make
-        string model
-        float batteryCapacityKWh
-        float averageConsumptionKWhPerKm
-        string[] plugTypes
-    }
+
+    TRIP ||--o{ TRIP_WAYPOINT : "contains"
     TRIP {
         uuid id
         uuid userId
         uuid evModelId
-        json origin
-        json destination
+        string originAddress
+        geography originLocation
+        string destinationAddress
+        geography destinationLocation
         float totalDistanceKm
+        float totalDurationMin
+        float initialBatteryPercentage
+        float finalPredictedBatteryPercentage
+        timestamp createdAt
     }
+
+    TRIP_WAYPOINT {
+        uuid id
+        uuid tripId
+        integer sequenceNumber
+        string name
+        geography location
+        float distanceFromStartKm
+        float elevationMeters
+        float predictedSocPercentage
+        boolean isChargingStop
+        uuid recommendedStationId
+    }
+
+    CHARGING_STATION ||--o{ STATION_REPORT : "receives"
+    CHARGING_STATION ||--o{ CHARGER_CONNECTOR : "has"
     CHARGING_STATION {
         uuid id
         string name
         string provider
         geography location
-        string[] plugTypes
-        float powerKW
         boolean isAvailable
+        timestamp createdAt
+    }
+
+    CHARGER_CONNECTOR {
+        uuid id
+        uuid stationId
+        string plugType
+        float powerKW
+        string status
+        float pricingPhpPerKWh
+    }
+
+    STATION_REPORT {
+        uuid id
+        uuid stationId
+        uuid userId
+        string statusReport
+        string comments
+        timestamp createdAt
     }
 ```

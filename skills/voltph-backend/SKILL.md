@@ -1,11 +1,11 @@
 ---
 name: voltph-backend
-description: Specialized workflows for the VoltPH Node.js API, including Express, TypeORM, and PostGIS integration for EV calculations.
+description: Specialized workflows for the Voltpath PH Node.js API, including Express, TypeORM, and PostGIS integration for EV calculations.
 ---
 
-# VoltPH Backend Skill
+# Voltpath PH Backend Skill
 
-Guidance for developing the VoltPH API, focusing on performance, geospatial logic, and robust data management.
+Guidance for developing the Voltpath PH API, focusing on performance, geospatial logic, and robust data management.
 
 ## 🛠 Tech Stack
 - **Runtime:** Node.js (LTS)

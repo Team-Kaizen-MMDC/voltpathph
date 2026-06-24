@@ -1,8 +1,8 @@
 # Frontend Web Documentation 🖥🌐
 
-![Web Version](https://img.shields.io/badge/web-v1.0.0--alpha-blue)
+![Web Version](https://img.shields.io/badge/web-v1.0.0--beta-blue)
 
-The VoltPH Web application is a modern React application built with TypeScript and Vite. It serves as the desktop platform for EV trip planning and station discovery.
+The Voltpath PH Web application is a modern React application built with TypeScript and Vite. It serves as the desktop platform for EV trip planning and station discovery.
 
 ## 🚀 Getting Started
 

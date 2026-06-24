@@ -1,11 +1,11 @@
 ---
 name: voltph-research-engineer
-description: Specialized research and experimentation for VoltPH, focusing on advanced EV algorithms, traffic prediction models, and evaluating 3rd party APIs for the Philippines market.
+description: Specialized research and experimentation for Voltpath PH, focusing on advanced EV algorithms, traffic prediction models, and evaluating 3rd party APIs for the Philippines market.
 ---
 
-# VoltPH Research Engineer Skill
+# Voltpath PH Research Engineer Skill
 
-Expert guidance for investigative tasks, prototyping, and technical research within the VoltPH ecosystem.
+Expert guidance for investigative tasks, prototyping, and technical research within the Voltpath PH ecosystem.
 
 ## 🔬 Research Domains
 - **Predictive Modeling:** Investigating traffic patterns and environmental factors (weather, elevation) affecting EV range in the PH.
