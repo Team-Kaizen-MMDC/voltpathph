@@ -1,6 +1,6 @@
 # DevOps & Deployment Guide 🚀🏗
 
-![DevOps Version](https://img.shields.io/badge/devops-v1.0.0--alpha-blue)
+![DevOps Version](https://img.shields.io/badge/devops-v1.0.0--beta-blue)
 
 This document outlines the deployment strategy, CI/CD workflows, and environment management for the Voltpath PH platform.
 

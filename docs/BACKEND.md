@@ -1,6 +1,6 @@
 # Backend API Documentation 🔙💻
 
-![Backend Version](https://img.shields.io/badge/backend-v1.0.0--alpha-blue)
+![Backend Version](https://img.shields.io/badge/backend-v1.0.0--beta-blue)
 
 The Voltpath PH Backend is a Node.js Express application built with TypeScript and TypeORM, using PostgreSQL and PostGIS for geospatial data management.
 

@@ -1,6 +1,6 @@
 # Voltpath PH 🔋🇵🇭
 
-![Version](https://img.shields.io/badge/version-1.0.0--alpha-blue)
+![Version](https://img.shields.io/badge/version-1.0.0--beta-blue)
 ![Tech Stack](https://img.shields.io/badge/stack-Turborepo%20|%20Node.js%20|%20React%20|%20PostGIS-green)
 ![License](https://img.shields.io/badge/license-MIT-yellow)
 [![Project Kanban](https://img.shields.io/badge/Kanban-Voltpath%20PH-blueviolet?logo=github)](https://github.com/orgs/Team-Kaizen-MMDC/projects/5)

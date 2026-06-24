@@ -1,6 +1,6 @@
 # Frontend Mobile Documentation 📱🇵🇭
 
-![Mobile Version](https://img.shields.io/badge/mobile-v1.0.0--alpha-blue)
+![Mobile Version](https://img.shields.io/badge/mobile-v1.0.0--beta-blue)
 
 The Voltpath PH Mobile application is built with React Native and Expo. It is optimized for on-the-go EV trip monitoring and locating charging stations across the Philippines.
 

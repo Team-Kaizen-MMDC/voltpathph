@@ -1,6 +1,6 @@
 # Technical Stack Documentation 🛠
 
-![Stack Version](https://img.shields.io/badge/stack-v1.0.0--alpha-blue)
+![Stack Version](https://img.shields.io/badge/stack-v1.0.0--beta-blue)
 
 This document provides a detailed breakdown of the technologies, libraries, and architectural decisions made for Voltpath PH.
 
