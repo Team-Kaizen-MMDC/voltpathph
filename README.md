@@ -80,6 +80,7 @@ We use **Railway** for production hosting. It automatically handles our monorepo
 
 - [Project Kanban Board](https://github.com/orgs/Team-Kaizen-MMDC/projects/5) - Track sprints, backlog, and roadmap.
 - [Technical Stack](./docs/TECH_STACK.md)
+- [Database Schema & Architecture Guide](./docs/DATABASE.md)
 - [Backend API Guide](./docs/BACKEND.md)
 - [Frontend Web Guide](./docs/FRONTEND_WEB.md)
 - [Frontend Mobile Guide](./docs/FRONTEND_MOBILE.md)

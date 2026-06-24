@@ -66,13 +66,13 @@ The core engine for route and battery calculation.
   - Response: `TripResult`
 
 ## 🗄 Database & Geospatial
-VoltPH uses **PostGIS** to handle geographical data.
+VoltPH uses **PostgreSQL** with the **PostGIS** extension to handle spatial data.
 
-- **Spatial Indexing:** The `ChargingStation` table has a GIST index on the `location` column.
-- **Coordinate System:** All points use **SRID 4324** (WGS 84).
-- **Entities:** Located in `src/entities/`.
-  - `EVModel`: Specifications (Battery, Consumption, Plugs).
-  - `ChargingStation`: Geographical point and provider details.
+For a comprehensive guide on database structure, column types, relationship diagrams, and query optimizations, see the [Database Architecture Documentation](./DATABASE.md).
+
+- **Coordinate System:** All geographical coordinates use standard **SRID 4326** (WGS 84 GPS standard).
+- **Spatial Indexing:** GIST indices are utilized on `location` coordinates for high-performance radius queries.
+- **TypeORM Entities:** Stored under `apps/api/src/entities/`.
 
 ## 🧪 Testing & Quality
 - **Linter:** ESLint
