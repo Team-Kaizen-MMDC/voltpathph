@@ -2,6 +2,94 @@
 
 This document provides a detailed breakdown of the VoltPH database schema, spatial indexing configurations, relationships, and coordinate reference standards.
 
+## Entity Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    USER ||--o{ USER_VEHICLE : "owns"
+    USER ||--o{ TRIP : "plans"
+    USER ||--o{ STATION_REPORT : "submits"
+    
+    EV_MODEL ||--o{ USER_VEHICLE : "defines specification for"
+    EV_MODEL ||--o{ TRIP : "is selected for"
+    
+    USER_VEHICLE {
+        uuid id
+        uuid userId
+        uuid evModelId
+        string licensePlate
+        string nickname
+        float currentOdometerKm
+        float currentSocPercentage
+    }
+
+    USER {
+        uuid id
+        string email
+        string passwordHash
+        string name
+        timestamp createdAt
+    }
+
+    TRIP ||--o{ TRIP_WAYPOINT : "contains"
+    TRIP {
+        uuid id
+        uuid userId
+        uuid evModelId
+        string originAddress
+        geography originLocation
+        string destinationAddress
+        geography destinationLocation
+        float totalDistanceKm
+        float totalDurationMin
+        float initialBatteryPercentage
+        float finalPredictedBatteryPercentage
+        timestamp createdAt
+    }
+
+    TRIP_WAYPOINT {
+        uuid id
+        uuid tripId
+        integer sequenceNumber
+        string name
+        geography location
+        float distanceFromStartKm
+        float elevationMeters
+        float predictedSocPercentage
+        boolean isChargingStop
+        uuid recommendedStationId
+    }
+
+    CHARGING_STATION ||--o{ STATION_REPORT : "receives"
+    CHARGING_STATION ||--o{ CHARGER_CONNECTOR : "has"
+    CHARGING_STATION {
+        uuid id
+        string name
+        string provider
+        geography location
+        boolean isAvailable
+        timestamp createdAt
+    }
+
+    CHARGER_CONNECTOR {
+        uuid id
+        uuid stationId
+        string plugType
+        float powerKW
+        string status
+        float pricingPhpPerKWh
+    }
+
+    STATION_REPORT {
+        uuid id
+        uuid stationId
+        uuid userId
+        string statusReport
+        string comments
+        timestamp createdAt
+    }
+```
+
 ---
 
 ## 🏗 Storage Engine & Extensions

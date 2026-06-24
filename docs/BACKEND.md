@@ -65,6 +65,49 @@ The core engine for route and battery calculation.
   - Request Body: `TripPlan`
   - Response: `TripResult`
 
+#### Trip Optimization Sequence Workflow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Driver (Mobile/Web Client)
+    participant FE as VoltPath Client
+    participant API as VoltPH API (Railway)
+    participant DB as Supabase DB (PostgreSQL/PostGIS)
+    participant G_Routes as Google Routes API
+    participant G_Elev as Google Elevation API
+
+    U->>FE: Enter Trip Plan (Origin, Destination, EV Model, Initial SoC)
+    FE->>API: POST /api/trips/optimize (TripPlan Payload)
+    
+    critical Route Retrieval
+        API->>G_Routes: Request Path & Traffic (Waypoints, Polyline, Duration)
+        G_Routes-->>API: Return Encoded Polyline & Traffic Speeds
+    end
+    
+    critical Specs & Geometry Load
+        API->>DB: Query EVModel Specifications (batteryCapacityKWh, Cd, Mass)
+        DB-->>API: Return Vehicle Spec Specs
+        API->>API: Decode Polyline Coordinates & Apply Ramer-Douglas-Peucker (RDP) Reduction
+    end
+    
+    critical Terrain Profile Lookup
+        API->>G_Elev: Request Elevation Coordinates along Path
+        G_Elev-->>API: Return Slope Profiles (Meters relative to Sea Level)
+    end
+    
+    critical Energy Optimization & Search
+        API->>API: Execute Physics Engine (Drag, Roll, Slope, A/C draw) per segment
+        API->>DB: Spatial Query (ST_DWithin along Route Line geography buffer)
+        DB-->>API: Return Compatible Charging Stations
+        API->>API: Build Recommended Charging Stops & Final SoC Waypoints
+    end
+    
+    API-->>FE: Return optimized TripResult JSON
+    FE->>U: Display visual map overlays, waypoint SoC steps, and charging pins
+```
+
+
 ## 🗄 Database & Geospatial
 VoltPH uses **PostgreSQL** with the **PostGIS** extension to handle spatial data.
 
