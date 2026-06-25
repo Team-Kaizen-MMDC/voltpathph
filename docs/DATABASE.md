@@ -9,10 +9,10 @@ erDiagram
     USER ||--o{ USER_VEHICLE : "owns"
     USER ||--o{ TRIP : "plans"
     USER ||--o{ STATION_REPORT : "submits"
-    
+
     EV_MODEL ||--o{ USER_VEHICLE : "defines specification for"
     EV_MODEL ||--o{ TRIP : "is selected for"
-    
+
     USER_VEHICLE {
         uuid id
         uuid userId
@@ -24,9 +24,8 @@ erDiagram
     }
 
     USER {
-        uuid id
+        uuid id "= Supabase auth.users.id"
         string email
-        string passwordHash
         string name
         timestamp createdAt
     }
@@ -93,7 +92,9 @@ erDiagram
 ---
 
 ## 🏗 Storage Engine & Extensions
-- **Platform:** Supabase Managed PostgreSQL (v14+)
+
+- **Platform:** Supabase Managed PostgreSQL (version 15)
+- **Authentication:** **Supabase Auth** owns credential storage. User emails/passwords and issued JWTs live in the Supabase-managed `auth.users` schema; the application tables below only store app-specific profile data keyed by `auth.users.id`.
 - **Extensions:**
   - `uuid-ossp`: For primary key generation using UUIDv4.
   - `postgis`: For native geospatial data types and queries.
@@ -101,28 +102,34 @@ erDiagram
 ---
 
 ## 🌐 Geospatial Standards & Coordinate System
+
 - **Coordinate Reference System (CRS):** **SRID 4326** (WGS 84).
 - **Data Type:** Geospatial columns use the `geography` type restricted to `Point` features.
-  - *Rationale:* Using `geography` ensures that standard PostGIS operations like `ST_DWithin` and `ST_Distance` measure distances natively in **meters** on a spherical Earth, rather than Cartesian degrees.
+  - _Rationale:_ Using `geography` ensures that standard PostGIS operations like `ST_DWithin` and `ST_Distance` measure distances natively in **meters** on a spherical Earth, rather than Cartesian degrees.
 - **Spatial Indexing:** A **GiST (Generalized Search Tree)** index is configured on all spatial columns to speed up radius lookups and routing buffers.
 
 ---
 
 ## 🗂 Tables & Columns Specifications
 
-### 1. `user`
-Stores account and authentication credentials.
+### 1. `user` (application profile)
+
+Application-side profile data. **Credentials are not stored here** — Supabase Auth manages email, password hashing, and JWTs in `auth.users`. This table extends an authenticated user with app-specific fields and is keyed by the same UUID.
+
 - **Table Name:** `user`
 - **Columns:**
-  - `id` (UUIDv4, Primary Key, Default: `uuid_generate_v4()`)
-  - `email` (VARCHAR(255), Unique, Not Null)
-  - `password_hash` (VARCHAR(255), Not Null)
+  - `id` (UUIDv4, Primary Key) — equals `auth.users.id` (Foreign Key → `auth.users(id)` ON DELETE CASCADE)
+  - `email` (VARCHAR(255), Unique, Not Null) — mirrored from Supabase Auth for convenience
   - `name` (VARCHAR(255), Not Null)
   - `created_at` (TIMESTAMP, Default: `NOW()`)
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 
+> **Note:** `password_hash` is intentionally absent — passwords are never stored in application tables under the Supabase Auth model.
+
 ### 2. `ev_model`
+
 Specifications of EV vehicle models available in the Philippine market.
+
 - **Table Name:** `ev_model`
 - **Columns:**
   - `id` (UUIDv4, Primary Key)
@@ -132,15 +139,14 @@ Specifications of EV vehicle models available in the Philippine market.
   - `average_consumption_kwh_per_km` (DOUBLE PRECISION, Not Null)
   - `plug_types` (TEXT[], Not Null) - e.g., `['Type 2', 'CCS2']`
   - `image_url` (VARCHAR(500), Nullable)
-  - `drag_coefficient` (DOUBLE PRECISION, Default: `0.26`) - $C_d$
-  - `frontal_area_sqm` (DOUBLE PRECISION, Default: `2.4`) - $A$
-  - `mass_kg` (DOUBLE PRECISION, Default: `1600.0`) - $m$
-  - `rolling_resistance_coefficient` (DOUBLE PRECISION, Default: `0.012`) - $C_r$
+  - _Physics-model columns (`drag_coefficient`, `frontal_area_sqm`, `mass_kg`, `rolling_resistance_coefficient`) are intentionally deferred: the canonical energy model is rule-based (`E = Ebase × Wtraffic × Welevation × Wtemperature`) and does not require them. They would only be added if the force-based model (future work) is adopted — see the `voltph-ev-physics` skill._
   - `created_at` (TIMESTAMP, Default: `NOW()`)
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 
 ### 3. `user_vehicle`
+
 Represents vehicles in a user's digital garage.
+
 - **Table Name:** `user_vehicle`
 - **Relationships:**
   - Foreign Key `userId` references `user(id)` ON DELETE CASCADE
@@ -157,7 +163,9 @@ Represents vehicles in a user's digital garage.
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 
 ### 4. `trip`
+
 Stores historical and saved optimized routes planned by users.
+
 - **Table Name:** `trip`
 - **Relationships:**
   - Foreign Key `userId` references `user(id)` ON DELETE CASCADE
@@ -178,7 +186,9 @@ Stores historical and saved optimized routes planned by users.
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 
 ### 5. `trip_waypoint`
+
 Detailed road coordinates and SoC metrics along a planned trip route.
+
 - **Table Name:** `trip_waypoint`
 - **Relationships:**
   - Foreign Key `tripId` references `trip(id)` ON DELETE CASCADE
@@ -196,7 +206,9 @@ Detailed road coordinates and SoC metrics along a planned trip route.
   - `recommended_station_id` (UUIDv4, Nullable)
 
 ### 6. `charging_station`
+
 Geospatial directory of EV charging stations in the Philippines.
+
 - **Table Name:** `charging_station`
 - **Columns:**
   - `id` (UUIDv4, Primary Key)
@@ -208,7 +220,9 @@ Geospatial directory of EV charging stations in the Philippines.
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 
 ### 7. `charger_connector`
+
 Individual charger plug specifications linked to charging stations.
+
 - **Table Name:** `charger_connector`
 - **Relationships:**
   - Foreign Key `stationId` references `charging_station(id)` ON DELETE CASCADE
@@ -223,7 +237,9 @@ Individual charger plug specifications linked to charging stations.
   - `updated_at` (TIMESTAMP, Default: `NOW()`)
 
 ### 8. `station_report`
+
 Crowdsourced status updates and reports submitted by users.
+
 - **Table Name:** `station_report`
 - **Relationships:**
   - Foreign Key `stationId` references `charging_station(id)` ON DELETE CASCADE
@@ -239,6 +255,7 @@ Crowdsourced status updates and reports submitted by users.
 ---
 
 ## ⚡ Indexing Strategy
+
 To optimize spatial queries and standard lookups:
 
 1.  **GIST Index on `charging_station.location`:**

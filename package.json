@@ -9,7 +9,12 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "test": "turbo test",
+    "typecheck": "turbo typecheck",
     "lint": "turbo lint",
+    "db:up": "node scripts/compose.mjs up -d",
+    "db:down": "node scripts/compose.mjs down",
+    "db:logs": "node scripts/compose.mjs logs -f db",
+    "db:reset": "node scripts/compose.mjs down -v && node scripts/compose.mjs up -d",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky",
     "lint-staged": "lint-staged"

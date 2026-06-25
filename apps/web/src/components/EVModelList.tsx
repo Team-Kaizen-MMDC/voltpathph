@@ -1,53 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { EVModel } from "@voltph/shared";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Zap, Cpu } from "lucide-react";
-import { API_URL } from "../config";
+import { getEvModels } from "../api/client";
 
 const EVModelList: React.FC = () => {
-  const [models, setModels] = useState<EVModel[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: models = [], isLoading } = useQuery({
+    queryKey: ["ev-models"],
+    queryFn: getEvModels,
+  });
 
-  useEffect(() => {
-    fetch(`${API_URL}/api/ev-models`)
-      .then((res) => res.json())
-      .then((data) => {
-        setModels(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch EV models", err);
-        // Fallback mock data for demo
-        setModels([
-          {
-            id: "1",
-            make: "BYD",
-            model: "Atto 3",
-            batteryCapacityKWh: 60.5,
-            averageConsumptionKWhPerKm: 0.16,
-            plugTypes: ["Type 2", "CCS2"],
-          },
-          {
-            id: "2",
-            make: "Jetour",
-            model: "Ice Cream",
-            batteryCapacityKWh: 13.9,
-            averageConsumptionKWhPerKm: 0.1,
-            plugTypes: ["Type 2"],
-          },
-          {
-            id: "3",
-            make: "Geely",
-            model: "Geometry C",
-            batteryCapacityKWh: 70,
-            averageConsumptionKWhPerKm: 0.17,
-            plugTypes: ["Type 2", "CCS2"],
-          },
-        ]);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div style={{ padding: "20px", textAlign: "center", color: "#64748B" }}>
         Loading EV models...

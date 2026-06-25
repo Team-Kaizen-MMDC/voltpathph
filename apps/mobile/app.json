@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Voltpath PH",
+    "slug": "voltph-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {}
+  }
+}

@@ -1,32 +1,108 @@
 import { Router } from "express";
 import { AppDataSource } from "../data-source";
 import { EVModel } from "../entities/EVModel";
-import { TripPlan, TripResult } from "@voltph/shared";
+import { ChargingStation } from "../entities/ChargingStation";
+import {
+  TripPlanSchema,
+  estimateRouteEnergy,
+  type ChargingStation as SharedChargingStation,
+  type TripResult,
+} from "@voltph/shared";
+import { getRouteData, type LatLng } from "../services/maps";
+import { requireAuth } from "../middleware/auth";
+import { config } from "../config";
 
 const router = Router();
 
-router.post("/optimize", async (req, res) => {
-  const plan: TripPlan = req.body;
+const round = (value: number, decimals: number): number => {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
+};
+
+async function findStationsNearby(
+  point: LatLng,
+  radiusMeters = config.stations.searchRadiusM,
+  limit = config.stations.nearbyLimit,
+): Promise<SharedChargingStation[]> {
+  try {
+    const rows = await AppDataSource.getRepository(ChargingStation)
+      .createQueryBuilder("s")
+      .select("s.id", "id")
+      .addSelect("s.name", "name")
+      .addSelect("s.provider", "provider")
+      .addSelect("s.plugTypes", "plugTypes")
+      .addSelect("s.powerKW", "powerKW")
+      .addSelect("s.isAvailable", "isAvailable")
+      .addSelect("ST_Y(s.location::geometry)", "latitude")
+      .addSelect("ST_X(s.location::geometry)", "longitude")
+      .where(
+        "ST_DWithin(s.location, ST_SetSRID(ST_Point(:lng, :lat), 4326), :radius)",
+        { lng: point.lng, lat: point.lat, radius: radiusMeters },
+      )
+      .limit(limit)
+      .getRawMany();
+
+    return rows.map((r) => ({
+      id: r.id,
+      name: r.name,
+      provider: r.provider,
+      latitude: Number(r.latitude),
+      longitude: Number(r.longitude),
+      plugTypes:
+        typeof r.plugTypes === "string"
+          ? r.plugTypes.split(",").filter(Boolean)
+          : (r.plugTypes ?? []),
+      powerKW: Number(r.powerKW),
+      isAvailable: r.isAvailable,
+    }));
+  } catch {
+    // Charging-station table may be empty or unavailable; degrade gracefully.
+    return [];
+  }
+}
+
+router.post("/optimize", requireAuth, async (req, res, next) => {
+  const parsed = TripPlanSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res
+      .status(400)
+      .json({ message: "Invalid trip plan", issues: parsed.error.issues });
+  }
+  const plan = parsed.data;
 
   try {
-    const evModel = await AppDataSource.getRepository(EVModel).findOneBy({ id: plan.evModelId });
+    const evModel = await AppDataSource.getRepository(EVModel).findOneBy({
+      id: plan.evModelId,
+    });
     if (!evModel) {
       return res.status(404).json({ message: "EV model not found" });
     }
 
-    // Mocked implementation for now
-    // In a real app, this would call Google Routes API and perform battery calculations
-    const mockResult: TripResult = {
-      totalDistanceKm: 120.5,
-      totalDurationMin: 150,
-      estimatedBatteryConsumptionKWh: 18.2,
-      remainingBatteryPercentage: plan.initialBatteryPercentage - (18.2 / evModel.batteryCapacityKWh * 100),
-      recommendedChargingStops: []
+    const route = await getRouteData(plan.origin, plan.destination);
+
+    const energy = estimateRouteEnergy({
+      segments: route.segments,
+      baseConsumptionKWhPerKm: evModel.averageConsumptionKWhPerKm,
+      batteryCapacityKWh: evModel.batteryCapacityKWh,
+      initialSocPercent: plan.initialBatteryPercentage,
+    });
+
+    const recommendedChargingStops =
+      energy.remainingSocPercent < config.trip.lowSocThresholdPercent
+        ? await findStationsNearby(plan.destination)
+        : [];
+
+    const result: TripResult = {
+      totalDistanceKm: round(route.distanceKm, 1),
+      totalDurationMin: round(route.durationMin, 0),
+      estimatedBatteryConsumptionKWh: round(energy.totalKWh, 2),
+      remainingBatteryPercentage: round(energy.remainingSocPercent, 1),
+      recommendedChargingStops,
     };
 
-    res.json(mockResult);
+    res.json(result);
   } catch (error) {
-    res.status(500).json({ message: "Error optimizing trip", error });
+    next(error);
   }
 });
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TripPlan, TripResult } from "@voltph/shared";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { TripPlan } from "@voltph/shared";
 import {
   Navigation,
   MapPin,
@@ -8,46 +9,40 @@ import {
   ArrowRight,
   Zap,
 } from "lucide-react";
-import { API_URL } from "../config";
+import { getEvModels, optimizeTrip } from "../api/client";
+
+// Temporary demo coordinates used until Places Autocomplete (geocoding) is wired
+// up; the text inputs are sent as the human-readable address only. Replace with
+// geocoded coordinates from the origin/destination fields when autocomplete lands.
+const DEMO_ORIGIN = { lat: 14.5995, lng: 120.9842 }; // Manila
+const DEMO_DESTINATION = { lat: 15.145, lng: 120.5887 }; // Angeles
+const DEFAULT_INITIAL_BATTERY_PERCENT = 100;
 
 const TripPlanner: React.FC = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const [evModelId] = useState("1");
-  const [result, setResult] = useState<TripResult | null>(null);
-  const [isPlanning, setIsPlanning] = useState(false);
 
-  const handlePlan = async (e: React.FormEvent) => {
+  // Shared cache with EVModelList; used to send a real EV model id.
+  const { data: models = [] } = useQuery({
+    queryKey: ["ev-models"],
+    queryFn: getEvModels,
+  });
+
+  const {
+    mutate,
+    data: result,
+    isPending: isPlanning,
+  } = useMutation({ mutationFn: optimizeTrip });
+
+  const handlePlan = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsPlanning(true);
     const plan: TripPlan = {
-      origin: { lat: 14.5995, lng: 120.9842, address: origin }, // Manila
-      destination: { lat: 15.145, lng: 120.5887, address: destination }, // Angeles
-      evModelId,
-      initialBatteryPercentage: 100,
+      origin: { ...DEMO_ORIGIN, address: origin },
+      destination: { ...DEMO_DESTINATION, address: destination },
+      evModelId: models[0]?.id ?? "",
+      initialBatteryPercentage: DEFAULT_INITIAL_BATTERY_PERCENT,
     };
-
-    try {
-      const res = await fetch(`${API_URL}/api/trips/optimize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(plan),
-      });
-      const data = await res.json();
-      setResult(data);
-    } catch (err) {
-      console.error("Failed to plan trip", err);
-      // Fallback result for demo if backend is offline
-      setResult({
-        totalDistanceKm: 85.2,
-        totalDurationMin: 110,
-        estimatedBatteryConsumptionKWh: 13.6,
-        remainingBatteryPercentage: 77.5,
-        recommendedChargingStops: [],
-      });
-    } finally {
-      setIsPlanning(false);
-    }
+    mutate(plan);
   };
 
   const inputStyle = {

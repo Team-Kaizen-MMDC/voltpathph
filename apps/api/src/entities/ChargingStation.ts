@@ -16,7 +16,7 @@ export class ChargingStation {
   @Column({
     type: "geography",
     spatialFeatureType: "Point",
-    srid: 4324,
+    srid: 4326,
   })
   location!: Point;
 

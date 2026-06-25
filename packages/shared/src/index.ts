@@ -42,4 +42,12 @@ export interface TripResult {
   recommendedChargingStops: ChargingStation[];
 }
 
-export * from './validation';
+export interface PlaceResult {
+  /** Human-readable place name / formatted address. */
+  description: string;
+  latitude: number;
+  longitude: number;
+}
+
+export * from "./validation";
+export * from "./energy";
