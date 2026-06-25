@@ -43,6 +43,22 @@ if (!resolved) {
 }
 
 const [bin, baseArgs] = resolved;
+
+// Podman on macOS/Windows runs inside a Linux VM ("machine") that must be
+// started first. Fail early with an actionable hint instead of letting the
+// compose provider dump a stack trace on a refused socket.
+if (bin === "podman" || bin === "podman-compose") {
+  if (!ok("podman", ["info"])) {
+    console.error(
+      "Podman is installed but its machine isn't reachable.\n" +
+        "Start it, then re-run your command:\n" +
+        "  podman machine start\n" +
+        "(first time only: `podman machine init` before `podman machine start`)",
+    );
+    process.exit(1);
+  }
+}
+
 const args = [...baseArgs, ...process.argv.slice(2)];
 console.log(`> ${bin} ${args.join(" ")}`);
 const run = spawnSync(bin, args, { stdio: "inherit" });

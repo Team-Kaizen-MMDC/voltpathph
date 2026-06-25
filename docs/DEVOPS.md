@@ -9,6 +9,7 @@ This document outlines the deployment strategy, CI/CD workflows, and environment
 Local dev needs only **Node.js** and a container engine (**Docker or Podman**) — Supabase, a Google Maps key, and Supabase Auth are all optional. The API degrades gracefully without them; the **only hard dependency is a database**, which the container engine provides.
 
 - **Database (required):** `npm run db:up` starts PostgreSQL 15 + PostGIS via `docker-compose.yml`, with credentials matching the `DB_*` defaults. The `db:*` scripts auto-detect Docker or Podman (`scripts/compose.mjs`). Leave `DATABASE_URL` unset/commented so the API uses the `DB_*` vars.
+  - On macOS/Windows with **Podman**, start its VM once per session first: `podman machine start` (first time only: `podman machine init`). `npm run db:up` prints this hint if the machine isn't running. On Apple Silicon the PostGIS image runs under amd64 emulation (a harmless platform warning).
 - **Google Maps key (optional):** unset → routes/distances use a haversine estimate (no live traffic/elevation).
 - **Supabase Auth (optional):** `SUPABASE_JWT_SECRET` unset in non-production → auth is bypassed for local demos.
 - **Open-Meteo (optional):** unreachable → the energy model uses a baseline temperature.
