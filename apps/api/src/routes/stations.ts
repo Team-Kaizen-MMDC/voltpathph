@@ -26,8 +26,8 @@ router.get("/nearby", async (req, res) => {
       )
       .getMany();
     res.json(stations);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching nearby stations", error });
+  } catch {
+    res.status(500).json({ message: "Error fetching nearby stations" });
   }
 });
 

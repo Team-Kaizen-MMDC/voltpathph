@@ -8,8 +8,8 @@ router.get("/", async (req, res) => {
   try {
     const evModels = await AppDataSource.getRepository(EVModel).find();
     res.json(evModels);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching EV models", error });
+  } catch {
+    res.status(500).json({ message: "Error fetching EV models" });
   }
 });
 
@@ -22,8 +22,8 @@ router.get("/:id", async (req, res) => {
       return res.status(404).json({ message: "EV model not found" });
     }
     res.json(evModel);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching EV model", error });
+  } catch {
+    res.status(500).json({ message: "Error fetching EV model" });
   }
 });
 

@@ -24,9 +24,11 @@ export const AppDataSource = new DataSource({
   database: !process.env.DATABASE_URL
     ? process.env.DB_DATABASE || "voltph"
     : undefined,
-  synchronize: true, // Be careful with this in production
+  // Auto-sync schema in development only. In production set NODE_ENV=production
+  // and apply migrations explicitly (npm run migration:run).
+  synchronize: process.env.NODE_ENV !== "production",
   logging: false,
   entities: [EVModel, ChargingStation],
-  migrations: [],
+  migrations: [__dirname + "/migrations/*.{ts,js}"],
   subscribers: [],
 });

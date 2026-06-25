@@ -34,21 +34,27 @@ in partial fulfillment of the requirements for the degree of Bachelor of Science
 
 Panel Evaluators:
 
-\<Insert panel’s name and signature\>  
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  
- Panel Chair Panel Member Panel Member
+<Insert panel’s name and signature>
+
+---
+
+Panel Chair Panel Member Panel Member
 
 **APPROVED:**
 
 Accepted and approved in partial fulfillment of the requirements for the degree of Bachelor of Information Technology Major in Software Development.
 
-Glenn Baluyot  
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  
- Mentor/Adviser
+Glenn Baluyot
 
-Mario Pison Jr.  
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  
- Program Head
+---
+
+Mentor/Adviser
+
+Mario Pison Jr.
+
+---
+
+Program Head
 
 Date of Project Proposal Oral Defense: May 26, 2026
 
@@ -56,7 +62,7 @@ Date of Project Proposal Oral Defense: May 26, 2026
 
 # **DECLARATION OF ORIGINAL WORK** {#declaration-of-original-work}
 
-We, the undersigned from Section A3101, enrolled in MO-IT200D1 \- Capstone 1 for Term 3, under the supervision of our adviser, _Glen Baluyot,_ hereby affirm that this paper, titled _Voltpath PH: A Mobile-Based EV Range And Charging Optimizer For Philippine Road And Traffic Conditions_, is an original product of our research investigation.
+We, the undersigned from Section A3101, enrolled in MO-IT200D1 - Capstone 1 for Term 3, under the supervision of our adviser, _Glenn Baluyot,_ hereby affirm that this paper, titled _Voltpath PH: A Mobile-Based EV Range And Charging Optimizer For Philippine Road And Traffic Conditions_, is an original product of our research investigation.
 
 To the best of our knowledge, this work neither contains any material that is previously published, built, or written by another person or by any of the authors nor does it contain falsified, fabricated, or plagiarized content.
 
@@ -74,7 +80,7 @@ Eric Jay VIRTUCIO
 
 Conforme:
 
-Glen Baluyot
+Glenn Baluyot
 
 # **ACKNOWLEDGEMENT** {#acknowledgement}
 
@@ -92,30 +98,30 @@ Finally, the researchers offer their deepest gratitude to God Almighty for provi
 
 # **LIST OF TABLES** {#list-of-tables}
 
-Table 1\. Predefined Test Drive Routes ……………………………………………… page \#  
-Table 2\. Sample Data Collection Sheet for Test Drive Segments ………………… page \#  
-Table 3\. Functional Requirements …………………………………………………… page \#  
-Table 4\. Non-Functional Requirements ……………………………………………… page \#  
-Table 5\. Sprint Timeline ……………………………………………………………… page \#  
-Table 6\. Sprint Deliverables ………………………………………………………… page \#  
-Table 7\. Technologies and Development Tools ……………………………………… page \#  
-Table 8\. Testing Plan Summary ……………………………………………………… page \#
+Table 1. Predefined Test Drive Routes ……………………………………………… page #  
+Table 2. Sample Data Collection Sheet for Test Drive Segments ………………… page #  
+Table 3. Functional Requirements …………………………………………………… page #  
+Table 4. Non-Functional Requirements ……………………………………………… page #  
+Table 5. Sprint Timeline ……………………………………………………………… page #  
+Table 6. Sprint Deliverables ………………………………………………………… page #  
+Table 7. Technologies and Development Tools ……………………………………… page #  
+Table 8. Testing Plan Summary ……………………………………………………… page #
 
 # **LIST OF FIGURES** {#list-of-figures}
 
-Figure 1\. Google Maps Homepage…………………………………………………… page \#  
-Figure 2\. Waze Homepage………………………….………………………………… page \#  
-Figure 3\. EVRO Homepage.…………………………………………………………… page \#  
-Figure 4\. Voltpath PH System Architecture……………………………………… page \#  
-Figure 5\. API and Component Architecture……………………………………… page \#  
-Figure 6\. Trip Optimization Sequence…………………………………………… page \#  
-Figure 7\. Entity Relationship Diagram…………………………………………… page \#
+Figure 1. Google Maps Homepage…………………………………………………… page #  
+Figure 2. Waze Homepage………………………….………………………………… page #  
+Figure 3. EVRO Homepage.…………………………………………………………… page #  
+Figure 4. Voltpath PH System Architecture……………………………………… page #  
+Figure 5. API and Component Architecture……………………………………… page #  
+Figure 6. Trip Optimization Sequence…………………………………………… page #  
+Figure 7. Entity Relationship Diagram…………………………………………… page #
 
 # **LIST OF APPENDICES** {#list-of-appendices}
 
-Appendix 1\. Link to Prototype and Source Code Repository ……………………… page \#  
-Appendix 2\. Disclosure of Artificial Intelligence Tools Used in Research ………… page \#  
-Appendix 3\. Sample Test Drive Data Collection Sheets …………………………… page \#  
+Appendix 1. Link to Prototype and Source Code Repository ……………………… page #  
+Appendix 2. Disclosure of Artificial Intelligence Tools Used in Research ………… page #  
+Appendix 3. Sample Test Drive Data Collection Sheets …………………………… page #  
 (Ensure to include the link to your prototype/output and the Disclosure of Artificial Intelligence Tools Used in Research. Each appendix should be on a separate page.)
 
 #
@@ -278,10 +284,10 @@ By examining these studies and systems, this review highlights successful models
 
 **Electric Vehicle Adoption and Range Anxiety**
 
-The global shift toward electric mobility has accelerated substantially over the past decade, driven by mounting environmental concerns, declining battery costs, and supportive government policies. According to the International Energy Agency (IEA, 2024), global electric vehicle sales neared 14 million units in 2023, representing a 35 percent increase from the previous year and capturing approximately 18 percent of total global car sales — a major increase from just 2 percent in 2020\. This rapid growth reflects both the maturation of EV technology and the deepening commitment of governments worldwide to decarbonize transportation sectors.  
+The global shift toward electric mobility has accelerated substantially over the past decade, driven by mounting environmental concerns, declining battery costs, and supportive government policies. According to the International Energy Agency (IEA, 2024), global electric vehicle sales neared 14 million units in 2023, representing a 35 percent increase from the previous year and capturing approximately 18 percent of total global car sales — a major increase from just 2 percent in 2020. This rapid growth reflects both the maturation of EV technology and the deepening commitment of governments worldwide to decarbonize transportation sectors.  
 Despite this global momentum, the distribution of EV adoption remains uneven. Zaino et al. (2024) note that regional disparities in infrastructure and economic development significantly affect EV uptake, with low-income and developing countries experiencing slower growth due to insufficient charging networks, high vehicle costs, and limited consumer familiarity with electric mobility. Southeast Asian countries, including the Philippines, are navigating these same structural barriers while simultaneously pursuing ambitious transport electrification targets (Huang et al., 2023).  
 Current research highlights that the primary barriers to Electric Vehicle (EV) adoption are not merely physical, but operational, often manifesting as range anxiety and perceived inconvenience of charging services (Cao et al., 2024). In their holistic review of e-mobility optimization, Cao et al. (2024) identify flexible and emerging service modes — specifically those leveraging information management and artificial intelligence — as increasingly central to addressing the gap between existing infrastructure and user requirements. This validates the development of Voltpath PH, as it functions as an optimization layer designed to mitigate these service-level frictions within the Philippine context.  
-In the Philippine context, the passage of Republic Act No. 11697, known as the Electric Vehicle Industry Development Act or EVIDA, in April 2022 marked a decisive turning point in national EV policy. Pineda and Calderon (2025) observe that EV sales in the Philippines grew sharply after EVIDA’s enactment, from 843 units in 2021 to 3,091 units in 2022, 10,602 units in 2023, and reaching 18,690 units in 2024\. While this growth trajectory is encouraging, these figures remain far short of the Department of Energy’s (DOE, 2023\) _Comprehensive Roadmap for the Electric Vehicle Industry (CREVI)_ short-term target of 2,454,200 EVs by 2028 under the clean energy scenario. This massive gap underscores the urgent need to address range anxiety, a primary psychological barrier to consumer adoption — through data-driven software solutions such as machine learning-based range prediction platforms (Amin et al., 2025).  
+In the Philippine context, the passage of Republic Act No. 11697, known as the Electric Vehicle Industry Development Act or EVIDA, in April 2022 marked a decisive turning point in national EV policy. Pineda and Calderon (2025) observe that EV sales in the Philippines grew sharply after EVIDA’s enactment, from 843 units in 2021 to 3,091 units in 2022, 10,602 units in 2023, and reaching 18,690 units in 2024. While this growth trajectory is encouraging, these figures remain far short of the Department of Energy’s (DOE, 2023) _Comprehensive Roadmap for the Electric Vehicle Industry (CREVI)_ short-term target of 2,454,200 EVs by 2028 under the clean energy scenario. This massive gap underscores the urgent need to address range anxiety, a primary psychological barrier to consumer adoption — through data-driven software solutions such as machine learning-based range prediction platforms (Amin et al., 2025).  
 Globally, EV adoption is severely constrained by range anxiety, or the persistent consumer fear of battery exhaustion before reaching an operational charging station. Pamidimukkala et al. (2024) identify charging station availability and limited driving range as the most pervasive global barriers to electric vehicle adoption. While these constraints affect international markets broadly, they manifest acutely in developing nations experiencing severe structural deficits. These findings mirror the domestic challenges of the Philippine transport sector, where operational charging networks remain predominantly clustered within the National Capital Region (NCR), creating severe infrastructure voids across rural and long-distance provincial routes.  
 Wang et al. (2024) further demonstrate that EV user behavior is significantly shaped by psychological factors such as risk aversion and confidence in battery performance. Their research indicates that drivers often adopt conservative strategies such as electing less efficient routes or making frequent charging stops when they perceive high uncertainty regarding their remaining range. To address these behavioral impacts of range anxiety, localized navigation tools, such as the proposed Voltpath PH application, can implement dynamic, condition-adjusted range predictions to bolster user confidence.  
 In the Philippine setting, range anxiety is compounded by the absence of a localized navigation system capable of translating real-world driving conditions into accurate battery range estimates. Manufacturer-provided range figures are typically derived from standardized test cycles conducted under controlled laboratory conditions that do not replicate the stop-and-go traffic patterns, steep elevation changes, or high ambient temperatures characteristic of Philippine roads. This creates a persistent mismatch between advertised and real-world range that erodes user trust and reinforces range anxiety even among experienced EV drivers.
@@ -372,7 +378,7 @@ However, ABRP's consumption profiles are generic and user-supplied rather than e
 
 **Philippine Electric Vehicle Policy Framework**  
  The Philippine government has increasingly recognized electric vehicles (EVs) as an important component of sustainable transportation and national energy transition initiatives. In recent years, several policies and development frameworks have been introduced to accelerate EV adoption, expand charging infrastructure, and reduce the country’s dependence on fossil fuels. These policies provide the regulatory and institutional foundation necessary for the development of EV-related technologies and intelligent transportation systems within the Philippines.  
- One of the most significant policy milestones in the Philippine transportation landscape was the enactment of Republic Act No. 11697, the Electric Vehicle Industry Development Act (EVIDA), which lapsed into law in 2022\. As outlined by the Department of Energy (DOE, 2023), EVIDA sought to accelerate the domestic adoption of electric mobility by establishing the Comprehensive Roadmap for the Electric Vehicle Industry (CREVI) — a national framework governing EV infrastructure, local manufacturing, technological research, and strategic investment incentives. Furthermore, the legislation mandated the systematic rollout of charging infrastructure across public and private sectors, legally requiring commercial fleets, government offices, and real estate developers to actively participate in expanding the country’s EV ecosystem.  
+ One of the most significant policy milestones in the Philippine transportation landscape was the enactment of Republic Act No. 11697, the Electric Vehicle Industry Development Act (EVIDA), which lapsed into law in 2022. As outlined by the Department of Energy (DOE, 2023), EVIDA sought to accelerate the domestic adoption of electric mobility by establishing the Comprehensive Roadmap for the Electric Vehicle Industry (CREVI) — a national framework governing EV infrastructure, local manufacturing, technological research, and strategic investment incentives. Furthermore, the legislation mandated the systematic rollout of charging infrastructure across public and private sectors, legally requiring commercial fleets, government offices, and real estate developers to actively participate in expanding the country’s EV ecosystem.  
  Supporting the implementation of EVIDA is the Comprehensive Roadmap for the Electric Vehicle Industry (CREVI), which outlines the government’s long-term strategy for accelerating EV adoption and infrastructure deployment across the country. The DOE (2023) explained that CREVI includes targets for EV deployment, expansion of charging stations, public transportation electrification, and the integration of sustainable transportation technologies. The roadmap emphasizes the importance of coordinated infrastructure planning and technological innovation in achieving the country’s clean energy and transportation goals.  
  Pineda and Calderon (2025) observed that EV adoption in the Philippines increased significantly following the implementation of EVIDA, demonstrating the growing impact of government support and policy intervention on the country’s EV sector. However, the study also noted that infrastructure limitations, charging accessibility issues, and operational uncertainties continue to hinder large-scale EV adoption despite favorable policy developments.  
  Similarly, Clean Air Asia (2023) highlighted that while national policy frameworks successfully stimulated private-sector investment and heightened public awareness, localized EV support systems and access to charging infrastructure remained structurally underdeveloped. The policy analysis emphasized that the rollout of physical infrastructure must be complemented by digital operational frameworks, specifically highlighting existing local integrations of shared booking and routing management platforms to optimize fleet utilization and mitigate driver charging anxiety. Ultimately, the report underscored that integrating systematic route planning and fleet tracking remains crucial to sustaining long-term electric mobility transitions across municipal road networks.  
@@ -407,12 +413,12 @@ This chapter presents the systematic approach undertaken to design and plan the 
 **Data Gathering Methods**  
 A rigorous data gathering process is essential to establish a baseline of user needs and technical requirements for Voltpath PH. To ensure the platform directly addresses existing market gaps and user pain points, this study adopted a comprehensive, multi-layered data collection framework. This methodology combines secondary research through a review of existing systems and literature with primary empirical data collection through controlled real-world test drives.
 
-**_Review of Existing Literature and Systems._** Chapter II established the theoretical and competitive landscape within which Voltpath PH operates. Examining internationally deployed EV navigation platforms, Google Maps, Waze, and EVRO Philippines, alongside peer-reviewed research on EV energy consumption factors, SoC estimation models, and Philippine EV infrastructure exposed recurring gaps: the absence of locally-calibrated energy models, the lack of dynamic segment-level SoC forecasting in available navigation tools, and the fragmented state of charging station data outside Metro Manila. These gaps translated directly into the functional requirements for Voltpath PH's core features: the locally-weighted energy formula, the route-level SoC forecast display, and the integrated charging station directory. Academic literature on rule-based energy coefficient modeling (Montanino et al., 2025; Amin et al., 2025), terrain-sensitive consumption behavior (Polat et al., 2025; Zhang & Li, 2022), and Philippine-specific infrastructure constraints (Saflor et al., 2024; Clean Air Asia, 2023; 2024\) further informed the non-functional requirements for accuracy and reliability.
+**_Review of Existing Literature and Systems._** Chapter II established the theoretical and competitive landscape within which Voltpath PH operates. Examining internationally deployed EV navigation platforms, Google Maps, Waze, and EVRO Philippines, alongside peer-reviewed research on EV energy consumption factors, SoC estimation models, and Philippine EV infrastructure exposed recurring gaps: the absence of locally-calibrated energy models, the lack of dynamic segment-level SoC forecasting in available navigation tools, and the fragmented state of charging station data outside Metro Manila. These gaps translated directly into the functional requirements for Voltpath PH's core features: the locally-weighted energy formula, the route-level SoC forecast display, and the integrated charging station directory. Academic literature on rule-based energy coefficient modeling (Montanino et al., 2025; Amin et al., 2025), terrain-sensitive consumption behavior (Polat et al., 2025; Zhang & Li, 2022), and Philippine-specific infrastructure constraints (Saflor et al., 2024; Clean Air Asia, 2023; 2024) further informed the non-functional requirements for accuracy and reliability.
 
     ***Real-World EV Test Drives.*** The second and primary data gathering method involves conducting controlled, real-world test drives using a Geely EX5 Em-i Max, a battery electric vehicle representative of the compact crossover EV segment increasingly adopted by Philippine consumers. The test vehicle will be driven across a set of predefined routes spanning Metro Manila and Cavite, selected specifically to capture variation across the three local conditions identified in the literature review: traffic congestion, road elevation, and ambient temperature.
 
-To ensure that the regression analysis can isolate and capture the effects of traffic congestion, road elevation, and highway driving conditions, test drives will be conducted along four predefined route types, summarized in Table 1\. The Heavy Traffic route, from Bonifacio Global City (BGC) to Quezon Avenue, represents stop-and-go, high-congestion urban driving typical of Metro Manila’s business districts during peak hours. The Mixed Traffic route, from Manila to BGC, represents a combination of arterial roads and moderately congested city streets. The Elevation route, from Cavite to Tagaytay, represents sustained uphill and downhill driving along a significant elevation gradient. The Highway route, along the Skyway and South Luzon Expressway (SLEX), represents free-flowing, steady-speed expressway driving with minimal elevation change. Test drives will be conducted at different times of day, including the morning rush, midday, and evening rush periods, and across varying ambient temperature conditions, allowing the effects of traffic congestion, elevation, and temperature on energy consumption to be observed both individually and in combination.  
-**Table 1\.**  
+To ensure that the regression analysis can isolate and capture the effects of traffic congestion, road elevation, and highway driving conditions, test drives will be conducted along four predefined route types, summarized in Table 1. The Heavy Traffic route, from Bonifacio Global City (BGC) to Quezon Avenue, represents stop-and-go, high-congestion urban driving typical of Metro Manila’s business districts during peak hours. The Mixed Traffic route, from Manila to BGC, represents a combination of arterial roads and moderately congested city streets. The Elevation route, from Cavite to Tagaytay, represents sustained uphill and downhill driving along a significant elevation gradient. The Highway route, along the Skyway and South Luzon Expressway (SLEX), represents free-flowing, steady-speed expressway driving with minimal elevation change. Test drives will be conducted at different times of day, including the morning rush, midday, and evening rush periods, and across varying ambient temperature conditions, allowing the effects of traffic congestion, elevation, and temperature on energy consumption to be observed both individually and in combination.  
+**Table 1.**  
 _Predefined Test Drive Routes_
 
 | Route Type    |                Example Route                |
@@ -422,13 +428,13 @@ _Predefined Test Drive Routes_
 | Elevation     |              Cavite → Tagaytay              |
 | Highway       |   Skyway / South Luzon Expressway (SLEX)    |
 
-For each route segment, the data needed to compute the actual energy consumption and the corresponding driving conditions will be recorded, as summarized in Table 2\. The core data to be recorded per segment consist of: (a) the vehicle’s state of charge (SoC) at the start of the segment, to be read from the Geely EX5 Em-i Max’s onboard battery management display; (b) the state of charge (SoC) at the end of the segment; (c) the distance traveled, to be obtained via GPS tracking or the vehicle’s odometer; and (d) the rated battery capacity of the Geely EX5 Em-i Max, obtained from manufacturer specifications. In addition, the driving conditions for each segment will be recorded to serve as the independent variables for the regression analysis: the average traffic congestion level, classified as free, light, moderate, or heavy and cross-checked against real-time traffic data from the Google Maps Routes API; the average road grade, expressed as a percentage and derived from the Google Maps Elevation API; the ambient temperature at the time of the test, to be recorded via a weather application or onboard thermometer; and the average vehicle speed for the segment, to be obtained from the dashboard or a GPS logger.  
+For each route segment, the data needed to compute the actual energy consumption and the corresponding driving conditions will be recorded, as summarized in Table 2. The core data to be recorded per segment consist of: (a) the vehicle’s state of charge (SoC) at the start of the segment, to be read from the Geely EX5 Em-i Max’s onboard battery management display; (b) the state of charge (SoC) at the end of the segment; (c) the distance traveled, to be obtained via GPS tracking or the vehicle’s odometer; and (d) the rated battery capacity of the Geely EX5 Em-i Max, obtained from manufacturer specifications. In addition, the driving conditions for each segment will be recorded to serve as the independent variables for the regression analysis: the average traffic congestion level, classified as free, light, moderate, or heavy and cross-checked against real-time traffic data from the Google Maps Routes API; the average road grade, expressed as a percentage and derived from the Google Maps Elevation API; the ambient temperature at the time of the test, to be recorded via a weather application or onboard thermometer; and the average vehicle speed for the segment, to be obtained from the dashboard or a GPS logger.  
 From the starting and ending state of charge and the rated battery capacity, the actual energy consumption per segment will be computed as:
 
-Actual (Wh/km) \= \[(Starting SoC% − Ending SoC%) × Battery Capacity (Wh)\] ÷ Distance (km)
+Actual (Wh/km) = \[(Starting SoC% − Ending SoC%) × Battery Capacity (Wh)\] ÷ Distance (km)
 
-For example, a segment with a starting SoC of 80%, an ending SoC of 72%, a rated battery capacity of 40 kWh (40,000 Wh), and a distance of 5 km yields an actual energy consumption of (0.08 × 40,000) ÷ 5, or 640 Wh/km. This value, together with the corresponding traffic level, road grade, ambient temperature, and average speed for the same segment, forms one row of the data collection sheet illustrated in Table 2\.  
-**Table 2\.**  
+For example, a segment with a starting SoC of 80%, an ending SoC of 72%, a rated battery capacity of 40 kWh (40,000 Wh), and a distance of 5 km yields an actual energy consumption of (0.08 × 40,000) ÷ 5, or 640 Wh/km. This value, together with the corresponding traffic level, road grade, ambient temperature, and average speed for the same segment, forms one row of the data collection sheet illustrated in Table 2.  
+**Table 2.**  
 _Sample Data Collection Sheet for Test Drive Segments_
 
 | Route Segment                    | Start SoC | End SoC | Distance (km) | Temp (°C) | Traffic Level | Road Grade (%) | Actual (Wh/km) |
@@ -441,14 +447,14 @@ _Sample Data Collection Sheet for Test Drive Segments_
 The values presented in Table 2 are illustrative and are intended to demonstrate the structure of the data collection sheet; actual values will be recorded during the conduct of the real-world test drives. Each completed row corresponds to one route segment and provides the paired observations of actual energy consumption and driving conditions used in the regression analysis described below.  
 Once collected, this dataset of paired observations, consisting of the actual energy consumption computed for each route segment as described above together with its corresponding traffic level, road grade, and ambient temperature, will serve as the empirical basis for a multiple regression analysis. In this analysis, actual energy consumption per route segment will be treated as the dependent variable, while the traffic congestion index, net elevation change per kilometer (derived from road grade), and ambient temperature deviation from a defined baseline will be treated as independent variables. The resulting regression coefficients will then be normalized into multiplicative weighting factors, Wtraffic, Welevation, and Wtemperature, each centered on a value of 1.0 under baseline conditions of light traffic, flat terrain, and moderate ambient temperature. A weighting factor greater than 1.0 indicates a condition that increases energy consumption relative to baseline, such as heavy congestion, net uphill travel, or high ambient temperature with air-conditioning load, while a value less than 1.0 indicates a condition that reduces consumption, such as free-flowing traffic or net downhill travel with regenerative braking recovery.  
 These locally-calibrated weighting factors are embedded directly into the Voltpath PH energy consumption formula, expressed as:  
-E \= Ebase × Wtraffic × Welevation x Wtemperature  
+E = Ebase × Wtraffic × Welevation × Wtemperature  
 Where:
 
-- E \= Estimated energy consumption (in Wh/km) for a given route segment
-- Ebase \= Baseline energy consumption rate in Wh/km derived from the Geely EX5 Em-I Max manufacturer specifications
-- Wtraffic \= A weight factor that adjusts consumption based on traffic level (free flow, light, moderate, heavy). Heavy stop-and-go traffic means more acceleration/braking \= more energy used
-- Welevation \= Road elevation adjustment weight. Uphill \= more energy needed; downhill \= some energy recovered via regenerative braking
-- Wtemperature \= Ambient temperature adjustment weight. High tropical heat increases battery load (e.g., air conditioning usage)
+- E = Estimated energy consumption (in Wh/km) for a given route segment
+- Ebase = Baseline energy consumption rate in Wh/km derived from the Geely EX5 Em-I Max manufacturer specifications
+- Wtraffic = A weight factor that adjusts consumption based on traffic level (free flow, light, moderate, heavy). Heavy stop-and-go traffic means more acceleration/braking = more energy used
+- Welevation = Road elevation adjustment weight. Uphill = more energy needed; downhill = some energy recovered via regenerative braking
+- Wtemperature = Ambient temperature adjustment weight. High tropical heat increases battery load (e.g., air conditioning usage)
 
 Because these factors are applied multiplicatively rather than additively, Voltpath PH can represent the compounding effect of simultaneously adverse conditions, such as a route that is both heavily congested and significantly uphill, more accurately than an additive model would, consistent with the multiplicative modeling approach supported by Xie et al. (2025).
 
@@ -469,7 +475,7 @@ Because these factors are applied multiplicatively rather than additively, Voltp
 
 **Overarching System Goals for Voltpath PH.** The design and development of Voltpath PH on several overarching system goals, each directly addressing the identified problems and user needs. Together, these goals aim to build a reliable and user-friendly platform that transforms EV navigation and range management in the Philippines.
 
-**_To Provide a Locally-Calibrated EV Range Prediction Model._** Voltpath PH aims to deliver an EV range prediction model whose underlying energy consumption formula, E \= Ebase × Wtraffic × Welevation × Wtemperature, will be calibrated using weighting coefficients derived from real-world test drive data to be collected on Philippine roads. By grounding Wtraffic, Welevation, and Wtemperature in local regression analysis rather than generalized or manufacturer-default values, the system seeks to produce range estimates that more accurately reflect the conditions Filipino EV drivers actually encounter, directly addressing the accuracy and trust needs identified above.
+**_To Provide a Locally-Calibrated EV Range Prediction Model._** Voltpath PH aims to deliver an EV range prediction model whose underlying energy consumption formula, E = Ebase × Wtraffic × Welevation × Wtemperature, will be calibrated using weighting coefficients derived from real-world test drive data to be collected on Philippine roads. By grounding Wtraffic, Welevation, and Wtemperature in local regression analysis rather than generalized or manufacturer-default values, the system seeks to produce range estimates that more accurately reflect the conditions Filipino EV drivers actually encounter, directly addressing the accuracy and trust needs identified above.
 
 **_To Offer Energy-Aware Route Optimization._** Rather than relying solely on shortest-distance or shortest-time routing, Voltpath PH aims to recommend routes that minimize predicted energy consumption by factoring in real-time traffic conditions and route elevation profiles. This goal directly addresses the gap identified in existing navigation platforms, which do not account for the energy implications of route choice for EV drivers, and supports the safety and planning confidence needs of users undertaking longer or unfamiliar trips.
 
@@ -479,25 +485,25 @@ Because these factors are applied multiplicatively rather than additively, Voltp
 
 **Functional Requirements**  
 The functional requirements for Voltpath PH were derived from the identified user needs and system gaps. Table 3 enumerates each requirement with its description and implementation priority.  
-_Table 3\. Functional Requirements_
+_Table 3. Functional Requirements_
 
-| ID    | Requirement                    | Description                                                                                                                                                                                                    | Priority |
-| :---- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| FR-01 | EV Range Prediction            | The system shall estimate battery energy consumption per route segment using the formula **_E \= Ebase × Wtraffic × Welevation × Wtemperature_**, with weighting factors derived from Philippine driving data. | High     |
-| FR-02 | State-of-Charge Display        | The system shall display the estimated State-of-Charge (SoC) as a percentage at each route waypoint and at the destination.                                                                                    | High     |
-| FR-03 | Energy-Efficient Routing       | The system shall generate and display route alternatives ranked by predicted energy consumption rather than solely by distance or travel time.                                                                 | High     |
-| FR-04 | Charging Station Locator       | The system shall retrieve and display nearby EV charging stations along the route.                                                                                                                             | High     |
-| FR-05 | Real-Time Traffic Integration  | The system shall integrate live traffic data from the Google Maps Routes API to adjust route energy estimates dynamically.                                                                                     | High     |
-| FR-06 | Elevation Data Integration     | The system shall retrieve route elevation profiles via the Google Maps Elevation API and apply terrain-based adjustments to energy predictions.                                                                | High     |
-| FR-07 | EV Model Configuration         | Users shall be able to select from a list of supported EV models (e.g. Geely) so that the baseline consumption rate (Ebase) reflects the correct vehicle specification.                                        | Medium   |
-| FR-08 | User Account Management        | Users shall be able to register, log in (via Supabase Auth), and save trip history and preferred EV model to their profile.                                                                                    | Medium   |
-| FR-09 | Reachable Range Visualization  | The system shall display the estimated reachable travel zone (range overlay) based on the current State-of-Charge and the selected EV model.                                                                   | Medium   |
-| FR-10 | Crowdsourced Station Reporting | Users shall be able to submit and view status reports (e.g., available, occupied, out of service) for charging stations to keep directory data current.                                                        | Medium   |
+| ID    | Requirement                    | Description                                                                                                                                                                                                   | Priority |
+| :---- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------- |
+| FR-01 | EV Range Prediction            | The system shall estimate battery energy consumption per route segment using the formula **_E = Ebase × Wtraffic × Welevation × Wtemperature_**, with weighting factors derived from Philippine driving data. | High     |
+| FR-02 | State-of-Charge Display        | The system shall display the estimated State-of-Charge (SoC) as a percentage at each route waypoint and at the destination.                                                                                   | High     |
+| FR-03 | Energy-Efficient Routing       | The system shall generate and display route alternatives ranked by predicted energy consumption rather than solely by distance or travel time.                                                                | High     |
+| FR-04 | Charging Station Locator       | The system shall retrieve and display nearby EV charging stations along the route.                                                                                                                            | High     |
+| FR-05 | Real-Time Traffic Integration  | The system shall integrate live traffic data from the Google Maps Routes API to adjust route energy estimates dynamically.                                                                                    | High     |
+| FR-06 | Elevation Data Integration     | The system shall retrieve route elevation profiles via the Google Maps Elevation API and apply terrain-based adjustments to energy predictions.                                                               | High     |
+| FR-07 | EV Model Configuration         | Users shall be able to select from a list of supported EV models (e.g. Geely) so that the baseline consumption rate (Ebase) reflects the correct vehicle specification.                                       | Medium   |
+| FR-08 | User Account Management        | Users shall be able to register, log in (via Supabase Auth), and save trip history and preferred EV model to their profile.                                                                                   | Medium   |
+| FR-09 | Reachable Range Visualization  | The system shall display the estimated reachable travel zone (range overlay) based on the current State-of-Charge and the selected EV model.                                                                  | Medium   |
+| FR-10 | Crowdsourced Station Reporting | Users shall be able to submit and view status reports (e.g., available, occupied, out of service) for charging stations to keep directory data current.                                                       | Medium   |
 
 **Non-Functional Requirements**  
 Non-functional requirements define the quality attributes the system must satisfy to be considered production-ready. Table 4 presents these requirements along with their measurable success metrics.
 
-_Table 4\. Non-Functional Requirements_
+_Table 4. Non-Functional Requirements_
 
 | ID     | Category        | Requirement                                                                                                                                                                               | Metric                  |
 | :----- | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- |
@@ -514,7 +520,7 @@ _Table 4\. Non-Functional Requirements_
    This section presents the technical blueprint of Voltpath PH, including system architecture, data flows, the EV range prediction model, and the mobile application's user interface design approach.
 
 **System Architecture**  
-Voltpath PH is structured as a cloud-native, client-server system organized within a Turborepo monorepo containing three deployable applications and one shared logic package, as illustrated in Figure 4\.
+Voltpath PH is structured as a cloud-native, client-server system organized within a Turborepo monorepo containing three deployable applications and one shared logic package, as illustrated in Figure 4.
 
 The mobile application (apps/mobile), built with React Native and Expo, serves as the primary interface for Filipino EV drivers. The web application (apps/web), built with React, TypeScript, and Vite, provides an administrative and informational layer sharing domain logic and type definitions with the mobile client through the packages/shared package. The backend API (apps/api), built with Node.js and Express, acts as the central orchestration layer, receiving trip planning requests from either client, querying the Google Maps Platform APIs, executing the energy prediction model, performing geospatial charging station lookups, and returning optimized trip results. The PostgreSQL database hosted on Supabase, extended with PostGIS, serves as the persistent data store for user profiles, EV model specifications, trip histories, and the charging station directory.
 
@@ -746,13 +752,13 @@ Activities include:
 - Processing route elevation information and geographic data.
 - Developing the localized EV range prediction model.
 - Implementing the weighted energy consumption formula:  
-  **_E \= Ebase x Wtraffic x Welevation x Wtemperature_**  
+  **_E = Ebase × Wtraffic × Welevation × Wtemperature_**  
   Where:
-- E \= Estimated energy consumption
-- Ebase \= Baseline energy consumption derived from manufacturer specifications (Wh/km)
-- Wtraffic \= Traffic congestion adjustment weight
-- Welevation \= Road elevation adjustment weight
-- Wtemperature \= Ambient temperature adjustment weight
+- E = Estimated energy consumption
+- Ebase = Baseline energy consumption derived from manufacturer specifications (Wh/km)
+- Wtraffic = Traffic congestion adjustment weight
+- Welevation = Road elevation adjustment weight
+- Wtemperature = Ambient temperature adjustment weight
 
 The model estimates battery energy consumption using weighted adjustment factors that reflect real-world Philippine driving conditions. Traffic congestion, terrain elevation, and ambient temperature are incorporated to provide a more realistic estimate of EV energy usage compared to traditional distance-based calculations.  
 To improve prediction accuracy, the coefficient weights will be calibrated using collected route and driving data. The system will also calculate the estimated remaining battery State-of-Charge (SoC) and projected driving range throughout the route.
@@ -823,7 +829,7 @@ Deliverables:
 - Bug resolution documentation
 - Final application release
 
-**Table 5\.** _Sprint Timeline_
+**Table 5.** _Sprint Timeline_
 
 | Sprint      | Major Activities                                                                                     |
 | :---------- | :--------------------------------------------------------------------------------------------------- |
@@ -833,7 +839,7 @@ Deliverables:
 | Sprint 7-8  | Intelligent Routing, Charging Station Integration, and Geospatial Processing using PostGIS           |
 | Sprint 9-10 | System Testing, Model Validation (MAPE & RMSE), Optimization, Bug Fixing, and Deployment Preparation |
 
-**Table 6\.** _Sprint Deliverables_
+**Table 6.** _Sprint Deliverables_
 
 | Sprint      | Major Activities                                    |
 | :---------- | :-------------------------------------------------- |
@@ -843,14 +849,14 @@ Deliverables:
 | Sprint 7-8  | Route Optimization Module, Charging Station Locator |
 | Sprint 9-10 | Test Reports, Validation Results, Final Release     |
 
-**Table 7\.** _Technologies and Development Tools_  
+**Table 7.** _Technologies and Development Tools_  
 The project will utilize the following technologies:
 
 | Component                 | Technology                                       |
 | :------------------------ | :----------------------------------------------- |
 | Mobile Application        | React Native with Expo (TypeScript)              |
-| Web/Admin Frontend        | React \+ TypeScript \+ Vite                      |
-| Backend Application Layer | [Node.js](http://Node.js) \+ Express             |
+| Web/Admin Frontend        | React + TypeScript + Vite                        |
+| Backend Application Layer | [Node.js](http://Node.js) + Express              |
 | Programming Language      | TypeScript                                       |
 | Database Management       | PostgreSQL                                       |
 | Cloud Database Hosting    | Supabase                                         |
@@ -870,7 +876,7 @@ Through Agile Scrum, structured sprint planning, collaborative development pract
 
    The testing strategy for Voltpath PH is designed to validate system correctness, prediction accuracy, and usability across all layers of the application. Five testing types will be conducted across Sprints 9–10 and during the controlled road-test phase. Table 8 summarizes each testing type alongside its scope and success criteria.
 
-_Table 8\. Testing Plan Summary_
+_Table 8. Testing Plan Summary_
 
 | Testing Type                   | Scope                                                                                                                                                                         | Success Criteria                                                                                                                     |
 | :----------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
@@ -890,7 +896,7 @@ Integration tests will validate the full data pipeline from API endpoint to exte
 
 **System Testing**
 
-System tests will execute the full application stack on the Railway staging environment, verifying that mobile-to-API-to-database round trips succeed for all ten functional requirements defined in Table 3\. System tests will be run on both Android and iOS builds to confirm cross-platform consistency. Any failures identified during system testing will be logged in GitHub Issues, prioritized in the sprint backlog, and resolved before the UAT phase.
+System tests will execute the full application stack on the Railway staging environment, verifying that mobile-to-API-to-database round trips succeed for all ten functional requirements defined in Table 3. System tests will be run on both Android and iOS builds to confirm cross-platform consistency. Any failures identified during system testing will be logged in GitHub Issues, prioritized in the sprint backlog, and resolved before the UAT phase.
 
 **Model Validation — Route Test Drives**
 
@@ -935,7 +941,7 @@ The methodology presented in this chapter provides a structured, evidence-based 
 
 A Better Route Planner. (n.d.). _A Better Route Planner (ABRP)_. Iternio. [https://abetterrouteplanner.com](https://abetterrouteplanner.com)
 
-Amin, A., Amin, M. S., Park, H., & Lee, D. (2025). Electric Vehicle Range Prediction Models: A Systematic review of machine learning, mathematical, and simulation approaches. _World Electric Vehicle Journal_, 16(11), 607\. [https://doi.org/10.3390/wevj16110607](https://doi.org/10.3390/wevj16110607)
+Amin, A., Amin, M. S., Park, H., & Lee, D. (2025). Electric Vehicle Range Prediction Models: A Systematic review of machine learning, mathematical, and simulation approaches. _World Electric Vehicle Journal_, 16(11), 607. [https://doi.org/10.3390/wevj16110607](https://doi.org/10.3390/wevj16110607)
 
 Aquino, P. T. (2021). _Electric vehicle charging stations in the Philippines_ \[PowerPoint slides\]. Department of Energy / ASEAN EV Outlook Presentation. [https://asew-expo.com/AEUDW2021/download/ASEAN-Electric-Vehicle-Outlook/Session1/Mr_Patrick_T_Aquino.pdf](https://asew-expo.com/AEUDW2021/download/ASEAN-Electric-Vehicle-Outlook/Session1/Mr_Patrick_T_Aquino.pdf)
 
@@ -949,13 +955,13 @@ Department of Energy. (2023). _Comprehensive Roadmap for the Electric Vehicle In
 
 Electric Vehicle Industry Development Act (EVIDA), Republic Act No. 11697 (2022). [https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011697](https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011697)
 
-Fan, L., Liu, C., Dai, B., Li, J., Wu, Z., & Guo, Y. (2023). Electric vehicle routing problem considering energy differences of charging stations. _Journal of Cleaner Production_, 418, 138184\. [https://doi.org/10.1016/j.jclepro.2023.138184](https://doi.org/10.1016/j.jclepro.2023.138184)
+Fan, L., Liu, C., Dai, B., Li, J., Wu, Z., & Guo, Y. (2023). Electric vehicle routing problem considering energy differences of charging stations. _Journal of Cleaner Production_, 418, 138184. [https://doi.org/10.1016/j.jclepro.2023.138184](https://doi.org/10.1016/j.jclepro.2023.138184)
 
 Garg, P., Yadav, B., Gupta, S., & Gupta, B. (2023). Performance analysis and optimization of cross platform application development using REACT Native. In _Lecture notes in networks and systems_ (pp. 559–567). [https://doi.org/10.1007/978-981-19-9304-6_51](https://doi.org/10.1007/978-981-19-9304-6_51)
 
-_Global EV Outlook 2024 – Analysis \- IEA_. (2024, April 23). IEA. [https://www.iea.org/reports/global-ev-outlook-2024](https://www.iea.org/reports/global-ev-outlook-2024)
+_Global EV Outlook 2024 – Analysis - IEA_. (2024, April 23). IEA. [https://www.iea.org/reports/global-ev-outlook-2024](https://www.iea.org/reports/global-ev-outlook-2024)
 
-Global EV Outlook 2025 – Analysis \- IEA. (2025, May 14). IEA. [https://www.iea.org/reports/global-ev-outlook-2025](https://www.iea.org/reports/global-ev-outlook-2025)
+Global EV Outlook 2025 – Analysis - IEA. (2025, May 14). IEA. [https://www.iea.org/reports/global-ev-outlook-2025](https://www.iea.org/reports/global-ev-outlook-2025)
 
 Google. (2026, March 30). Google Maps simplifies battery predictions and trip planning for 350+ Android Auto EV models. _Google Keyword Blog_. [https://blog.google/products-and-platforms/products/maps/google-maps-simplifies-battery-predictions-and-trip-planning-for-350-android-auto-ev-models/](https://blog.google/products-and-platforms/products/maps/google-maps-simplifies-battery-predictions-and-trip-planning-for-350-android-auto-ev-models/)
 
@@ -963,39 +969,39 @@ Google Maps Platform. (n.d.). _Places API documentation_. Google for Developers.
 
 Google Maps Platform Documentation. (n.d.). _Google for Developers_. [https://developers.google.com/maps/documentation/routes](https://developers.google.com/maps/documentation/routes)
 
-Gumasing, M. J. J., Bermejo, F. J. C. S., Elpedes, K. T. C., Gonzales, L. F. E., & Villajin, A. C. V. (2023). Antecedents of Waze Mobile Application Usage as a Solution for Sustainable Traffic Management among Gen Z. _Sustainability_, 15(13), 10186\. [https://doi.org/10.3390/su151310186](https://doi.org/10.3390/su151310186)
+Gumasing, M. J. J., Bermejo, F. J. C. S., Elpedes, K. T. C., Gonzales, L. F. E., & Villajin, A. C. V. (2023). Antecedents of Waze Mobile Application Usage as a Solution for Sustainable Traffic Management among Gen Z. _Sustainability_, 15(13), 10186. [https://doi.org/10.3390/su151310186](https://doi.org/10.3390/su151310186)
 
-Gutiérrez-Moreno, R., Llamazares, Á., Revenga, P., Ocaña, M., & Antunes-García, M. (2026). Electric Vehicle Route Optimization: An End-to-End Learning Approach with Multi-Objective Planning. _World Electric Vehicle Journal_, 17(1), 41\. [https://doi.org/10.3390/wevj17010041](https://doi.org/10.3390/wevj17010041)
+Gutiérrez-Moreno, R., Llamazares, Á., Revenga, P., Ocaña, M., & Antunes-García, M. (2026). Electric Vehicle Route Optimization: An End-to-End Learning Approach with Multi-Objective Planning. _World Electric Vehicle Journal_, 17(1), 41. [https://doi.org/10.3390/wevj17010041](https://doi.org/10.3390/wevj17010041)
 
 Habana, R., Anore, C. J., Santos, M. P., Vergara, R., Alipio, C. A., & Castro, J. (2021). _Identifying suitable locations of electric vehicle (EV) chargers in Quezon City using Geographic Information System (GIS)_ \[Paper presentation\]. 28th Annual Conference of the Transportation Science Society of the Philippines. [https://ncts.upd.edu.ph/tssp/wp-content/uploads/2021/12/03-TSSP2021_Suitable-locations-of-EV-chargers-using-GIS.pdf](https://ncts.upd.edu.ph/tssp/wp-content/uploads/2021/12/03-TSSP2021_Suitable-locations-of-EV-chargers-using-GIS.pdf)
 
-Huang, B., Choi, Y., Chng, S., & Neo, H. (2023). Examining Policy Strategies for Electrifying Transportation in ASEAN: A STEELUP Framework Evaluation. _Sustainability_, 15(22), 15708\. [https://doi.org/10.3390/su152215708](https://doi.org/10.3390/su152215708)
+Huang, B., Choi, Y., Chng, S., & Neo, H. (2023). Examining Policy Strategies for Electrifying Transportation in ASEAN: A STEELUP Framework Evaluation. _Sustainability_, 15(22), 15708. [https://doi.org/10.3390/su152215708](https://doi.org/10.3390/su152215708)
 
-Hussain, I., Ching, K. B., Uttraphan, C., Tay, K. G., & Noor, A. (2025). Evaluating machine learning algorithms for energy consumption prediction in electric vehicles: A comparative study. _Scientific Reports_, 15(1), 16124\. [https://doi.org/10.1038/s41598-025-94946-7](https://doi.org/10.1038/s41598-025-94946-7)
+Hussain, I., Ching, K. B., Uttraphan, C., Tay, K. G., & Noor, A. (2025). Evaluating machine learning algorithms for energy consumption prediction in electric vehicles: A comparative study. _Scientific Reports_, 15(1), 16124. [https://doi.org/10.1038/s41598-025-94946-7](https://doi.org/10.1038/s41598-025-94946-7)
 
 Kaptosv, L. (2025). Applying POSTGIS for storage and processing of geospatial data in logistics system. _The American Journal of Engineering and Technology_, 07(08), 318–327. [https://doi.org/10.37547/tajet/volume07issue08-28](https://doi.org/10.37547/tajet/volume07issue08-28)
 
-Khekare, U., & S, R. V. I. (2025). Adaptive deep Q-networks for accurate electric vehicle range estimation. _Frontiers in Big Data_, 8, 1697478\. [https://doi.org/10.3389/fdata.2025.1697478](https://doi.org/10.3389/fdata.2025.1697478)
+Khekare, U., & S, R. V. I. (2025). Adaptive deep Q-networks for accurate electric vehicle range estimation. _Frontiers in Big Data_, 8, 1697478. [https://doi.org/10.3389/fdata.2025.1697478](https://doi.org/10.3389/fdata.2025.1697478)
 
-Kim, G. (2024). Electric Vehicle Routing Problem with States of Charging Stations. _Sustainability_, 16(8), 3439\. [https://doi.org/10.3390/su16083439](https://doi.org/10.3390/su16083439)
+Kim, G. (2024). Electric Vehicle Routing Problem with States of Charging Stations. _Sustainability_, 16(8), 3439. [https://doi.org/10.3390/su16083439](https://doi.org/10.3390/su16083439)
 
 Liu, Y., Zhang, Q., Lyu, C., & Liu, Z. (2021). Modelling the energy consumption of electric vehicles under uncertain and small data conditions. _Transportation Research Part A: Policy and Practice_, 154, 313–328. [https://doi.org/10.1016/j.tra.2021.10.009](https://doi.org/10.1016/j.tra.2021.10.009)
 
-Ma, X., Li, J., Cui, H., Cheng, L., Ji, Y., & Wang, J. (2025). Electric vehicle range prediction considering real-time driving factors and battery capacity index. _Transportation Research Part D: Transport and Environment_, 144, 104795\. [https://doi.org/10.1016/j.trd.2025.104795](https://doi.org/10.1016/j.trd.2025.104795)
+Ma, X., Li, J., Cui, H., Cheng, L., Ji, Y., & Wang, J. (2025). Electric vehicle range prediction considering real-time driving factors and battery capacity index. _Transportation Research Part D: Transport and Environment_, 144, 104795. [https://doi.org/10.1016/j.trd.2025.104795](https://doi.org/10.1016/j.trd.2025.104795)
 
 Maurya, V. K., Bhoir, V., & Yadav, H. (2026). Academia: A cloud-based education management system with role-based access control and real-time analytics. _International Journal of Creative Research Thoughts (IJCRT)_, 14(4). [https://ijcrt.org/papers/IJCRT2604327.pdf](https://ijcrt.org/papers/IJCRT2604327.pdf)
 
-Montanino, M., Natale, I., Fiori, C., & Punzo, V. (2025). A traffic-flow-dependent macroscopic model of electric vehicle energy consumption. _Transportation Research Part C: Emerging Technologies_, 178, 105220\. [https://doi.org/10.1016/j.trc.2025.105220](https://doi.org/10.1016/j.trc.2025.105220)
+Montanino, M., Natale, I., Fiori, C., & Punzo, V. (2025). A traffic-flow-dependent macroscopic model of electric vehicle energy consumption. _Transportation Research Part C: Emerging Technologies_, 178, 105220. [https://doi.org/10.1016/j.trc.2025.105220](https://doi.org/10.1016/j.trc.2025.105220)
 
-Pamidimukkala, A., Kermanshachi, S., Rosenberger, J. M., & Hladik, G. (2024). Barriers and motivators to the adoption of electric vehicles: A global review. _Green Energy and Intelligent Transportation_, 3(2), 100153\. [https://doi.org/10.1016/j.geits.2024.100153](https://doi.org/10.1016/j.geits.2024.100153)
+Pamidimukkala, A., Kermanshachi, S., Rosenberger, J. M., & Hladik, G. (2024). Barriers and motivators to the adoption of electric vehicles: A global review. _Green Energy and Intelligent Transportation_, 3(2), 100153. [https://doi.org/10.1016/j.geits.2024.100153](https://doi.org/10.1016/j.geits.2024.100153)
 
-Pineda, G. a. D., & Calderon, A. D. (2025). The Electric Vehicle Industry Development Act (RA 11697 EVIDA): A review of its implementation and contribution to the Philippine Energy Plan. _Energies_, 18(17), 4669\. [https://doi.org/10.3390/en18174669](https://doi.org/10.3390/en18174669)
+Pineda, G. a. D., & Calderon, A. D. (2025). The Electric Vehicle Industry Development Act (RA 11697 EVIDA): A review of its implementation and contribution to the Philippine Energy Plan. _Energies_, 18(17), 4669. [https://doi.org/10.3390/en18174669](https://doi.org/10.3390/en18174669)
 
-Polat, A. A., Keser, S. B., Sarıçiçek, İ., & Yazıcı, A. (2025). Analysis of factors affecting electric vehicle range estimation: A case study of the Eskisehir Osmangazi University Campus. _Sustainability_, 17(8), 3488\. [https://doi.org/10.3390/su17083488](https://doi.org/10.3390/su17083488)
+Polat, A. A., Keser, S. B., Sarıçiçek, İ., & Yazıcı, A. (2025). Analysis of factors affecting electric vehicle range estimation: A case study of the Eskisehir Osmangazi University Campus. _Sustainability_, 17(8), 3488. [https://doi.org/10.3390/su17083488](https://doi.org/10.3390/su17083488)
 
 Ramachandrappa, N. C. (2024). A Comparative Analysis of Native vs React Native Mobile App Development. _International Journal of Computer Trends and Technology_, 72(9), 57–62. https://doi.org/10.14445/22312803/ijctt-v72i9p110
 
-Saflor, C. S. R., Mariñas, K. A., Gumasing, M. J., & Tangsoc, J. (2024). A Data-Driven Analysis of Electric Vehicle adoption Barriers in the Philippines: Combining SEM and ANNS. _World Electric Vehicle Journal_, 15(11), 519\. https://doi.org/10.3390/wevj15110519
+Saflor, C. S. R., Mariñas, K. A., Gumasing, M. J., & Tangsoc, J. (2024). A Data-Driven Analysis of Electric Vehicle adoption Barriers in the Philippines: Combining SEM and ANNS. _World Electric Vehicle Journal_, 15(11), 519. https://doi.org/10.3390/wevj15110519
 
 Santander, B. B., Cultura, A., II, & Dolino, C. (2026). Geospatial analysis for electric vehicle charging infrastructure development in Mindanao. _Journal of Interdisciplinary Perspectives_, 4(3), 165–174. https://doi.org/10.69569/jip.2025.795
 
@@ -1007,17 +1013,17 @@ Supabase. (2024). _Supabase documentation_. [https://supabase.com/docs](https://
 
 Wang, Z., Yao, E., & Yang, Y. (2024). An analysis of EV charging and route choice behavior considering the effects of planning ability, risk aversion and confidence in battery in long-distance travel. _Transportation Research Part F: Traffic Psychology and Behaviour_, 104, 186–200. [https://doi.org/10.1016/j.trf.2024.05.026](https://doi.org/10.1016/j.trf.2024.05.026)
 
-Xie, D., Jiang, Y., Guo, J., & Wang, Y. (2025). Full-scene energy consumption prediction for electric vehicles: A knowledge-enhanced hybrid-driven framework. _Energy_, 333, 137136\. https://doi.org/10.1016/j.energy.2025.137136
+Xie, D., Jiang, Y., Guo, J., & Wang, Y. (2025). Full-scene energy consumption prediction for electric vehicles: A knowledge-enhanced hybrid-driven framework. _Energy_, 333, 137136. https://doi.org/10.1016/j.energy.2025.137136
 
-Yılmaz, H., & Yagmahan, B. (2024). Electric vehicle energy consumption prediction for unknown route types using deep neural networks by combining static and dynamic data. _Applied Soft Computing_, 167, 112336\. https://doi.org/10.1016/j.asoc.2024.112336
+Yılmaz, H., & Yagmahan, B. (2024). Electric vehicle energy consumption prediction for unknown route types using deep neural networks by combining static and dynamic data. _Applied Soft Computing_, 167, 112336. https://doi.org/10.1016/j.asoc.2024.112336
 
-Zaino, R., Ahmed, V., Alhammadi, A. M., & Alghoush, M. (2024). Electric Vehicle Adoption: A comprehensive systematic review of technological, environmental, organizational and policy impacts. _World Electric Vehicle Journal_, 15(8), 375\. [https://doi.org/10.3390/wevj15080375](https://doi.org/10.3390/wevj15080375)
+Zaino, R., Ahmed, V., Alhammadi, A. M., & Alghoush, M. (2024). Electric Vehicle Adoption: A comprehensive systematic review of technological, environmental, organizational and policy impacts. _World Electric Vehicle Journal_, 15(8), 375. [https://doi.org/10.3390/wevj15080375](https://doi.org/10.3390/wevj15080375)
 
 Evro Mobility Solutions Inc. (2025). _EVRO: EV power everywhere._  
  [EVRO Official Website](https://www.evro.ph/)
 
 BusinessWorld. (2025, July 28). _Evro, Shell launch first unified EV charging experience in the Philippines._  
- [BusinessWorld \- EVRO and Shell Integration](https://www.bworldonline.com/velocity/2025/07/28/687626/evro-shell-launch-first-unified-ev-charging-experience-in-the-philippines/?utm_source=chatgpt.com)
+ [BusinessWorld - EVRO and Shell Integration](https://www.bworldonline.com/velocity/2025/07/28/687626/evro-shell-launch-first-unified-ev-charging-experience-in-the-philippines/?utm_source=chatgpt.com)
 
 # **APPENDICES** {#appendices}
 
@@ -1029,14 +1035,14 @@ Access the working prototype here: \[insert hyperlink\]
 
 **Disclosure of Artificial Intelligence Tools Used in Research**
 
-The authors of this paper, _\<First Name, MI, Last Name\>_, from section \<_Insert section_\>, enrolled in _\<MO-IT200D1 \- Capstone 1\>_ for Term _\<1, 2, or 3\>_, under the supervision of their adviser, _\<Mentor/Adviser’s First Name, MI, Last Name\>_, disclose the use of the following Artificial Intelligence (AI) Research tools in this Capstone Paper, titled _\<Insert title\>_, that is supportive and ethical, consistent to the [guidelines](https://support.mmdc.mcl.edu.ph/hc/en-us/articles/37180248710541-MMDC-s-Position-on-the-Use-of-AI-Tools) issued by the school:
+The authors of this paper, _<First Name, MI, Last Name>_, from section <_Insert section_>, enrolled in _<MO-IT200D1 - Capstone 1>_ for Term _<1, 2, or 3>_, under the supervision of their adviser, _<Mentor/Adviser’s First Name, MI, Last Name>_, disclose the use of the following Artificial Intelligence (AI) Research tools in this Capstone Paper, titled _<Insert title>_, that is supportive and ethical, consistent to the [guidelines](https://support.mmdc.mcl.edu.ph/hc/en-us/articles/37180248710541-MMDC-s-Position-on-the-Use-of-AI-Tools) issued by the school:
 
-| AI Tool   | Specific Use/Purpose               | AI-aided Sections/Chapters               |
-| --------- | ---------------------------------- | ---------------------------------------- |
-| _ChatGPT_ | _To improve sentence construction_ | _Chapter 1 \- Significance of the Study_ |
-|           |                                    |                                          |
-|           |                                    |                                          |
-|           |                                    |                                          |
+| AI Tool   | Specific Use/Purpose               | AI-aided Sections/Chapters              |
+| --------- | ---------------------------------- | --------------------------------------- |
+| _ChatGPT_ | _To improve sentence construction_ | _Chapter 1 - Significance of the Study_ |
+|           |                                    |                                         |
+|           |                                    |                                         |
+|           |                                    |                                         |
 
 Further, this is to certify the following:
 
@@ -1050,10 +1056,10 @@ The authors assume full responsibility and accountability for the accuracy, orig
 
 Signed:
 
-\<Insert authors’ names and signatures\>
+<Insert authors’ names and signatures>
 
 Conforme:  
-\<Insert mentor’s name and signature\>
+<Insert mentor’s name and signature>
 
 _\[Delete the texts in red before submission\]_
 

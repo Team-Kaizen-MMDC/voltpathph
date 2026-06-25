@@ -10,6 +10,15 @@ async function seed() {
 
     const models = [
       {
+        // Calibration vehicle for the Voltpath PH energy model (Geely EX5 Em-i Max).
+        make: "Geely",
+        model: "EX5 Em-i Max",
+        batteryCapacityKWh: 60.22,
+        averageConsumptionKWhPerKm: 0.15,
+        plugTypes: ["Type 2", "CCS2"],
+        imageUrl: "https://example.com/geely-ex5.jpg",
+      },
+      {
         make: "BYD",
         model: "Atto 3 Premium",
         batteryCapacityKWh: 60.48,
@@ -94,7 +103,9 @@ async function seed() {
         await evModelRepository.save(model);
         console.log(`Seeded model: ${modelData.make} ${modelData.model}`);
       } else {
-        console.log(`Model already exists: ${modelData.make} ${modelData.model}`);
+        console.log(
+          `Model already exists: ${modelData.make} ${modelData.model}`,
+        );
       }
     }
 

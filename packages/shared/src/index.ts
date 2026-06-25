@@ -42,4 +42,5 @@ export interface TripResult {
   recommendedChargingStops: ChargingStation[];
 }
 
-export * from './validation';
+export * from "./validation";
+export * from "./energy";
