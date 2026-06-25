@@ -98,7 +98,7 @@ Everything below is sourceable; only the calibration data requires fieldwork.
 
 1. Google Cloud project with **billing enabled** and these APIs turned on: Routes, Elevation, Places (New), Geocoding/Autocomplete. Set a **quota cap + billing alert**.
 2. Supabase project (enable PostGIS); Railway project for the API.
-3. Add a **weather lookup** (Open-Meteo) to the maps/conditions service for `temperatureC`.
+3. ~~Add a **weather lookup** (Open-Meteo) to the maps/conditions service for `temperatureC`.~~ ✅ Done — `apps/api/src/services/weather.ts`, wired into `getRouteData`.
 4. Build a **charging-station ingestion** step: Google Places query for a PH bounding box + OpenChargeMap supplement + manual seed → store as PostGIS points (the schema already supports this).
 5. Add **Places Autocomplete** to the trip input (today's clients use hardcoded coordinates — a real gap).
 6. **Run the test drives** on the 4 route archetypes, record SoC/distance/conditions, run the regression, and replace the placeholder weights in `packages/shared/src/energy.ts`.

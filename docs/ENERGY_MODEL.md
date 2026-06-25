@@ -92,7 +92,7 @@ Defined in `packages/shared/src/energy.ts`. **All values below are placeholders 
 | `acComfortBaselineC`           | 24                                                 | Assumption                               |
 | `maxAuxiliaryW`                | 3000                                               | Spec / measurement                       |
 
-Other assumptions: routes are segmented (Google Directions steps); per-segment grade from the Elevation API; ambient temperature per segment from a weather source (Open-Meteo — _integration pending_; defaults to `BASELINE_TEMPERATURE_C` until wired); SoC is not clamped to 0 so "won't make it" is representable as a negative arrival SoC.
+Other assumptions: routes are segmented (Google Directions steps); per-segment grade from the Elevation API; ambient temperature from Open-Meteo (free, no key) fetched once at the route midpoint and applied to every segment, falling back to `BASELINE_TEMPERATURE_C` when the lookup fails; SoC is not clamped to 0 so "won't make it" is representable as a negative arrival SoC.
 
 ---
 
@@ -133,7 +133,7 @@ Other assumptions: routes are segmented (Google Directions steps); per-segment g
 6. Return TripResult.
 ```
 
-Target latency ≤ 10 s (NFR-03): 1 Directions + 1 Elevation (+ later 1 weather) call, with response caching.
+Target latency ≤ 10 s (NFR-03): 1 Directions + 1 Elevation + 1 Open-Meteo call, with response caching.
 
 ---
 
@@ -154,7 +154,7 @@ Target latency ≤ 10 s (NFR-03): 1 Directions + 1 Elevation (+ later 1 weather)
 
 - **Single-vehicle calibration** (Geely EX5). Other `EVModel`s use uncalibrated defaults — label them as estimates.
 - **Battery aging / SoH** not modeled (assumes rated capacity).
-- **Weather** is per-segment temperature only (no humidity/precipitation); Open-Meteo wiring pending.
+- **Weather** is a single route-midpoint temperature applied to all segments (no per-segment sampling, humidity, or precipitation) via Open-Meteo; per-segment weather is future work.
 - **Tier 2 physical params** (mass, efficiencies, AC) are reference-vehicle constants, not per-`EVModel` columns — intentional for the MVP; would become per-model config for multi-vehicle support.
 - **No charging-curve / route-optimization** modeling (deferred — see `MVP_SCOPE_AND_FEASIBILITY.md`).
 

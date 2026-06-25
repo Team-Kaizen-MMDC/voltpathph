@@ -1,5 +1,6 @@
 import { Client } from "@googlemaps/google-maps-services-js";
 import type { RouteSegment, TrafficLevel } from "@voltph/shared";
+import { getTemperatureC } from "./weather";
 
 export interface LatLng {
   lat: number;
@@ -57,7 +58,11 @@ async function fetchElevations(
   }
 }
 
-function estimateFallback(origin: LatLng, destination: LatLng): RouteData {
+function estimateFallback(
+  origin: LatLng,
+  destination: LatLng,
+  temperatureC?: number,
+): RouteData {
   // No API key / API failure: straight-line distance with a road-network detour
   // factor and a nominal urban PH average speed. Keeps the API functional.
   const distanceKm = haversineKm(origin, destination) * 1.3;
@@ -72,6 +77,7 @@ function estimateFallback(origin: LatLng, destination: LatLng): RouteData {
         durationMin,
         trafficLevel: classifyTraffic(distanceKm, durationMin),
         deltaElevationM: 0,
+        temperatureC,
       },
     ],
   };
@@ -79,18 +85,28 @@ function estimateFallback(origin: LatLng, destination: LatLng): RouteData {
 
 /**
  * Resolve route distance/duration and a per-segment breakdown (distance,
- * traffic-scaled duration, signed elevation change) for the Tier-2 energy model.
+ * traffic-scaled duration, signed elevation change, ambient temperature) for the
+ * Tier-2 energy model.
  *
  * Uses Google Directions (per-step geometry) + one Elevation lookup when
  * `GOOGLE_MAPS_API_KEY` is set; otherwise returns a single-segment haversine
- * estimate so the endpoint always works.
+ * estimate. Ambient temperature comes from Open-Meteo (no key) at the route
+ * midpoint and is attached to every segment; it falls back to the energy model's
+ * baseline when the lookup fails.
  */
 export async function getRouteData(
   origin: LatLng,
   destination: LatLng,
 ): Promise<RouteData> {
+  const midpoint = {
+    lat: (origin.lat + destination.lat) / 2,
+    lng: (origin.lng + destination.lng) / 2,
+  };
+  const temperatureC =
+    (await getTemperatureC(midpoint.lat, midpoint.lng)) ?? undefined;
+
   const key = process.env.GOOGLE_MAPS_API_KEY;
-  if (!key) return estimateFallback(origin, destination);
+  if (!key) return estimateFallback(origin, destination, temperatureC);
 
   try {
     const res = await client.directions({
@@ -105,7 +121,9 @@ export async function getRouteData(
 
     const leg = res.data.routes[0]?.legs?.[0];
     const steps = leg?.steps;
-    if (!leg || !steps?.length) return estimateFallback(origin, destination);
+    if (!leg || !steps?.length) {
+      return estimateFallback(origin, destination, temperatureC);
+    }
 
     const totalDistanceKm = leg.distance.value / 1000;
     const baseDurationSec = leg.duration.value || 1;
@@ -136,6 +154,7 @@ export async function getRouteData(
         durationMin,
         deltaElevationM,
         trafficLevel: classifyTraffic(distanceKm, durationMin),
+        temperatureC,
       };
     });
 
@@ -146,6 +165,6 @@ export async function getRouteData(
       segments,
     };
   } catch {
-    return estimateFallback(origin, destination);
+    return estimateFallback(origin, destination, temperatureC);
   }
 }
