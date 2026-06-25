@@ -7,16 +7,19 @@ The Voltpath PH Web application is a modern React application built with TypeScr
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v18+)
 - Local API running at `http://localhost:3001` (or configured via env)
 
 ### Local Development
+
 1. Navigate to the web directory: `cd apps/web`
 2. Run development server: `npm run dev`
 3. Build for production: `npm run build`
 4. Preview production build: `npm run preview`
 
 ## 🏗 Component Architecture
+
 The application is structured into functional, reusable components:
 
 - **`App.tsx`**: Main entry point and layout definition.
@@ -24,14 +27,24 @@ The application is structured into functional, reusable components:
 - **`components/TripPlanner.tsx`**: The core interactive form for route and battery optimization.
 
 ## 🎨 Styling & UI
+
 - **Lucide React:** Used for consistent iconography.
 - **Responsive Design:** Grid-based layout designed to handle various desktop and tablet viewports.
 
 ## 📦 Shared Logic
+
 The web app consumes shared interfaces from `@voltph/shared`:
+
 - `EVModel`
 - `TripPlan`
 - `TripResult`
 
 ## 🔌 API Integration
-Communication with the backend is handled via standard `fetch` calls to the following base URL: `http://localhost:3001/api`.
+
+Communication with the backend uses **axios** through a shared client in `src/api/client.ts` (base URL from `VITE_API_URL`, default `http://localhost:3001/api`), wrapped by **TanStack Query** (`@tanstack/react-query`) for caching, loading, and error states:
+
+- `EVModelList` uses `useQuery(["ev-models"], getEvModels)`.
+- `TripPlanner` uses `useMutation(optimizeTrip)` and reads the EV model id from the cached `ev-models` query.
+- A `QueryClientProvider` is configured in `src/main.tsx`.
+
+The client falls back to demo data when the backend is unreachable, so the UI remains demonstrable offline.
