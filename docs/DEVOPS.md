@@ -4,6 +4,22 @@
 
 This document outlines the deployment strategy, CI/CD workflows, and environment management for the Voltpath PH platform.
 
+## 🧑‍💻 Local Development (no external services required)
+
+Local dev needs only **Node.js** and a container engine (**Docker or Podman**) — Supabase, a Google Maps key, and Supabase Auth are all optional. The API degrades gracefully without them; the **only hard dependency is a database**, which the container engine provides.
+
+- **Database (required):** `npm run db:up` starts PostgreSQL 15 + PostGIS via `docker-compose.yml`, with credentials matching the `DB_*` defaults. The `db:*` scripts auto-detect Docker or Podman (`scripts/compose.mjs`). Leave `DATABASE_URL` unset/commented so the API uses the `DB_*` vars.
+- **Google Maps key (optional):** unset → routes/distances use a haversine estimate (no live traffic/elevation).
+- **Supabase Auth (optional):** `SUPABASE_JWT_SECRET` unset in non-production → auth is bypassed for local demos.
+- **Open-Meteo (optional):** unreachable → the energy model uses a baseline temperature.
+
+```bash
+cp .env.example .env          # defaults already target the local Docker DB
+npm run db:up                 # start PostgreSQL + PostGIS (npm run db:down to stop)
+npm run dev                   # start api + web (+ shared) via Turborepo
+cd apps/api && npm run seed   # (optional) populate EV models
+```
+
 ## 🏗 Deployment Strategy
 
 ### 1. Platforms: Railway (compute) + Supabase (data & auth)

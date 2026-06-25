@@ -41,8 +41,8 @@ voltpathph/
 ### Prerequisites
 
 - Node.js (v18+)
-- A Supabase project (PostgreSQL + PostGIS + Auth) — or local PostgreSQL/PostGIS for offline development
-- Google Maps API Key (Routes, Places, Elevation)
+- Docker or Podman (for the local PostgreSQL + PostGIS database via `npm run db:up` — auto-detected)
+- _Optional:_ a Google Maps API key (Routes/Places/Elevation) and a Supabase project — only needed for live maps/auth or hosted environments. **Local dev works without them** (haversine routing + auth bypass fallbacks).
 
 ### Installation
 
@@ -68,8 +68,9 @@ voltpathph/
 4. Set up environment variables:
    Copy the **root** `.env.example` to a root `.env` (one consolidated file for all apps) and fill in your credentials (database, Supabase, Google Maps, `VITE_API_URL`). The API reads it via `apps/api/src/config.ts`; the web app reads its `VITE_*` vars from it via Vite's `envDir`.
 
-5. Run the development environment:
+5. Start the local database, then run everything:
    ```bash
+   npm run db:up   # local PostgreSQL + PostGIS (skip if using a remote DATABASE_URL)
    npm run dev
    ```
 

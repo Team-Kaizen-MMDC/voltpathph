@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Geely EX5 Em-i Max (the calibration vehicle) added to the EV seed.
 - `docs/ENERGY_MODEL.md`, `docs/MVP_SCOPE_AND_FEASIBILITY.md`, and `docs/PAPER_MVP_ALIGNMENT.md`.
 - Centralized, documented API configuration in `apps/api/src/config.ts`, and a single committed **root `.env.example`** consolidating every app's variables (the API loads the root `.env` via dotenv; the web app via Vite `envDir`). Externalized all previously-hardcoded tunables (API timeouts, elevation-point cap, station search radius/limit, low-SoC threshold, routing detour/speed, Open-Meteo URL) to documented environment variables; `process.env` is now read in exactly one place.
+- Local development infrastructure: a root `docker-compose.yml` (PostgreSQL 15 + PostGIS) plus `db:up`/`db:down`/`db:logs`/`db:reset` scripts that **auto-detect Docker or Podman** (`scripts/compose.mjs`), so the API runs locally **without Supabase or any external service** (Google Maps, Supabase Auth, and Open-Meteo all have graceful fallbacks). `config.ts` now ignores an unfilled `DATABASE_URL` placeholder and falls back to the discrete `DB_*` vars, and skips loading `.env` under `NODE_ENV=test` so test suites stay hermetic.
 
 ---
 

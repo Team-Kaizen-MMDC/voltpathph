@@ -1,0 +1,37 @@
+# Local development infrastructure for Voltpath PH.
+#
+# Spins up PostgreSQL 15 + PostGIS so the API runs locally WITHOUT Supabase or
+# any other external service. Credentials match the discrete DB_* defaults in
+# `apps/api/src/config.ts` (and the root `.env.example`), so with DATABASE_URL
+# left unset the API connects to this container out of the box.
+#
+# Usage (auto-detects Docker or Podman via scripts/compose.mjs):
+#   npm run db:up      # start (detached)
+#   npm run db:logs    # tail logs
+#   npm run db:down    # stop
+#   npm run db:reset   # wipe volume + restart
+#
+# The postgis/postgis image enables the `postgis` extension on POSTGRES_DB
+# automatically; the API's migrations also `CREATE EXTENSION IF NOT EXISTS`.
+
+services:
+  db:
+    image: postgis/postgis:15-3.4
+    container_name: voltph-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: voltph
+    ports:
+      - "5432:5432"
+    volumes:
+      - voltph-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d voltph"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  voltph-db-data:

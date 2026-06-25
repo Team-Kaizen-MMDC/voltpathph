@@ -34,10 +34,11 @@ GOOGLE_MAPS_API_KEY=your_google_maps_key
 
 ### Local Development
 
-1. Navigate to the api directory: `cd apps/api`
-2. Run in development mode: `npm run dev`
-3. Build for production: `npm run build`
-4. Start production server: `npm run start`
+1. Start the local database from the repo root: `npm run db:up` (PostgreSQL + PostGIS via Docker or Podman — auto-detected). Skip only if you point `DATABASE_URL` at a remote DB.
+2. Navigate to the api directory: `cd apps/api`
+3. Run in development mode: `npm run dev`
+4. Build for production: `npm run build`
+5. Start production server: `npm run start`
 
 > **Note:** If you encounter `TS2564` errors regarding property initialization in entities, ensure you are using definite assignment assertions (`!`) as per our TypeORM standards. Missing types for `cors` should be installed as a dev dependency (`@types/cors`).
 

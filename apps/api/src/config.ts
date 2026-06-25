@@ -47,9 +47,17 @@ export const config = {
   jsonBodyLimit: process.env.JSON_BODY_LIMIT ?? "1mb",
 
   db: {
-    /** Preferred: full Postgres/Supabase connection string (use the session pooler :5432 or a direct connection). */
-    url: process.env.DATABASE_URL,
-    /** Discrete fallbacks used only when DATABASE_URL is unset (local dev). */
+    /**
+     * Preferred: full Postgres/Supabase connection string (session pooler :5432
+     * or a direct connection). An unfilled template placeholder (still containing
+     * "<") is ignored so local dev falls back to the discrete DB_* vars below
+     * instead of crashing on an invalid URL.
+     */
+    url:
+      process.env.DATABASE_URL && !process.env.DATABASE_URL.includes("<")
+        ? process.env.DATABASE_URL
+        : undefined,
+    /** Discrete fallbacks used when DATABASE_URL is unset (local Docker dev). */
     host: process.env.DB_HOST ?? "localhost",
     port: num(process.env.DB_PORT, 5432),
     username: process.env.DB_USERNAME ?? "postgres",

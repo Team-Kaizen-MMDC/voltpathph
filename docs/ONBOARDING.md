@@ -9,13 +9,13 @@ Track current sprint assignments, backlog issues, and our roadmap on our [GitHub
 ## 🏁 Phase 1: Environment Setup (Day 1)
 
 - [ ] Install **Node.js** (LTS version).
-- [ ] Install **Docker Desktop** (for running PostgreSQL/PostGIS locally).
+- [ ] Install **Docker Desktop or Podman** (for running PostgreSQL/PostGIS locally; `npm run db:up` auto-detects either).
 - [ ] Set up **VS Code** with recommended extensions:
   - ESLint, Prettier, Tailwind CSS IntelliSense (if applicable), Turbo Console Log.
 - [ ] Clone the repo and run `npm install`.
 - [ ] Copy the **root** `.env.example` to a root `.env` and fill in credentials (database, Supabase, Google Maps, `VITE_API_URL`). It is the single consolidated env file for all apps — the API reads it via `apps/api/src/config.ts`, and Vite reads `VITE_*` from it via `envDir`.
 - [ ] Run `npm run build` from the root to ensure all packages (including `@voltph/shared`) compile correctly.
-- [ ] Set up local database and run `cd apps/api && npm run seed` to populate it with EV models.
+- [ ] Start the local database with `npm run db:up` (Docker PostgreSQL + PostGIS), then run `cd apps/api && npm run seed` to populate it with EV models. (Supabase is optional — only for hosted/prod.)
 - [ ] Run `npm run dev` and verify you can access the Web app (localhost:5173) and API (localhost:3001).
   - _Note:_ The Web app uses `VITE_API_URL` which defaults to `http://localhost:3001` if not set.
 
