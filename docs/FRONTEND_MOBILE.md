@@ -22,14 +22,28 @@ The Voltpath PH Mobile application is built with React Native and Expo. It is op
 
 ## 🗺 Features & Libraries
 
-- **React Native Maps:** Integrated for displaying charging stations and route polylines.
-- **Lucide React Native:** Used for consistent iconography across the mobile UI.
-- **Expo Constants/Status Bar:** For platform-native UI adjustments.
+- **Navigation:** `@react-navigation/native` + native-stack across three screens.
+- **Auth:** Supabase Auth (`@supabase/supabase-js`) with a **conditional sign-in gate** — enforced only when `EXPO_PUBLIC_SUPABASE_URL`/`EXPO_PUBLIC_SUPABASE_ANON_KEY` are set; otherwise the app runs open (matching the API's dev bypass). The axios client attaches the bearer token automatically.
+- **Place search:** debounced origin/destination autocomplete via the API's `/places/search` proxy, so the Google key stays server-side (no key on device).
+- **Data:** `@tanstack/react-query` + `axios` via `api/client.ts` (base URL from `EXPO_PUBLIC_API_URL`).
+- **Maps:** `react-native-maps` shows origin, destination, and charging-station markers. iOS uses Apple Maps (no key); **Android requires a Google Maps API key** — set `android.config.googleMaps.apiKey` in `app.json` (or inject it at EAS build). It is currently blank, so configure it before testing maps on Android.
+- **Lucide React Native / Expo Status Bar:** iconography and platform UI.
 
 ## 🏗 Project Structure
 
-- **`App.tsx`**: Root component containing navigation and layout.
-- **Type Safety:** Heavily relies on `@voltph/shared` for consistency with the backend.
+- **`App.tsx`** — providers (`QueryClientProvider`, `SafeAreaProvider`) + native-stack navigator.
+- **`config.ts`** — `EXPO_PUBLIC_API_URL` base URL.
+- **`api/client.ts`** — axios instance (with a Supabase bearer-token interceptor) + `getEvModels` / `optimizeTrip` / `searchPlaces`.
+- **`auth/`** — `supabase.ts` (client; null when unconfigured) + `AuthContext.tsx` (provider / `useAuth`).
+- **`components/`** — `PlaceSearchInput` (debounced autocomplete) and `SignOutButton`.
+- **`navigation/types.ts`** — `RootStackParamList`.
+- **`theme.ts`** — color palette.
+- **`screens/`**:
+  - `SignInScreen` — email/password sign-in (shown only when auth is configured).
+  - `TripPlannerScreen` — pick an EV model, search origin/destination, enter battery %, plan the trip.
+  - `ResultScreen` — distance / duration / energy, a **green/amber/red reachability verdict**, a `MapView`, and the charging-station list.
+  - `StationDetailScreen` — station provider, connectors, power, availability.
+- **Type Safety:** shares DTOs with the backend via `@voltph/shared`; run `npm run typecheck` (also wired into CI).
 
 ## 📱 Platform Specifics
 

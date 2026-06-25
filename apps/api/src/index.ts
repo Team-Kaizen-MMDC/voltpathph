@@ -10,6 +10,7 @@ import { AppDataSource } from "./data-source";
 import evModelRoutes from "./routes/evModels";
 import stationRoutes from "./routes/stations";
 import tripRoutes from "./routes/trips";
+import placeRoutes from "./routes/places";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json({ limit: config.jsonBodyLimit }));
 app.use("/api/ev-models", evModelRoutes);
 app.use("/api/stations", stationRoutes);
 app.use("/api/trips", tripRoutes);
+app.use("/api/places", placeRoutes);
 
 app.get("/health", (_req, res) => {
   const dbUp = AppDataSource.isInitialized;

@@ -83,6 +83,13 @@ export const config = {
     elevationTimeoutMs: num(process.env.GMAPS_ELEVATION_TIMEOUT_MS, 6000),
     /** Max points per Elevation request (API hard limit is 512). */
     maxElevationPoints: num(process.env.GMAPS_MAX_ELEVATION_POINTS, 350),
+    /** Timeout (ms) for the Geocoding request used by place search. */
+    geocodeTimeoutMs: num(process.env.GMAPS_GEOCODE_TIMEOUT_MS, 5000),
+  },
+
+  places: {
+    /** Max place-search results returned to clients. */
+    searchLimit: num(process.env.PLACES_RESULT_LIMIT, 5),
   },
 
   weather: {

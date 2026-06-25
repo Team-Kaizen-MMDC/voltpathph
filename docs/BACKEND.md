@@ -78,6 +78,15 @@ The core engine for route and battery calculation.
   - Request Body: `TripPlan`
   - Response: `TripResult`
 
+### Places
+
+Server-side place search (keeps the Google Maps key off the client).
+
+- **GET `/api/places/search`**
+  - Description: Free-text place search. Uses Google Geocoding when `GOOGLE_MAPS_API_KEY` is set; otherwise a built-in PH gazetteer.
+  - Query Parameters: `q` (string, required, min 2 chars)
+  - Response: `Array<PlaceResult>` (`{ description, latitude, longitude }`)
+
 #### Trip Optimization Sequence Workflow
 
 ```mermaid

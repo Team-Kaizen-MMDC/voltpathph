@@ -48,6 +48,7 @@ Voltpath PH uses a **Turborepo** monorepo structure to manage multiple applicati
   - **Routes API:** For traffic-aware routing and distance calculations.
   - **Places API:** For location search and autocomplete.
   - **Elevation API:** For terrain/grade profiles feeding the energy model.
+  - **Geocoding API:** Server-side place search for origin/destination (via `/api/places/search`).
 - **Supabase:** Managed PostgreSQL + PostGIS, **Supabase Auth** (JWT/credentials), and storage.
 - **Open-Meteo:** Free weather API (no key) supplying ambient temperature for the energy model's temperature term.
 - **OpenChargeMap (Optional):** Supplementary data source for charging station locations in the Philippines.
