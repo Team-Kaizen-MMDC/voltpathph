@@ -1,7 +1,7 @@
 # Capstone Paper — MVP Alignment Change Set (from → to-be)
 
 > **Purpose:** A reviewable list of the edits that would align `docs/MO-IT200D1 _ A3101 Team Kaizen Capstone 1 Paper.md` with the narrowed scope in `docs/MVP_SCOPE_AND_FEASIBILITY.md`.
-> **Status:** PROPOSED — **no edits have been applied to the paper.** Review, then tell me which to apply.
+> **Status:** ✅ APPLIED (2026-06-25) — all changes applied to the paper, with **RQ5 = Option A** and **Title = Option 1**. CH-9 was folded into CH-6 (the "optimizer" is defined in the Statement of the Problem); CH-7b is satisfied by the CH-5 Limitations paragraph. Downstream Testing, UI, Development-Plan, Conclusion, and RRL statements were reconciled so route optimization / crowdsourcing read as Phase 2.
 > **Date:** 2026-06-25
 
 ## Guiding principle
