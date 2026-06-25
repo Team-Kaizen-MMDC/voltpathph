@@ -10,7 +10,7 @@ The Voltpath PH Web application is a modern React application built with TypeScr
 
 - Node.js (v18+)
 - Local API running at `http://localhost:3001` (or configured via env)
-- Copy `apps/web/.env.example` to `.env` and set `VITE_API_URL` (inlined at build time)
+- Copy the root `.env.example` to a root `.env` and set `VITE_API_URL` (Vite reads it from the repo root via `envDir`; inlined at build time)
 
 ### Local Development
 

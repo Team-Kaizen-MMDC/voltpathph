@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions CI (`.github/workflows/ci.yml`): install → build → lint → test.
 - Geely EX5 Em-i Max (the calibration vehicle) added to the EV seed.
 - `docs/ENERGY_MODEL.md`, `docs/MVP_SCOPE_AND_FEASIBILITY.md`, and `docs/PAPER_MVP_ALIGNMENT.md`.
-- Centralized, documented API configuration in `apps/api/src/config.ts`, and committed `.env.example` templates for `apps/api`, `apps/web`, and `apps/mobile`. Externalized all previously-hardcoded tunables (API timeouts, elevation-point cap, station search radius/limit, low-SoC threshold, routing detour/speed, Open-Meteo URL) to documented environment variables; `process.env` is now read in exactly one place.
+- Centralized, documented API configuration in `apps/api/src/config.ts`, and a single committed **root `.env.example`** consolidating every app's variables (the API loads the root `.env` via dotenv; the web app via Vite `envDir`). Externalized all previously-hardcoded tunables (API timeouts, elevation-point cap, station search radius/limit, low-SoC threshold, routing detour/speed, Open-Meteo URL) to documented environment variables; `process.env` is now read in exactly one place.
 
 ---
 

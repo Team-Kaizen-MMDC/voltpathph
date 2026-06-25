@@ -1,8 +1,14 @@
+import path from "path";
 import dotenv from "dotenv";
 
-// Load apps/api/.env into process.env (no-op in production where vars are
-// injected by the platform). This is the ONLY place dotenv is loaded.
-dotenv.config();
+// Load the monorepo ROOT `.env` into process.env (no-op in production, where
+// vars are injected by the platform). This is the ONLY place dotenv is loaded.
+// __dirname is apps/api/src (ts-node) or apps/api/dist (compiled); three levels
+// up is the repo root in both cases. Skipped under test so suites stay hermetic
+// (they set process.env explicitly).
+if (process.env.NODE_ENV !== "test") {
+  dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+}
 
 /**
  * Centralized, documented configuration for the Voltpath PH API.

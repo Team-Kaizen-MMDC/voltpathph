@@ -11,7 +11,7 @@ The Voltpath PH Mobile application is built with React Native and Expo. It is op
 - Node.js (v18+)
 - **Expo Go** app installed on your iOS/Android device.
 - Local API reachable from your mobile device.
-- Copy `apps/mobile/.env.example` to `.env` and set `EXPO_PUBLIC_API_URL` (use your dev machine's LAN IP on a physical device).
+- Set `EXPO_PUBLIC_API_URL` in the root `.env` (copied from the root `.env.example`); use your dev machine's LAN IP on a physical device. (Mobile env loading is wired when the API integration lands.)
 
 ### Local Development
 

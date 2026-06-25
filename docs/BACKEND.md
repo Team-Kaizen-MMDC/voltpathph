@@ -14,7 +14,7 @@ The Voltpath PH Backend is a Node.js Express application built with TypeScript a
 
 ### Environment Variables
 
-The complete, commented list of variables — including optional tuning knobs — is in **`apps/api/.env.example`**; copy it to `.env` and fill in real values. All variables are read centrally in **`src/config.ts`** (with safe defaults), so add new configuration there rather than reading `process.env` elsewhere. Against Supabase, prefer the single `DATABASE_URL` connection string (use the **session pooler on port 5432** or the direct connection — not the transaction pooler on 6543, which TypeORM's prepared statements don't support):
+The complete, commented list of variables — including optional tuning knobs — is in the **root `.env.example`** (a single consolidated file for all apps); copy it to a root `.env` and fill in real values. All API variables are read centrally in **`src/config.ts`** (with safe defaults, loading the repo-root `.env`), so add new configuration there rather than reading `process.env` elsewhere. Against Supabase, prefer the single `DATABASE_URL` connection string (use the **session pooler on port 5432** or the direct connection — not the transaction pooler on 6543, which TypeORM's prepared statements don't support):
 
 ```env
 PORT=3001

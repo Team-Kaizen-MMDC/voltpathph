@@ -66,7 +66,7 @@ voltpathph/
    ```
 
 4. Set up environment variables:
-   Copy each app's `.env.example` to `.env` and fill in your credentials — at minimum `apps/api/.env` (database, Supabase, Google Maps) and `apps/web/.env` (`VITE_API_URL`). Every API variable is documented in `apps/api/.env.example` and read centrally in `apps/api/src/config.ts`.
+   Copy the **root** `.env.example` to a root `.env` (one consolidated file for all apps) and fill in your credentials (database, Supabase, Google Maps, `VITE_API_URL`). The API reads it via `apps/api/src/config.ts`; the web app reads its `VITE_*` vars from it via Vite's `envDir`.
 
 5. Run the development environment:
    ```bash

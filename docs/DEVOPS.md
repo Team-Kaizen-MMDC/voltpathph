@@ -102,7 +102,7 @@ Environment variables are handled per-app within the monorepo:
 
 ### Secret Management
 
-- **Never commit `.env` files** (they are gitignored). Each app ships a committed **`.env.example`** template (`apps/api`, `apps/web`, `apps/mobile`) — copy it to `.env` and fill in.
+- **Never commit `.env` files** (they are gitignored). A single committed **`.env.example`** at the repo root is the template for all apps — copy it to a root `.env` and fill in. (The API loads it via dotenv; the web app via Vite `envDir`; Vite/Expo only expose `VITE_*`/`EXPO_PUBLIC_*` vars, so API secrets in the shared file never reach the client bundles.)
 - All API configuration is centralized and documented in **`apps/api/src/config.ts`** (environment variables with safe defaults); never hardcode config or secrets elsewhere in the code.
 - Use the **1Password CLI** or **GitHub Secrets** to share development secrets securely among the team, and inject production values via the Railway/Supabase dashboards.
 
