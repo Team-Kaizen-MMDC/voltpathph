@@ -11,6 +11,13 @@ import {
 } from "lucide-react";
 import { getEvModels, optimizeTrip } from "../api/client";
 
+// Temporary demo coordinates used until Places Autocomplete (geocoding) is wired
+// up; the text inputs are sent as the human-readable address only. Replace with
+// geocoded coordinates from the origin/destination fields when autocomplete lands.
+const DEMO_ORIGIN = { lat: 14.5995, lng: 120.9842 }; // Manila
+const DEMO_DESTINATION = { lat: 15.145, lng: 120.5887 }; // Angeles
+const DEFAULT_INITIAL_BATTERY_PERCENT = 100;
+
 const TripPlanner: React.FC = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
@@ -30,10 +37,10 @@ const TripPlanner: React.FC = () => {
   const handlePlan = (e: React.FormEvent) => {
     e.preventDefault();
     const plan: TripPlan = {
-      origin: { lat: 14.5995, lng: 120.9842, address: origin }, // Manila
-      destination: { lat: 15.145, lng: 120.5887, address: destination }, // Angeles
+      origin: { ...DEMO_ORIGIN, address: origin },
+      destination: { ...DEMO_DESTINATION, address: destination },
       evModelId: models[0]?.id ?? "",
-      initialBatteryPercentage: 100,
+      initialBatteryPercentage: DEFAULT_INITIAL_BATTERY_PERCENT,
     };
     mutate(plan);
   };

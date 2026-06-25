@@ -66,7 +66,7 @@ voltpathph/
    ```
 
 4. Set up environment variables:
-   Copy `.env.example` in `apps/api` to `.env` and fill in your credentials.
+   Copy each app's `.env.example` to `.env` and fill in your credentials — at minimum `apps/api/.env` (database, Supabase, Google Maps) and `apps/web/.env` (`VITE_API_URL`). Every API variable is documented in `apps/api/.env.example` and read centrally in `apps/api/src/config.ts`.
 
 5. Run the development environment:
    ```bash

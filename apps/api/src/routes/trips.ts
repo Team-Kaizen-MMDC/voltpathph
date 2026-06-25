@@ -10,6 +10,7 @@ import {
 } from "@voltph/shared";
 import { getRouteData, type LatLng } from "../services/maps";
 import { requireAuth } from "../middleware/auth";
+import { config } from "../config";
 
 const router = Router();
 
@@ -18,13 +19,10 @@ const round = (value: number, decimals: number): number => {
   return Math.round(value * factor) / factor;
 };
 
-/** SoC below which the trip needs a charging stop recommendation. */
-const LOW_SOC_THRESHOLD = 20;
-
 async function findStationsNearby(
   point: LatLng,
-  radiusMeters = 10000,
-  limit = 5,
+  radiusMeters = config.stations.searchRadiusM,
+  limit = config.stations.nearbyLimit,
 ): Promise<SharedChargingStation[]> {
   try {
     const rows = await AppDataSource.getRepository(ChargingStation)
@@ -90,7 +88,7 @@ router.post("/optimize", requireAuth, async (req, res, next) => {
     });
 
     const recommendedChargingStops =
-      energy.remainingSocPercent < LOW_SOC_THRESHOLD
+      energy.remainingSocPercent < config.trip.lowSocThresholdPercent
         ? await findStationsNearby(plan.destination)
         : [];
 

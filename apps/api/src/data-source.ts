@@ -2,31 +2,22 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { EVModel } from "./entities/EVModel";
 import { ChargingStation } from "./entities/ChargingStation";
-import dotenv from "dotenv";
+import { config } from "./config";
 
-dotenv.config();
+const { db } = config;
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL,
-  host: !process.env.DATABASE_URL
-    ? process.env.DB_HOST || "localhost"
-    : undefined,
-  port: !process.env.DATABASE_URL
-    ? parseInt(process.env.DB_PORT || "5432")
-    : undefined,
-  username: !process.env.DATABASE_URL
-    ? process.env.DB_USERNAME || "postgres"
-    : undefined,
-  password: !process.env.DATABASE_URL
-    ? process.env.DB_PASSWORD || "password"
-    : undefined,
-  database: !process.env.DATABASE_URL
-    ? process.env.DB_DATABASE || "voltph"
-    : undefined,
-  // Auto-sync schema in development only. In production set NODE_ENV=production
-  // and apply migrations explicitly (npm run migration:run).
-  synchronize: process.env.NODE_ENV !== "production",
+  // Prefer the full connection string; fall back to discrete vars for local dev.
+  url: db.url,
+  host: db.url ? undefined : db.host,
+  port: db.url ? undefined : db.port,
+  username: db.url ? undefined : db.username,
+  password: db.url ? undefined : db.password,
+  database: db.url ? undefined : db.database,
+  // Auto-sync schema in development only; production uses explicit migrations
+  // (npm run migration:run).
+  synchronize: !config.isProduction,
   logging: false,
   entities: [EVModel, ChargingStation],
   migrations: [__dirname + "/migrations/*.{ts,js}"],

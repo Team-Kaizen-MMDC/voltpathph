@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import type { Request, Response, NextFunction } from "express";
+import { config } from "../config";
 
 export interface SupabaseJwtPayload {
   sub: string;
@@ -33,10 +34,10 @@ export function requireAuth(
   res: Response,
   next: NextFunction,
 ): void {
-  const secret = process.env.SUPABASE_JWT_SECRET;
+  const secret = config.supabase.jwtSecret;
 
   if (!secret) {
-    if (process.env.NODE_ENV === "production") {
+    if (config.isProduction) {
       res
         .status(500)
         .json({ message: "Server authentication is not configured" });

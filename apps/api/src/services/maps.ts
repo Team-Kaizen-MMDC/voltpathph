@@ -1,6 +1,7 @@
 import { Client } from "@googlemaps/google-maps-services-js";
 import type { RouteSegment, TrafficLevel } from "@voltph/shared";
 import { getTemperatureC } from "./weather";
+import { config } from "../config";
 
 export interface LatLng {
   lat: number;
@@ -17,7 +18,6 @@ export interface RouteData {
 }
 
 const EARTH_RADIUS_KM = 6371;
-const MAX_ELEVATION_POINTS = 350; // Elevation API allows up to 512 locations/call
 const client = new Client({});
 
 function haversineKm(a: LatLng, b: LatLng): number {
@@ -46,11 +46,12 @@ async function fetchElevations(
   points: LatLng[],
   key: string,
 ): Promise<number[] | null> {
-  if (points.length < 2 || points.length > MAX_ELEVATION_POINTS) return null;
+  if (points.length < 2 || points.length > config.googleMaps.maxElevationPoints)
+    return null;
   try {
     const res = await client.elevation({
       params: { locations: points, key },
-      timeout: 6000,
+      timeout: config.googleMaps.elevationTimeoutMs,
     });
     return res.data.results.map((r) => r.elevation);
   } catch {
@@ -65,8 +66,9 @@ function estimateFallback(
 ): RouteData {
   // No API key / API failure: straight-line distance with a road-network detour
   // factor and a nominal urban PH average speed. Keeps the API functional.
-  const distanceKm = haversineKm(origin, destination) * 1.3;
-  const durationMin = (distanceKm / 30) * 60;
+  const distanceKm =
+    haversineKm(origin, destination) * config.routing.detourFactor;
+  const durationMin = (distanceKm / config.routing.fallbackAvgSpeedKmh) * 60;
   return {
     distanceKm,
     durationMin,
@@ -105,7 +107,7 @@ export async function getRouteData(
   const temperatureC =
     (await getTemperatureC(midpoint.lat, midpoint.lng)) ?? undefined;
 
-  const key = process.env.GOOGLE_MAPS_API_KEY;
+  const key = config.googleMaps.apiKey;
   if (!key) return estimateFallback(origin, destination, temperatureC);
 
   try {
@@ -116,7 +118,7 @@ export async function getRouteData(
         departure_time: "now",
         key,
       },
-      timeout: 8000,
+      timeout: config.googleMaps.directionsTimeoutMs,
     });
 
     const leg = res.data.routes[0]?.legs?.[0];

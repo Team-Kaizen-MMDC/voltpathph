@@ -5,13 +5,15 @@
  * Returns null on any failure (offline, timeout, bad response) so callers fall
  * back to the model's baseline temperature rather than erroring the request.
  */
+import { config } from "../config";
+
 export async function getTemperatureC(
   lat: number,
   lng: number,
-  timeoutMs = 3000,
+  timeoutMs = config.weather.timeoutMs,
 ): Promise<number | null> {
   const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}` +
+    `${config.weather.openMeteoUrl}?latitude=${lat}` +
     `&longitude=${lng}&current=temperature_2m`;
 
   const controller = new AbortController();

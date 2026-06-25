@@ -5,25 +5,17 @@ import express, {
   type Response,
 } from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+import { config } from "./config";
 import { AppDataSource } from "./data-source";
 import evModelRoutes from "./routes/evModels";
 import stationRoutes from "./routes/stations";
 import tripRoutes from "./routes/trips";
 
-dotenv.config();
-
 const app = express();
-const port = process.env.PORT || 3001;
 
 // Restrict CORS to configured web origins in production; reflect origin in dev.
-const allowedOrigins = process.env.WEB_ORIGIN?.split(",").map((o) => o.trim());
-app.use(
-  cors({
-    origin: allowedOrigins && allowedOrigins.length ? allowedOrigins : true,
-  }),
-);
-app.use(express.json({ limit: "1mb" }));
+app.use(cors({ origin: config.webOrigins.length ? config.webOrigins : true }));
+app.use(express.json({ limit: config.jsonBodyLimit }));
 
 app.use("/api/ev-models", evModelRoutes);
 app.use("/api/stations", stationRoutes);
@@ -47,8 +39,10 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 AppDataSource.initialize()
   .then(() => {
     console.log("Data Source has been initialized!");
-    app.listen(port, () => {
-      console.log(`VoltPath PH API listening at http://localhost:${port}`);
+    app.listen(config.port, () => {
+      console.log(
+        `VoltPath PH API listening at http://localhost:${config.port}`,
+      );
     });
   })
   .catch((err) => {

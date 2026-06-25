@@ -102,8 +102,9 @@ Environment variables are handled per-app within the monorepo:
 
 ### Secret Management
 
-- **Never commit `.env` files.**
-- Use the **1Password CLI** or **GitHub Secrets** to share development secrets securely among the team.
+- **Never commit `.env` files** (they are gitignored). Each app ships a committed **`.env.example`** template (`apps/api`, `apps/web`, `apps/mobile`) — copy it to `.env` and fill in.
+- All API configuration is centralized and documented in **`apps/api/src/config.ts`** (environment variables with safe defaults); never hardcode config or secrets elsewhere in the code.
+- Use the **1Password CLI** or **GitHub Secrets** to share development secrets securely among the team, and inject production values via the Railway/Supabase dashboards.
 
 ## 🛠 Infrastructure Commands (Root)
 
