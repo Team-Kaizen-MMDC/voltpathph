@@ -4,7 +4,7 @@ import { EVModel } from "../entities/EVModel";
 import { ChargingStation } from "../entities/ChargingStation";
 import {
   TripPlanSchema,
-  estimateTripEnergy,
+  estimateRouteEnergy,
   type ChargingStation as SharedChargingStation,
   type TripResult,
 } from "@voltph/shared";
@@ -82,15 +82,11 @@ router.post("/optimize", requireAuth, async (req, res, next) => {
 
     const route = await getRouteData(plan.origin, plan.destination);
 
-    const energy = estimateTripEnergy({
-      distanceKm: route.distanceKm,
+    const energy = estimateRouteEnergy({
+      segments: route.segments,
       baseConsumptionKWhPerKm: evModel.averageConsumptionKWhPerKm,
       batteryCapacityKWh: evModel.batteryCapacityKWh,
       initialSocPercent: plan.initialBatteryPercentage,
-      conditions: {
-        trafficLevel: route.trafficLevel,
-        gradePercent: route.avgGradePercent,
-      },
     });
 
     const recommendedChargingStops =

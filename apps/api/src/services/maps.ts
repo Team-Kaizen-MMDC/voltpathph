@@ -1,5 +1,5 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import type { TrafficLevel } from "@voltph/shared";
+import type { RouteSegment, TrafficLevel } from "@voltph/shared";
 
 export interface LatLng {
   lat: number;
@@ -9,14 +9,14 @@ export interface LatLng {
 export interface RouteData {
   distanceKm: number;
   durationMin: number;
-  trafficLevel: TrafficLevel;
-  /** Net grade between endpoints, in percent. */
-  avgGradePercent: number;
+  /** Per-segment breakdown for the Tier-2 energy model. */
+  segments: RouteSegment[];
   /** Where the figures came from: a live Google call or a local estimate. */
   source: "google" | "estimate";
 }
 
 const EARTH_RADIUS_KM = 6371;
+const MAX_ELEVATION_POINTS = 350; // Elevation API allows up to 512 locations/call
 const client = new Client({});
 
 function haversineKm(a: LatLng, b: LatLng): number {
@@ -41,84 +41,111 @@ function classifyTraffic(
   return "heavy";
 }
 
-async function netGradePercent(
-  origin: LatLng,
-  destination: LatLng,
-  distanceKm: number,
+async function fetchElevations(
+  points: LatLng[],
   key: string,
-): Promise<number> {
-  if (distanceKm <= 0) return 0;
+): Promise<number[] | null> {
+  if (points.length < 2 || points.length > MAX_ELEVATION_POINTS) return null;
   try {
     const res = await client.elevation({
-      params: { locations: [origin, destination], key },
-      timeout: 5000,
+      params: { locations: points, key },
+      timeout: 6000,
     });
-    const results = res.data.results;
-    if (results.length >= 2) {
-      const rise = results[1].elevation - results[0].elevation;
-      return (rise / (distanceKm * 1000)) * 100;
-    }
+    return res.data.results.map((r) => r.elevation);
   } catch {
-    // ignore — fall back to flat
+    return null;
   }
-  return 0;
+}
+
+function estimateFallback(origin: LatLng, destination: LatLng): RouteData {
+  // No API key / API failure: straight-line distance with a road-network detour
+  // factor and a nominal urban PH average speed. Keeps the API functional.
+  const distanceKm = haversineKm(origin, destination) * 1.3;
+  const durationMin = (distanceKm / 30) * 60;
+  return {
+    distanceKm,
+    durationMin,
+    source: "estimate",
+    segments: [
+      {
+        distanceKm,
+        durationMin,
+        trafficLevel: classifyTraffic(distanceKm, durationMin),
+        deltaElevationM: 0,
+      },
+    ],
+  };
 }
 
 /**
- * Resolve route distance/duration/traffic/grade.
- * Uses the Google Directions + Elevation APIs when `GOOGLE_MAPS_API_KEY` is set,
- * and falls back to a haversine-based estimate otherwise so the endpoint always
- * returns real, input-derived figures (never hard-coded mock values).
+ * Resolve route distance/duration and a per-segment breakdown (distance,
+ * traffic-scaled duration, signed elevation change) for the Tier-2 energy model.
+ *
+ * Uses Google Directions (per-step geometry) + one Elevation lookup when
+ * `GOOGLE_MAPS_API_KEY` is set; otherwise returns a single-segment haversine
+ * estimate so the endpoint always works.
  */
 export async function getRouteData(
   origin: LatLng,
   destination: LatLng,
 ): Promise<RouteData> {
   const key = process.env.GOOGLE_MAPS_API_KEY;
+  if (!key) return estimateFallback(origin, destination);
 
-  if (key) {
-    try {
-      const res = await client.directions({
-        params: {
-          origin: `${origin.lat},${origin.lng}`,
-          destination: `${destination.lat},${destination.lng}`,
-          departure_time: "now",
-          key,
-        },
-        timeout: 8000,
-      });
-      const leg = res.data.routes[0]?.legs?.[0];
-      if (leg) {
-        const distanceKm = leg.distance.value / 1000;
-        const durationMin =
-          (leg.duration_in_traffic?.value ?? leg.duration.value) / 60;
-        return {
-          distanceKm,
-          durationMin,
-          trafficLevel: classifyTraffic(distanceKm, durationMin),
-          avgGradePercent: await netGradePercent(
-            origin,
-            destination,
-            distanceKm,
-            key,
-          ),
-          source: "google",
-        };
-      }
-    } catch {
-      // fall through to the estimate below
-    }
+  try {
+    const res = await client.directions({
+      params: {
+        origin: `${origin.lat},${origin.lng}`,
+        destination: `${destination.lat},${destination.lng}`,
+        departure_time: "now",
+        key,
+      },
+      timeout: 8000,
+    });
+
+    const leg = res.data.routes[0]?.legs?.[0];
+    const steps = leg?.steps;
+    if (!leg || !steps?.length) return estimateFallback(origin, destination);
+
+    const totalDistanceKm = leg.distance.value / 1000;
+    const baseDurationSec = leg.duration.value || 1;
+    const trafficDurationSec =
+      leg.duration_in_traffic?.value ?? baseDurationSec;
+    // Distribute observed traffic delay proportionally across steps so the
+    // time-based auxiliary (AC) term reflects congestion.
+    const trafficFactor = trafficDurationSec / baseDurationSec;
+
+    // Boundary points: start of first step, then the end of every step.
+    const points: LatLng[] = [
+      { lat: steps[0].start_location.lat, lng: steps[0].start_location.lng },
+      ...steps.map((s) => ({
+        lat: s.end_location.lat,
+        lng: s.end_location.lng,
+      })),
+    ];
+    const elevations = await fetchElevations(points, key);
+
+    const segments: RouteSegment[] = steps.map((step, i) => {
+      const distanceKm = step.distance.value / 1000;
+      const durationMin = ((step.duration.value || 0) * trafficFactor) / 60;
+      const deltaElevationM = elevations
+        ? elevations[i + 1] - elevations[i]
+        : 0;
+      return {
+        distanceKm,
+        durationMin,
+        deltaElevationM,
+        trafficLevel: classifyTraffic(distanceKm, durationMin),
+      };
+    });
+
+    return {
+      distanceKm: totalDistanceKm,
+      durationMin: trafficDurationSec / 60,
+      source: "google",
+      segments,
+    };
+  } catch {
+    return estimateFallback(origin, destination);
   }
-
-  // Fallback: straight-line distance with a road-network detour factor and a
-  // nominal urban PH average speed. Keeps the API functional without a key.
-  const distanceKm = haversineKm(origin, destination) * 1.3;
-  const durationMin = (distanceKm / 30) * 60;
-  return {
-    distanceKm,
-    durationMin,
-    trafficLevel: classifyTraffic(distanceKm, durationMin),
-    avgGradePercent: 0,
-    source: "estimate",
-  };
 }
