@@ -4,21 +4,23 @@
 
 The Voltpath PH Mobile application is built with React Native and Expo. It is optimized for on-the-go EV trip monitoring and locating charging stations across the Philippines.
 
+> **Status:** The three MVP screens, navigation, Supabase Auth, and place search are implemented and pass `npm run typecheck` (wired into CI), but are **not yet runtime-verified on a simulator/device**. Run via Expo Go (below) to validate the UI.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js (v18+)
 - **Expo Go** app installed on your iOS/Android device.
-- Local API reachable from your mobile device.
-- Set `EXPO_PUBLIC_API_URL` in the root `.env` (copied from the root `.env.example`); use your dev machine's LAN IP on a physical device. (Mobile env loading is wired when the API integration lands.)
+- The API running locally and reachable from the device.
+- `EXPO_PUBLIC_API_URL` set in the root `.env` (copied from `.env.example`) — use your dev machine's LAN IP on a physical device, **not** `localhost`.
 
 ### Local Development
 
-1. Navigate to the mobile directory: `cd apps/mobile`
-2. Install dependencies: `npm install`
-3. Start Expo: `npm run start`
-4. Scan the QR code with your device or run on an emulator (`a` for Android, `i` for iOS).
+1. From the repo root, start the backend: `npm run db:up` then `npm run dev` (API on `:3001`).
+2. Set `EXPO_PUBLIC_API_URL` in the root `.env` (LAN IP for a physical device).
+3. Start Expo: `cd apps/mobile && npm run start`.
+4. Open in **Expo Go** (scan the QR) or an emulator (`a` for Android, `i` for iOS).
 
 ## 🗺 Features & Libraries
 
@@ -44,6 +46,17 @@ The Voltpath PH Mobile application is built with React Native and Expo. It is op
   - `ResultScreen` — distance / duration / energy, a **green/amber/red reachability verdict**, a `MapView`, and the charging-station list.
   - `StationDetailScreen` — station provider, connectors, power, availability.
 - **Type Safety:** shares DTOs with the backend via `@voltph/shared`; run `npm run typecheck` (also wired into CI).
+
+## ⚙️ Configuration & graceful fallbacks
+
+The app runs with **no external services** for local UI testing; each integration activates only when configured:
+
+| Capability        | Needs                                                        | Without it                                                                          |
+| ----------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| API base URL      | `EXPO_PUBLIC_API_URL`                                        | defaults to `http://localhost:3001`                                                 |
+| Sign-in gate      | `EXPO_PUBLIC_SUPABASE_URL` + `EXPO_PUBLIC_SUPABASE_ANON_KEY` | auth is skipped — app opens straight to Trip Planner (the API's dev-bypass applies) |
+| Live place search | `GOOGLE_MAPS_API_KEY` **on the API**                         | `/places/search` returns a built-in PH gazetteer                                    |
+| Android map tiles | `android.config.googleMaps.apiKey` in `app.json`             | iOS uses Apple Maps (works); the Android map renders blank                          |
 
 ## 📱 Platform Specifics
 
