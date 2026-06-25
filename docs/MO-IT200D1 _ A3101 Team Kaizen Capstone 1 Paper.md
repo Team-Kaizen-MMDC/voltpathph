@@ -791,23 +791,23 @@ Deliverables:
 - Charging station locator module
 - Geospatial query services
 
-**Phase 4: Intelligent Routing and Charging Integration (Sprints 7–8)**  
+**Phase 4: Energy-Aware Routing and Charging Integration (Sprints 7–8)**  
 This phase focuses on charging station accessibility and energy-aware route information — annotating the recommended route with predicted energy and State-of-Charge. (Ranking alternative routes by energy is Phase 2 / Future Work.)  
 Activities include:
 
-- Developing energy-efficient route recommendations.
-- Implementing traffic-aware routing.
+- Annotating the recommended route with predicted energy consumption and per-waypoint State-of-Charge.
+- Integrating traffic-aware route data via the Google Maps Routes API.
 - Integrating charging station data into the navigation system.
 - Creating charging station search and filtering functions.
 - Implementing radius-based charging station lookups using PostGIS.
-- Developing charging-aware route suggestions.
-- Displaying reachable travel zones and route alternatives.
+- Surfacing charging-aware suggestions (stations along or near the route).
+- Displaying reachable travel zones and per-waypoint SoC. (Ranking alternative routes by predicted energy is Phase 2 / Future Work.)
 
 Deliverables:
 
-- Route optimization module
+- Energy-aware route annotation module (per-segment energy and SoC)
 - Charging station locator
-- Intelligent navigation system
+- Range- and charging-aware navigation interface
 
 **Phase 5: System Refinement and Testing (Sprints 9–10)**  
 The final phase focuses on testing, optimization, and system preparation.  
@@ -835,13 +835,13 @@ Deliverables:
 
 **Table 5.** _Sprint Timeline_
 
-| Sprint      | Major Activities                                                                                     |
-| :---------- | :--------------------------------------------------------------------------------------------------- |
-| Sprint 1-2  | Project Setup, UI/UX Development                                                                     |
-| Sprint 3-4  | Database Design, Backend Development, and Core System Architecture setup                             |
-| Sprint 5-6  | Google Maps API Integration, EV Range Prediction Model Development, and SoC Estimation Module        |
-| Sprint 7-8  | Intelligent Routing, Charging Station Integration, and Geospatial Processing using PostGIS           |
-| Sprint 9-10 | System Testing, Model Validation (MAPE & RMSE), Optimization, Bug Fixing, and Deployment Preparation |
+| Sprint      | Major Activities                                                                                      |
+| :---------- | :---------------------------------------------------------------------------------------------------- |
+| Sprint 1-2  | Project Setup, UI/UX Development                                                                      |
+| Sprint 3-4  | Database Design, Backend Development, and Core System Architecture setup                              |
+| Sprint 5-6  | Google Maps API Integration, EV Range Prediction Model Development, and SoC Estimation Module         |
+| Sprint 7-8  | Energy-Aware Route Information, Charging Station Integration, and Geospatial Processing using PostGIS |
+| Sprint 9-10 | System Testing, Model Validation (MAPE & RMSE), Optimization, Bug Fixing, and Deployment Preparation  |
 
 **Table 6.** _Sprint Deliverables_
 
