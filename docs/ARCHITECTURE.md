@@ -81,7 +81,7 @@ graph TB
 
 ## Sequence Diagram: Trip Optimization Workflow
 
-This diagram illustrates the flow of data when a user plans a trip and requests route optimization.
+This diagram illustrates the flow of data when a user plans a trip and requests a range and State-of-Charge estimate.
 
 ```mermaid
 sequenceDiagram

@@ -9,18 +9,19 @@
 
 ## 🚀 Key Features
 
-- **Trip Optimization Engine:** Calculate the most efficient route considering Philippine traffic patterns and elevation.
-- **Battery Efficiency Prediction:** Tailored consumption models for popular PH EV brands (BYD, Jetour, Geely, Vinfast).
+- **Localized Range & SoC Prediction:** Estimate battery use and predicted arrival State-of-Charge for a route using a rule-based model calibrated to Philippine traffic, terrain, and heat. _(Energy-efficient route ranking is planned for Phase 2.)_
+- **Battery Efficiency Prediction:** Consumption model calibrated for a reference vehicle (Geely EX5 Em-i Max), with other PH brands (BYD, Jetour, Vinfast) using labeled manufacturer defaults.
 - **Charging Station Locator:** Real-time map of charging stations with plug-type filtering and availability status.
 - **Multi-Platform Support:** Seamless experience across Web and Mobile (React Native).
 
 ## 🛠 Tech Stack
 
 - **Monorepo:** [Turborepo](https://turbo.build/)
-- **Backend:** Node.js (Express), TypeORM, PostgreSQL + PostGIS
+- **Backend:** Node.js (Express), TypeORM
+- **Data & Auth:** Supabase (PostgreSQL + PostGIS, Supabase Auth)
 - **Frontend (Web):** React, TypeScript, Vite
 - **Frontend (Mobile):** React Native (Expo), TypeScript
-- **APIs:** Google Maps (Routes, Places)
+- **APIs:** Google Maps (Routes, Places, Elevation); Open-Meteo (weather)
 
 ## 📁 Project Structure
 
@@ -40,8 +41,8 @@ voltpathph/
 ### Prerequisites
 
 - Node.js (v18+)
-- PostgreSQL with PostGIS extension
-- Google Maps API Key
+- A Supabase project (PostgreSQL + PostGIS + Auth) — or local PostgreSQL/PostGIS for offline development
+- Google Maps API Key (Routes, Places, Elevation)
 
 ### Installation
 
@@ -74,7 +75,7 @@ voltpathph/
 
 ## 🌍 Deployment
 
-We use **Railway** for production hosting. It automatically handles our monorepo structure via the `railway.json` configuration. See the [DevOps Guide](docs/DEVOPS.md) for detailed instructions on provisioning PostgreSQL/PostGIS and setting up service networking.
+We use **Railway** for the API/web compute (via `railway.json`) and **Supabase** for the database, PostGIS, and authentication. See the [DevOps Guide](docs/DEVOPS.md) for provisioning Supabase (PostgreSQL/PostGIS), configuring environment variables, and CI.
 
 ## 📖 Documentation
 
@@ -83,6 +84,8 @@ We use **Railway** for production hosting. It automatically handles our monorepo
 - [Database Schema & Architecture Guide](./docs/DATABASE.md)
 - [Backend API Guide](./docs/BACKEND.md)
 - [Testing & Quality Assurance Guide](./docs/TESTING.md)
+- [Energy Model & SoC Algorithm](./docs/ENERGY_MODEL.md)
+- [MVP Scope & Feasibility](./docs/MVP_SCOPE_AND_FEASIBILITY.md)
 - [Frontend Web Guide](./docs/FRONTEND_WEB.md)
 - [Frontend Mobile Guide](./docs/FRONTEND_MOBILE.md)
 - [DevOps, Deployment & Branching Strategy](./docs/DEVOPS.md)

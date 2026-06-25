@@ -18,11 +18,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Realigned the `voltph-ev-physics` skill and related guidance to treat the paper's rule-based multiplicative energy model (`E = Ebase × Wtraffic × Welevation × Wtemperature`) as canonical, with the force-based physics model retained as labeled future work.
 - Hardened security, testing, DevOps, and documentation skills with concrete checklists (input validation, no raw error leakage, migrations over `synchronize`, CI workflow template, doc/code consistency mandate).
+- Implemented a real `/api/trips/optimize`: zod validation, Google Directions/Elevation routing (haversine fallback), the rule-based energy model, per-segment SoC, and a PostGIS nearby-station query — replacing the hard-coded mock.
+- Made the data source production-safe: env-gated `synchronize` (off in production), TypeORM migrations, and a Supabase Postgres connection story; added a central error handler, JSON body limit, and env-driven CORS allowlist.
+- Standardized the database/auth host on **Supabase** (DB + PostGIS + Supabase Auth) across the paper, docs, and skills; removed deferred physics columns from the documented schema.
+- Aligned the Capstone paper to the MVP scope: FR-03 (route ranking) and FR-10 (crowdsourcing) marked **Phase 2**; objectives, research questions, system goals, scope, testing, and conclusion reconciled; regression specified as **log-linear**.
+- Updated `README.md`, `docs/TESTING.md`, and `docs/TECH_STACK.md` to match the implemented stack and tests.
 
 ### Added
 
 - `docs/REVIEW_AND_IMPROVEMENTS.md` — advisory review of the codebase, documentation, and Capstone paper.
 - `voltph-capstone-paper` agent skill for maintaining the academic paper (APA, table/figure numbering, FR/NFR cross-reference integrity, proposal tense).
+- Rule-based energy model in `packages/shared/src/energy.ts` (Tier 1 multiplicative + Tier 2 per-segment with signed elevation and time-based AC) with 18 Vitest unit tests (`energy.test.ts`).
+- `apps/api/src/services/maps.ts` (Google Directions + Elevation, per-segment breakdown) and `services/weather.ts` (Open-Meteo ambient temperature).
+- `apps/api/src/middleware/auth.ts` — Supabase JWT verification (HS256 via Node `crypto`, no new dependency).
+- TypeORM initial migration (`apps/api/src/migrations/`) and `migration:run/revert/generate` scripts.
+- GitHub Actions CI (`.github/workflows/ci.yml`): install → build → lint → test.
+- Geely EX5 Em-i Max (the calibration vehicle) added to the EV seed.
+- `docs/ENERGY_MODEL.md`, `docs/MVP_SCOPE_AND_FEASIBILITY.md`, and `docs/PAPER_MVP_ALIGNMENT.md`.
 
 ---
 

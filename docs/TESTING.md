@@ -2,35 +2,37 @@
 
 This document details the testing architecture, validation protocols, and user acceptance criteria for the Voltpath PH platform.
 
+> **Status legend:** ✅ implemented today · 🔜 planned. The MVP scope is defined in [`MVP_SCOPE_AND_FEASIBILITY.md`](./MVP_SCOPE_AND_FEASIBILITY.md); the energy model is specified in [`ENERGY_MODEL.md`](./ENERGY_MODEL.md).
+
 ---
 
 ## 🧪 Testing Types Summary
 
-| Testing Type | Scope | Target Frameworks | Success Criteria |
-| :--- | :--- | :--- | :--- |
-| **Unit Testing** | Physics math engine, SoC depletion calculator, query builders, and zod validation schemas. | Jest (Backend / Shared), Vitest (Web) | $\ge 90\%$ code coverage on core calculation modules; all tests pass. |
-| **Integration Testing** | Dynamic API flows: optimization coordinates lookup, station buffer calculations, Google Maps SDK mapping, and Auth flows. | Jest, Supertest, Postman Collections | Correct HTTP status codes (200, 201, 400, 401, 404, 500) and schemas returned. |
-| **System Testing** | Full monorepo stack verification (client-to-API-to-database) on Railway staging environment. | React Native Component Testing, Playwright (Web) | All functional requirements (FR-01 to FR-08) verified on Android & iOS. |
-| **Model Validation** | Compare predicted energy usage against actual SoC logs using the **Geely EX5 Em-i Max** test vehicle. | Real-world road telemetry, Python/Node data analysis scripts | **MAPE $\le 15\%$** and **RMSE $\le 80$ Wh/km** across Metro Manila & Cavite routes. |
-| **UAT (User Acceptance)** | Researcher-driven scenario assessments (e.g., planning with low SoC, finding plugs, interpreting ranges). | SUS (System Usability Scale) Questionnaire | **Average SUS score $\ge 70$** across evaluators; unanimous "easy to use" rating. |
+| Testing Type              | Scope                                                                                                                                             | Target Frameworks                                                      | Success Criteria                                                                                              |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| **Unit Testing**          | Rule-based energy model (segment consumption, signed elevation energy, time-based auxiliary/AC load, per-segment SoC) and zod validation schemas. | Vitest (shared), Jest (api), Vitest + RTL (web)                        | ✅ Energy model covered (18 cases); 🔜 expand toward ≥ 90% coverage on core calculation modules.              |
+| **Integration Testing**   | API flows: `/api/trips/optimize` (validation → energy → stations), `/api/stations/nearby` PostGIS queries, Supabase-JWT auth middleware.          | Jest, Supertest, Postman Collections                                   | Correct HTTP status codes (200, 400, 401, 404, 500) and schema-valid payloads. 🔜                             |
+| **System Testing**        | Full monorepo stack (client → API → Supabase) on Railway staging.                                                                                 | Manual + 🔜 Playwright (web), `@testing-library/react-native` (mobile) | MVP functional requirements (FR-01, FR-02, FR-04–FR-09) verified on Android & iOS. FR-03 & FR-10 are Phase 2. |
+| **Model Validation**      | Compare predicted vs actual SoC using the **Geely EX5 Em-i Max** test vehicle.                                                                    | Real-world road telemetry, Python/Node analysis scripts                | **MAPE ≤ 15%** and **RMSE ≤ 80 Wh/km**, reported per route archetype on held-out segments.                    |
+| **UAT (User Acceptance)** | Researcher-driven scenarios (planning with low SoC, finding plugs, interpreting the SoC verdict).                                                 | SUS (System Usability Scale) Questionnaire                             | **Average SUS ≥ 70**; unanimous "easy to use" rating.                                                         |
 
 ---
 
 ## 📂 Testing Execution Commands
 
-Use these commands from the root directory to execute automated checks:
+Run from the repository root:
 
 ```bash
-# Run all tests in the Turborepo monorepo
+# Run all tests across the Turborepo monorepo
 npm run test
 
-# Run unit tests only on shared package logic (e.g. physics algorithms)
-npx turbo run test --filter=shared
+# Unit tests for the shared energy model (Vitest)
+npx turbo run test --filter=@voltph/shared
 
-# Run backend API integration tests
+# Backend API tests (Jest)
 npx turbo run test --filter=api
 
-# Run web vitest component checks
+# Web component/config tests (Vitest)
 npx turbo run test --filter=web
 ```
 
@@ -39,38 +41,45 @@ npx turbo run test --filter=web
 ## 🛠 Testing Framework Specifications
 
 ### 1. Unit Testing
-- **Backend / Shared:** Written using **Jest**. Focuses on the math engine in `packages/shared/src/physics.ts` to verify rolling resistance, drag computations, and auxiliary load additions.
-- **Frontend Web:** Powered by **Vitest** and **React Testing Library** for verifying UI component rendering and hook behaviors.
-- **Frontend Mobile:** Verified using **Jest** and `@testing-library/react-native`.
+
+- **Shared (energy model):** ✅ Written using **Vitest** in `packages/shared/src/energy.test.ts`. Verifies the rule-based model end-to-end with known input/output pairs: traffic/elevation/temperature weights, **signed elevation energy** (regen on descents), **time-based auxiliary/AC energy**, `segmentEnergyWh`, and `estimateRouteEnergy` (cumulative SoC, per-waypoint SoC, min-SoC, negative arrival SoC = "won't make it", zero-capacity guard).
+- **Backend (api):** **Jest** + Supertest. Currently covers deployment/data-source configuration; 🔜 endpoint logic.
+- **Frontend Web:** **Vitest** + React Testing Library.
+- **Frontend Mobile:** 🔜 **Jest** + `@testing-library/react-native`.
+
+> The model is rule-based (`E = Ebase × Wtraffic × Welevation × Wtemperature`); the force-based physics model is future work and is **not** under test. Calibration constants in `energy.ts` are placeholders until the test-drive regression replaces them.
 
 ### 2. Integration Testing
-- Test suites are configured in `apps/api/test/` using **Supertest** to mock HTTP operations.
-- **Key Scenarios Checked:**
-  1. `/api/trips/optimize`: Submitting valid and invalid `TripPlan` payloads, ensuring it coordinates with the mocked Google Maps SDK and returns valid `TripResult` schemas.
-  2. `/api/stations/nearby`: Checking radius-based geospatial queries, verifying that PostGIS retrieves stations inside the spatial search parameters.
-  3. `/api/auth/register` & `/api/auth/login`: Verifying registration validation, duplicate email guards, password hashing, and token signature validation.
+
+- Test suites live in `apps/api/test/` (Supertest).
+- **Key scenarios:**
+  1. `/api/trips/optimize` — submit valid/invalid `TripPlan` payloads (zod-validated); with `GOOGLE_MAPS_API_KEY` set it calls Google Directions/Elevation, otherwise a haversine estimate; returns a schema-valid `TripResult`. 🔜
+  2. `/api/stations/nearby` — radius-based PostGIS `ST_DWithin` queries return stations within the search area. 🔜
+  3. **Authentication** — the API does not expose register/login endpoints; **Supabase Auth** issues tokens and the API's `requireAuth` middleware verifies the Supabase JWT (`SUPABASE_JWT_SECRET`) on protected routes. Tests cover valid/expired/invalid-signature tokens and the dev bypass. 🔜
 
 ---
 
 ## 🚗 Model Validation Protocol (Road Test Drives)
 
-To validate the EV range prediction engine against real Philippine road and traffic conditions:
-1. **Test Vehicle:** **Geely EX5 Em-i Max** (Curb weight: ~1600kg, Drag Coefficient $C_d$: 0.26).
-2. **Test Route Corridors:** Metro Manila urban streets (stop-and-go congestion) and elevation climbs in Cavite/Tagaytay.
-3. **Telemetry Tracking:** Drivers log coordinates, timestamps, travel speed, and real-time battery State-of-Charge (SoC) percentages at specific markers.
-4. **Calculations Validation:**
-   - **Mean Absolute Percentage Error (MAPE):**
-     $$\text{MAPE} = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{\text{Actual SoC}_t - \text{Predicted SoC}_t}{\text{Actual SoC}_t} \right| \le 15\%$$
-   - **Root Mean Square Error (RMSE):**
-     $$\text{RMSE} = \sqrt{\frac{1}{n} \sum_{t=1}^{n} (\text{Actual Wh/km}_t - \text{Predicted Wh/km}_t)^2} \le 80 \text{ Wh/km}$$
-   - *Recalibration Procedure:* If thresholds are exceeded, the physics weight factors (traffic drag multipliers, AC temperature load constants) will be re-run against the expanded telemetry dataset using linear regression.
+To validate the rule-based energy/SoC model against real Philippine road and traffic conditions:
+
+1. **Test Vehicle:** **Geely EX5 Em-i Max** (the single calibrated reference vehicle; baseline consumption and `REFERENCE_VEHICLE` parameters in `energy.ts` are placeholders pending calibration).
+2. **Route Corridors:** the four archetypes — heavy traffic, mixed, elevation (Cavite/Tagaytay climbs), and highway (Skyway/SLEX).
+3. **Telemetry:** log coordinates, timestamps, speed, distance, traffic level, road grade, ambient temperature, and start/end SoC per segment.
+4. **Metrics:**
+   - **MAPE:** $$\text{MAPE} = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{\text{Actual}_t - \text{Predicted}_t}{\text{Actual}_t} \right| \le 15\%$$
+   - **RMSE:** $$\text{RMSE} = \sqrt{\frac{1}{n} \sum_{t=1}^{n} (\text{Actual Wh/km}_t - \text{Predicted Wh/km}_t)^2} \le 80 \text{ Wh/km}$$
+   - Report **per route archetype** on **held-out** segments (not the rows used to fit the weights).
+   - _Recalibration:_ fit the multiplicative weights via **log-linear regression** (`ln(E) = ln(Ebase) + Σ βᵢ·xᵢ` ⇒ `Wᵢ = exp(βᵢ·xᵢ)`); if thresholds are exceeded, re-run on an expanded dataset and recalibrate.
 
 ---
 
 ## 📋 User Acceptance Testing (UAT)
-Conducted internally by developers/evaluators assessing specific usability parameters:
+
+Conducted internally by developers/evaluators:
+
 - **Predefined Scenarios:**
-  - *Scenario A:* Plan a trip from Manila to Tagaytay with an initial SoC of $35\%$, verifying that the system recommends charging stops along the route.
-  - *Scenario B:* Identify and filter charging stations by CCS2 plug type on the mobile map sheet.
-  - *Scenario C:* View and report a broken charger status at a simulated station.
-- **System Usability Scale (SUS):** Evaluators complete the standard 10-item Likert scale questionnaire. The average rating must exceed **70** to pass UAT boundaries.
+  - _Scenario A:_ Plan Manila → Tagaytay with an initial SoC of 35%, verifying the SoC prediction and the reachability verdict, and that charging stations are surfaced along the route.
+  - _Scenario B:_ Identify and filter charging stations by CCS2 plug type on the mobile map.
+  - _Scenario C (Phase 2):_ Submit/view a charger status report (crowdsourced reporting, FR-10) — deferred to Phase 2.
+- **System Usability Scale (SUS):** evaluators complete the 10-item questionnaire; average must exceed **70** to pass.
