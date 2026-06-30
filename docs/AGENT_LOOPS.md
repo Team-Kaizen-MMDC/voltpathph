@@ -213,7 +213,119 @@ make _both_ interactive and headless loops better:
 
 ---
 
-## 6. Failure modes & guardrails ⚠️
+## 6. Sample agentic loop prompts (Agentic SDLC)
+
+The agentic loop maps cleanly onto the software development lifecycle: each phase is
+the **same** gather → act → verify cycle pointed at a different goal. The quality of
+the run is set almost entirely by the **prompt**. Use this skeleton, then see the
+per-phase examples — all grounded in this repo.
+
+### The prompt skeleton
+
+```text
+GOAL:     <one evaluable outcome>
+CONTEXT:  read <files / docs> first
+SCOPE:    only touch <paths>; do NOT touch <paths>
+PLAN:     propose a plan and stop for review   ← for anything non-trivial
+VERIFY:   <command that must exit 0>
+STOP:     when <success condition> is true
+RULES:    don't edit the energy model unattended · don't read .env · show me the diff
+```
+
+> Every strong prompt names a **verification gate** and a **scope boundary**. A prompt
+> without them invites the failure modes in §7 (scope creep, superficial fixes,
+> "done" without passing).
+
+### 1 · Plan / Requirements — _explore before building_
+
+Run in **plan mode** (`Shift+Tab` ×2) so it can't edit yet.
+
+```text
+Read apps/api/src/routes/stations.ts, packages/shared/src/index.ts, and
+docs/BACKEND.md. I want to add plug-type filtering to GET /api/stations/nearby
+(?plugType=CCS2). Produce an implementation plan: which files change, the query
+change for the PostGIS lookup, validation, and the tests you'll add. Do NOT edit
+anything yet — stop at the plan.
+```
+
+### 2 · Design / Architecture — _capture the decision_
+
+```text
+We're considering caching Google Routes responses to cut API cost. Read
+docs/ARCHITECTURE.md (the in-memory cache note) and apps/api/src/services/maps.ts.
+Compare 2–3 approaches (in-memory TTL vs. Postgres table vs. none) with tradeoffs
+for our Railway/Supabase setup, recommend one, and draft an ADR in docs/adr/
+following the existing 0001 format. Plan only — no code.
+```
+
+### 3 · Implement (TDD) — _failing test first, loop to green_
+
+```text
+GOAL: add a `plugType` optional filter to GET /api/stations/nearby.
+CONTEXT: read stations.ts, the trips.ts PostGIS query for the ST_DWithin pattern,
+  and validation.ts for the schema style.
+SCOPE: apps/api/src only.
+Write a FAILING test first (Jest + Supertest) asserting the filter narrows results,
+then implement until `cd apps/api && npm test` and `npm run typecheck` pass.
+STOP when both are green. Show me the diff before finishing.
+```
+
+### 4 · Test — _raise the safety net_
+
+```text
+Add integration tests for POST /api/trips/optimize in apps/api covering: 400 on an
+invalid body (Zod), 404 on unknown evModelId, and a 200 happy path that asserts
+recommendedChargingStops is populated when arrival SoC is below the threshold.
+Use Supertest; run the DB with `npm run db:up` if needed. Verify with
+`cd apps/api && npm test`. Don't modify production route logic — tests only.
+```
+
+### 5 · Debug — _reproduce → isolate → fix → verify_
+
+```text
+Bug: predicted arrival SoC looks too high for heavy-traffic Metro Manila routes.
+First reproduce it with a failing unit test in packages/shared/src/energy.test.ts
+(use a heavy-traffic, hot-temperature segment). Then isolate the cause in
+energy.ts (likely the time-based auxiliary/AC term, see docs/ENERGY_MODEL.md §2).
+Propose the fix as a DIFF with rationale — do NOT apply changes to energy.ts
+yourself; this is the calibrated scientific core. Verify your repro test fails
+before and would pass after.
+```
+
+### 6 · Refactor — _behavior-preserving, tests as the net_
+
+```text
+Refactor findStationsNearby out of apps/api/src/routes/trips.ts into a new
+apps/api/src/services/stations.ts, and reuse it from routes/stations.ts. Pure
+move + reuse — no behavior change. The gate is unchanged tests: `npm test` and
+`npm run typecheck` from repo root must stay green. Scope to apps/api. Show the diff.
+```
+
+### 7 · Document — _keep docs in sync with code_
+
+```text
+The stations endpoint just gained a plugType filter. Update docs/BACKEND.md to
+document the new query param (type, allowed values, example), matching the
+existing endpoint-doc style. Docs only — don't touch source. Then show me the diff.
+```
+
+### 8 · Release / Ops — _draft, never auto-apply the risky step_
+
+```text
+An entity field was added to apps/api/src/entities/ChargingStation.ts. From
+apps/api, run `npm run migration:generate` to draft the migration, then show me
+the generated SQL and sanity-check it against docs/DATABASE.md (PostGIS / naming
+conventions). Do NOT run `npm run migration:run` — I'll apply it after review.
+```
+
+> **Headless variants:** any of these becomes an SDK run (§4) by setting
+> `maxTurns`, `maxBudgetUsd`, scoped `allowedTools`, and `permissionMode`
+> (`"plan"` for phases 1–2, `"acceptEdits"` for 3–4 & 6). Keep phases 5 and 8
+> human-in-the-loop — they propose, you apply.
+
+---
+
+## 7. Failure modes & guardrails ⚠️
 
 The well-known agentic-loop failure modes, each mapped to a concrete guardrail here:
 
@@ -238,7 +350,7 @@ The well-known agentic-loop failure modes, each mapped to a concrete guardrail h
 
 ---
 
-## 7. TL;DR
+## 8. TL;DR
 
 - The agentic loop = **gather context → take action → verify results**, repeated,
   with you able to interrupt and steer.
