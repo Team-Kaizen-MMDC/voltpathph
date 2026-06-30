@@ -40,3 +40,6 @@ yarn-error.log*
 .idea/
 *.swp
 *.swo
+
+# Claude Code — commit shared settings.json, ignore personal/local overrides
+.claude/settings.local.json
