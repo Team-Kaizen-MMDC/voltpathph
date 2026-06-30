@@ -233,7 +233,7 @@ RULES:    don't edit the energy model unattended · don't read .env · show me t
 ```
 
 > Every strong prompt names a **verification gate** and a **scope boundary**. A prompt
-> without them invites the failure modes in §7 (scope creep, superficial fixes,
+> without them invites the failure modes in §8 (scope creep, superficial fixes,
 > "done" without passing).
 
 ### 1 · Plan / Requirements — _explore before building_
@@ -325,7 +325,47 @@ conventions). Do NOT run `npm run migration:run` — I'll apply it after review.
 
 ---
 
-## 7. Failure modes & guardrails ⚠️
+## 7. Portability across agent tools
+
+The agentic loop is a property of the **harness**, not of any one model or vendor —
+it's the same ReAct cycle (§1) everywhere. So everything in this doc carries over to
+other tools; only the _surface details_ differ.
+
+| Tool                        | Runs the loop | Context file                 | Headless entry             | Notes                                                              |
+| --------------------------- | ------------- | ---------------------------- | -------------------------- | ------------------------------------------------------------------ |
+| **Claude Code**             | ✅            | `CLAUDE.md`                  | Agent SDK `query()` (§4)   | This doc's primary target.                                         |
+| **Antigravity CLI** (`agy`) | ✅            | Antigravity/Gemini config    | SDK + Managed Agents API   | Multi-agent (manager + subagents), hooks, scheduled tasks.         |
+| **Gemini CLI**              | ✅            | `GEMINI.md` (or `AGENTS.md`) | scripting mode             | ⚠️ retired for consumers 2026-06-18 → Antigravity CLI replaces it. |
+| **opencode**                | ✅            | `AGENTS.md` (native)         | SDK + HTTP API             | Model-agnostic; explicit max-iterations cap; Build/Plan agents.    |
+| **GitHub Copilot**          | ✅            | `AGENTS.md` (configurable)   | Copilot CLI / coding agent | Agent mode in the IDE; autonomous coding agent on issues/PRs.      |
+
+**Portable as-is** (no translation needed):
+
+- the mental model (gather → act → verify / ReAct, §1)
+- the prompt skeleton and SDLC prompts (§6) — they're plain English
+- the verification gates (`turbo test`, `turbo typecheck`) — just shell commands
+- the guardrails (scope a verify command, cap iterations, review the diff, keep the
+  energy model out of unattended edits, §8)
+
+**Translate per tool** (same concept, different name):
+
+| Concept              | Claude Code                   | Elsewhere                                                       |
+| -------------------- | ----------------------------- | --------------------------------------------------------------- |
+| Project conventions  | `CLAUDE.md`                   | `GEMINI.md` / `AGENTS.md`                                       |
+| Iteration cap        | `maxTurns`                    | opencode max-agentic-iterations, etc.                           |
+| Permissions          | `permissionMode` + allow/deny | opencode wildcard permission keys; Gemini `settings.json`       |
+| Headless entry       | Agent SDK `query()`           | opencode SDK/HTTP · Gemini scripting · Antigravity SDK          |
+| Shared tool protocol | MCP                           | **MCP** (supported by all of the above — one setup, every tool) |
+
+> **Single source of truth.** [`AGENTS.md`](../AGENTS.md) at the repo root is the
+> vendor-neutral entry point (read natively by opencode/Copilot, by config in
+> Gemini); it carries the non-negotiable rules inline and points to `CLAUDE.md` for
+> the full guide. Keep conventions in those two files so **every** harness inherits
+> them, not just Claude Code.
+
+---
+
+## 8. Failure modes & guardrails ⚠️
 
 The well-known agentic-loop failure modes, each mapped to a concrete guardrail here:
 
@@ -350,7 +390,7 @@ The well-known agentic-loop failure modes, each mapped to a concrete guardrail h
 
 ---
 
-## 8. TL;DR
+## 9. TL;DR
 
 - The agentic loop = **gather context → take action → verify results**, repeated,
   with you able to interrupt and steer.

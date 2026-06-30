@@ -77,3 +77,5 @@ Railway hosts the API/web compute (`railway.json`); Supabase provides PostgreSQL
 ## Further docs
 
 `docs/ARCHITECTURE.md` (system diagram), `BACKEND.md`, `DATABASE.md`, `ENERGY_MODEL.md`, `TESTING.md`, `FRONTEND_WEB.md`, `FRONTEND_MOBILE.md`, `DEVOPS.md`. Also `docs/AGENT_LOOPS.md` for using Claude Code / the Agent SDK on this repo.
+
+This file is the canonical agent guide. `AGENTS.md` at the repo root is a vendor-neutral mirror (for Gemini CLI / Antigravity, opencode, Copilot) that carries the non-negotiable rules and points back here — keep the two consistent when conventions change.
