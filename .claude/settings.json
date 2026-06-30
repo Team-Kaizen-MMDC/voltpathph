@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm test:*)",
+      "Bash(npm run build)",
+      "Bash(npm run build:*)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run format)",
+      "Bash(npm run format:*)",
+      "Bash(npm run db:up)",
+      "Bash(npm run db:up:*)",
+      "Bash(npm run db:logs:*)",
+      "Bash(npx turbo run *)",
+      "Bash(npx jest:*)",
+      "Bash(npx vitest:*)",
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch)",
+      "Bash(git branch:*)"
+    ],
+    "deny": [
+      "Bash(npm run db:reset)",
+      "Bash(npm run db:reset:*)",
+      "Bash(npm run db:down)",
+      "Bash(npm run db:down:*)",
+      "Bash(npm run migration:run)",
+      "Bash(npm run migration:run:*)",
+      "Bash(npm run migration:revert)",
+      "Bash(npm run migration:revert:*)",
+      "Bash(git push)",
+      "Bash(git push:*)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}
